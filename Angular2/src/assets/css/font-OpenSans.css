@@ -1,0 +1,50 @@
+@font-face
+{
+   font-family:'OpenSans';
+   src:url('font/OpenSans-Regular.ttf') format("truetype");
+}
+@font-face
+{
+   font-family:'OpenSans-Light';
+   src:url('font/OpenSans-Light.ttf') format("truetype");
+ }
+ @font-face
+ {
+   font-family:'OpenSans-LightItalic';
+   src:url('font/OpenSans-LightItalic.ttf') format("truetype");
+}
+@font-face
+{
+   font-family:'OpenSans-Italic';
+   src:url('font/OpenSans-Italic.ttf') format("truetype");
+ }
+   @font-face
+   {
+   font-family:'OpenSans-Bold';
+   src:url('font/OpenSans-Bold.ttf') format("truetype");
+ }
+ @font-face
+ {
+   font-family:'OpenSans-BoldItalic';
+   src:url('font/OpenSans-BoldItalic.ttf') format("truetype");
+}
+@font-face
+{
+   font-family:'OpenSans-ExtraBold';
+   src:url('font/OpenSans-ExtraBold.ttf') format("truetype");
+}
+   @font-face
+   {
+   font-family:'OpenSans-ExtraBoldItalic';
+   src:url('font/OpenSans-ExtraBoldItalic.ttf') format("truetype");
+}
+@font-face
+{
+   font-family:'OpenSans-SemiBold';
+   src:url('font/OpenSans-Semibold.ttf') format("truetype");
+ }
+ @font-face
+ {
+   font-family:'OpenSans-SemiBoldItalic';
+   src:url('font/OpenSans-SemiboldItalic.ttf') format("truetype");
+}

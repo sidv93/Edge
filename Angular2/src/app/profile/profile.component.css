@@ -1,0 +1,255 @@
+.msDiv{
+	background-color : #f4f6f6;
+	border: 1px solid cc0066;
+    border-radius: 0px;
+	margin-bottom: 10px;
+	margin-right:10px;
+	height: 184px;
+	width:147px;
+	padding: 20px;
+	float: left;
+	text-align: center;
+}
+
+.msP{
+font-weight:bold;
+font-family:Arial;
+font-size:17px;
+margin-top:10px;
+color: #cc0066;
+display: block;
+text-align:center;
+}
+
+.msUser{
+	margin-left: 15px;
+}
+
+.msPregular{
+	font-size:12px
+}
+
+.msPheading{
+	font-size:12px;
+}
+
+.msService{
+	margin-left: 15px;
+}
+.msDivP{
+	background-color : #f4f6f6;
+	border-bottom-style: solid;
+	border-bottom-color: #D8E6E6;
+	border-bottom-width: thin;
+	margin-left:10px;
+	margin-right:10px;
+	margin-bottom: 10px;
+	height: 50px;
+	width:200px;
+}
+
+.msDivCb{
+	background-color : #f4f6f6;
+	border: 1px solid white;
+    border-radius: 0px;
+	margin-bottom: 10px;
+	margin-right:10px;
+    padding: 15px;
+	height: 184px;
+	width:147px;
+	padding: 15px;
+	float: left;
+	text-align: center;
+}
+
+.msDivRight{
+    border-radius: 0px;
+	margin-bottom: 10px;
+	margin-right:0px;
+    padding: 0px;
+}
+
+.divbox{
+	padding-top:0px;
+	height:635px;
+	width:625px;
+	margin-top:10px;
+	margin-left:25px;
+	padding-left:15px;
+	padding-top:10px;
+	box-shadow:2px 1px 2px 1px #ececec;
+}
+.divsearch{
+	float:left;
+	margin-left:527px;
+	margin-top:10px;
+	box-shadow:1px 1px #ececec;
+}
+.divsearchms{
+	float:right;
+	margin-left:210px;
+	box-shadow:1px 1px #ececec;
+}
+
+.searchbox{
+	height:30px;
+	border:none;
+	color:#ececec;
+	padding-left:6px;
+	box-shadow:0px 0px 0px 0px;
+}
+.searchbox:focus {
+    outline:none;
+    border-color:#9ecaed;
+	border-radius:7px;
+    box-shadow:0 0 10px #9ecaed;
+}
+
+.msDesc{
+	font-size:10px
+}
+.white{
+	color: #ffffff;
+}
+.msbottom-margin{
+	margin-bottom:0px;
+	padding-bottom: 0px;
+}
+.mstop-margin{
+	margin-top:5px;
+	padding-top:0px;
+}
+.left-top-margin{
+	margin-left:26px;
+	margin-top:30px;
+}
+.msleft-margin{
+	margin-left:0px;
+}
+
+.download-button-width{
+	width:120px;
+}
+
+.msfont{
+	font-family: Arial;
+	color:#333333;
+}
+.msheading{
+	font-size:14px;
+}
+
+.msregular{
+	font-size:12px
+}
+.bold{
+	font-weight: bold;
+}
+.mstab{
+	font-family: Arial;
+	font-size:15px;
+	color:#e20075;
+}
+.css3menu_top{
+    background-color: #424542;
+    border-color: #FFFFFF;
+    border-radius: 6px 6px 6px 6px;
+    border-width: 2px;
+    box-shadow: 3.5px 3.5px 5px #000000;
+    display: none;
+    height: 300px;
+    left: 0;
+    overflow: auto;
+    padding: 0 10px 10px;
+    position: absolute;
+    top: 100%;
+    width: 160px;
+}
+.mstable{
+	border: 1px dotted #cccccc;
+	width:600px;
+}
+
+.td1{
+	padding-left:20px;
+	height:36px;
+	width:200px;
+	border:1px dotted #ececec;
+	font-family:Arial;
+	font-size:14px;
+	color:#77013d;
+}
+
+.td2{
+	padding-left:20px;
+	border:1px dotted #ececec;
+	font-family:Arial;
+	font-size:14px;
+	color:#333333;
+}
+
+ul.mstab {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+}
+
+/* Float the list items side by side */
+ul.mstab li {float: left;}
+
+/* Style the links inside the list items */
+ul.mstab li a {
+    display: inline-block;
+    text-align: center;
+    margin-right:15px;
+	padding-top:3px;
+    text-decoration: none;
+	border-top:2px solid white;
+    font-family: Arial;
+	font-size:15px;
+	color:#e20075;
+}
+
+/* Change background color of links on hover */
+ul.mstab li a:hover {
+    color:#e20075;
+}
+
+/* Create an active/current tablink class */
+ul.mstab li a:focus {
+    color:#77013d;
+	border-top:2px solid #e20075;
+	padding-top:3px;
+}
+
+.appCheckbox{
+	color:#666666;
+	cursor:default;
+}
+.statusIcon{
+	cursor:default;
+}
+.clearBoth{
+	clear: both;
+}
+.teleco-divbox{
+	padding-top:0px;
+	height:400px;
+	width:960px;
+	margin-top:10px;
+	margin-left:25px;
+	padding-left:15px;
+	padding-top:10px;
+	box-shadow:2px 1px 2px 1px #ececec;
+}
+
+.teleco-table{
+	border: 1px dotted #cccccc;
+	width:780px;
+}
+.error{
+	color: red;
+	font-size:16px;
+	width:300px;
+}

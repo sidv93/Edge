@@ -1,0 +1,645 @@
+
+<button id="openModalButton" [hidden]="true" data-toggle="modal"  data-target="#onBoardSteps">Open Modal</button>
+<div class="modal fade no-padding" id="onBoardSteps" role="dialog" style="overflow : auto;">
+  <div class="modal-dialog no-padding" style="width: 100%; height: 100%; margin: 0;">
+	<div class="modal-content no-padding" style="border: none; min-height: 100%;">
+      <div class="modal-body no-padding" >
+
+        <div class="container-fluid no-padding text-left">
+		    <div class="row logo-border">
+				<div class="col-sm-4 col-md-2 no-padding">
+					<div class="col-xs-12 col-md-12 no-padding"><img src="assets/image/logo/edge_logo_black.png"></div>
+				</div>
+		    </div>
+		</div>
+
+         <div class="container" *ngIf="onBoardFlag">
+          <form class="form-group form-signin" name="onEdgeBoardForm" id="onEdgeBoardForm" #onEdgeBoardForm="ngForm" novalidate>
+            <div class="margin clearfix">
+              <button type="button" class="close" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+               data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+            </div>
+
+              <div class="row margin-large">
+                  <div class="col-md-12">
+                     <h1>Edge Onboarding</h1>
+                   </div>
+              </div>
+
+               <div class="row margin-large">
+              		 <div class="col-md-12">
+                           <div class="row edge-bs-wizard " style="border-bottom:0;">
+                               <div class="col-md-6 bs-wizard-step active" style= "float: left">
+                                   <!-- <div class="text-center bs-wizard-stepnum">Step 1</div> -->
+                                   <div class="progress"><div class="progress-bar"></div></div>
+                                   <a href="javascript:;" class="bs-wizard-dot">1</a>
+                                   <div class="bs-wizard-info text-color">Details</div>
+                               </div>
+                               <div class="col-md-6 bs-wizard-step disabled"><!-- complete -->
+                                   <!-- <div class="text-center bs-wizard-stepnum">Step 3</div> -->
+                                   <div class="progress"><div class="progress-bar"></div></div>
+                                   <a href="javascript:;" class="bs-wizard-dot">2</a>
+                                   <div class="bs-wizard-info">Finalize</div>
+                               </div>
+                           </div>
+                   </div>
+                 </div>
+
+             <div class="form-group less-margin">
+                 <div class="row">
+                     <div class="col-md-12">
+                         <div class="col-md-12 no-padding"><span class="title">General Details</span>  <img src="assets/image/icons/more.png" style="margin-left: 10px; vertical-align: top;"></div>
+                     </div>
+                 </div>
+             </div>
+
+              <div class="form-group margin-bottom-large">
+                   <div class="row margin-bottom">
+                     <div class="col-md-4">
+                       <div class="col-md-12 no-padding">
+                             <label class="form-label">Operator*</label>
+                       </div>
+                       <div class="col-md-12 no-padding">
+                             <select class="form-control"  required name="operator" id="operator"  (change)="getTelcoUsersList()" [(ngModel)]="edgePresent.operator"  #operator="ngModel">
+                                <option selected hidden disabled style="display: none" value = "null">Select operator</option>
+                                <option *ngFor="let operator of globalServiceObj.operatorsList"  [ngValue]="operator">{{operator}}</option>
+                              </select>
+                             <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+                              <div style="width:300px; color:red;" [hidden]="operator.valid || (operator.untouched )">Operator is required</div>
+                       </div>
+                      </div>
+                     <div class="col-md-4">
+                      <div class="col-md-12 no-padding">
+                            <label class="form-label">User*</label>
+                      </div>
+                      <div class="col-md-12 no-padding">
+                            <select class="form-control" required name="telcoUser" id="telcoUser" #telcoUser="ngModel" [(ngModel)]="edgePresent.telcoUser">
+                              <option selected hidden disabled style="display: none" value = "null">Select user</option>
+                              <option *ngFor="let telcoUser of telcoUserList" [ngValue]="telcoUser">{{telcoUser}}</option>
+                            </select>
+                            <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+                            <div style="width:300px; color:red;" [hidden]="telcoUser.valid || (telcoUser.untouched )">Telco User is required</div>
+                    </div>
+                  </div>
+
+			          <div class="col-md-4">
+			           <div class="col-md-12 no-padding">
+			                <label class="form-label">Edge Logo</label>
+			            </div>
+			            <div class="col-md-12 no-padding">
+			               <input type="file" class="form-control" value= "Browse" accept="image/*" name="icon" id="icon" (change)="onChange($event)">
+			               <label class="form-label" style="margin: 10px 0 0 0;">Icon Max Dimensions 100 x 100px</label>
+                     <div style="color:grey;">Accepted formats are jpg,png,jpeg,tiff</div>
+			               <div style="width:300px; color:red;" [hidden]="!imageDimensionsFlag">Please select an image of the given dimensions</div>
+                     <div style="width:300px; color:red;" *ngIf="iconFlag">Invalid format</div>
+			           </div>
+			         </div>
+               </div>
+
+               <div class="row">
+                         <div class="col-md-8">
+                              <div class="col-md-12 no-padding">
+                                     <label class="form-label">Description</label>
+                               </div>
+                               <div class="col-md-12 no-padding">
+                                   <textarea class="form-control" rows="6" id="comment" [(ngModel)]="edgePresent.description" name="description" #description="ngModel" ></textarea>
+                              </div>
+
+                          </div>
+                     </div>
+             </div>
+
+
+                  <div class="form-group less-margin">
+                      <div class="row">
+                          <div class="col-md-12">
+                              <span class="title">Resource Reservation</span>
+                          </div>
+                      </div>
+                  </div>
+
+                  <div class="form-group margin-bottom-large">
+                     <div class="row">
+                        <div class="col-md-4">
+                          <div class="col-md-12 no-padding">
+                                <label class="form-label">No Of CPU*</label>
+                          </div>
+                          <div class="col-md-12 no-padding">
+                                 <input type="text" class="form-control" [(ngModel)]="edgePresent.resource.cpu" name="cpu" id="cpu" #cpu="ngModel" required pattern="[0-9]*">
+                         </div>
+                         <div style="width:300px; color:red;" *ngIf="cpu.touched  && (edgePresent.resource.cpu==undefined || edgePresent.resource.cpu=='')">No of CPU is required.</div>
+                         <div style="width:300px; color:red;" *ngIf="!cpu.valid && cpu.dirty && (edgePresent.resource.cpu!='')">Enter a numeric value.</div>
+                         </div>
+                        <div class="col-md-4">
+                         <div class="col-md-12 no-padding">
+                               <label class="form-label">Memory*</label>
+                         </div>
+                         <div class="col-md-12 no-padding">
+                                <input type="text" class="form-control" [(ngModel)]="edgePresent.resource.memory" name="memory" id="memory" #memory="ngModel" required pattern="[0-9]*">
+                        </div>
+                        <div style="width:300px; color:red;" *ngIf="memory.touched  && (edgePresent.resource.memory==undefined || edgePresent.resource.memory=='')">Memory is required.</div>
+                        <div style="width:300px; color:red;" *ngIf="!memory.valid && memory.dirty && (edgePresent.resource.memory!='')">Enter a numeric value.</div>
+                      </div>
+                         <div class="col-md-4">
+                            <div class="col-md-12 no-padding">
+                                   <label class="form-label">Storage*</label>
+                             </div>
+                             <div class="col-md-12 no-padding">
+                                    <input type="text" class="form-control" [(ngModel)]="edgePresent.resource.storage" name="storage" id="storage" #storage="ngModel" pattern="[0-9]*">
+                            </div>
+                            <div style="width:300px; color:red;" *ngIf="storage.touched  && (edgePresent.resource.storage==undefined || edgePresent.resource.storage=='')">Storage is required.</div>
+                            <div style="width:300px; color:red;" *ngIf="!storage.valid && storage.dirty && (edgePresent.resource.storage!='')">Enter a numeric value.</div>
+                        </div>
+                     </div>
+                   </div>
+
+                   <div class="form-group less-margin">
+                       <div class="row">
+                           <div class="col-md-12">
+                               <span class="title">Edge Details</span>
+                           </div>
+                       </div>
+                   </div>
+
+                   <div class="form-group margin-bottom-large">
+                       <div class="row margin-bottom">
+                         <div class="col-md-4">
+                           <div class="col-md-12 no-padding">
+                                 <label class="form-label">Edge Name*</label>
+                           </div>
+                           <div class="col-md-12 no-padding">
+                                       <input type="text" class="form-control" [(ngModel)]="edgePresent.edgeName" name="edgeName" id="edgeName" #edgeName="ngModel" (change)="ValidateEdgeName()" required >
+									   <div style="width:300px; color:red;" [hidden]="edgeName.valid || (edgeName.untouched)">Edge Name is required</div>
+                     				   <div style="width:300px; color:red;" *ngIf="duplicateedgeName && edgePresent.edgeName!=''">Name already exists</div>
+                               </div>
+                          </div>
+
+                          <div class="col-md-4">
+                           <div class="col-md-12 no-padding">
+                                 <label class="form-label">Location</label>
+                           </div>
+                           <div class="col-md-12 no-padding">
+                                  <input type="text" class="form-control" [(ngModel)]="edgePresent.location" name="location" id="location" #location="ngModel">
+                          </div>
+                        </div>
+
+                        <div class="col-md-4">
+                              <div class="col-md-12 no-padding">
+                                     <label class="form-label">Geolocation IP</label>
+                               </div>
+                               <div class="col-md-12 no-padding">
+                                      <input type="text" class="form-control" [(ngModel)]="edgePresent.geolocationip" name="geolocationip" id="geolocationip" #geolocationip="ngModel">
+                              </div>
+                          </div>
+
+                       </div>
+
+                       <div class="row">
+                       		<div class="col-md-4">
+                             <div class="col-md-12 no-padding">
+                                   <label class="form-label">Latitude</label>
+                             </div>
+                             <div class="col-md-12 no-padding">
+                                    <input type="text" class="form-control" [(ngModel)]="edgePresent.latitude" name="latitude" id="latitude" #latitude="ngModel">
+                            </div>
+                            </div>
+                           <div class="col-md-4">
+                            <div class="col-md-12 no-padding">
+                                  <label class="form-label">Longitude</label>
+                            </div>
+                            <div class="col-md-12 no-padding">
+                                   <input type="text" class="form-control" [(ngModel)]="edgePresent.longitude" name="longitude" id="longitude" #longitude="ngModel">
+                           </div>
+                         </div>
+
+                       </div>
+                    </div>
+
+                    <div class="form-group less-margin">
+                       <div class="row">
+                           <div class="col-md-12">
+                               <span class="title">Identity and Access Management</span>
+                           </div>
+                       </div>
+                   </div>
+
+                    <div class="form-group margin-bottom-large">
+                       <div class="row margin-bottom">
+                         <div class="col-md-4">
+                           <div class="col-md-12 no-padding">
+                                 <label class="form-label">Project ID*</label>
+                           </div>
+                           <div class="col-md-12 no-padding">
+                                  <input type="text" class="form-control" [(ngModel)]="edgePresent.projectID" name="projectID" id="projectID" #projectID="ngModel" required >
+                          </div>
+                           <div style="width:300px; color:red;" [hidden]="projectID.valid || (projectID.untouched)">ProjectID is required</div>
+                          </div>
+
+                         <div class="col-md-4">
+                          <div class="col-md-12 no-padding">
+                                <label class="form-label">Username*</label>
+                          </div>
+                          <div class="col-md-12 no-padding">
+                                 <input type="text" class="form-control" [(ngModel)]="edgePresent.iamUsername" name="iamUsername" id="iamUsername"
+                                  #iamUsername="ngModel" required style="background-color:white;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                         </div>
+                          <div style="width:300px; color:red;" [hidden]="iamUsername.valid || (iamUsername.untouched)">IAM User Name is required</div>
+                       </div>
+
+                          <div class="col-md-4">
+                             <div class="col-md-12 no-padding">
+                                    <label class="form-label">Password*</label>
+                              </div>
+                              <div class="col-md-12 no-padding">
+									<input type="password" class="form-control" [(ngModel)]="edgePresent.iamPassword" name="iamPassword" id="iamPassword"
+                   #iamPassword="ngModel" required style="background-color:white;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                             </div>
+                              <div style="width:300px; color:red;" [hidden]="iamPassword.valid || (iamPassword.untouched)">IAM Password is required</div>
+                         </div>
+                       </div>
+
+                       <div class="row">
+                       <div class="col-md-4">
+                            <div class="col-md-12 no-padding">
+                                  <label class="form-label">IAM URL*</label>
+                            </div>
+                            <div class="col-md-12 no-padding">
+                                   <input type="text" class="form-control" [(ngModel)]="edgePresent.iamUrl" name="iamurl" id="iamurl" #iamurl="ngModel" required >
+                           </div>
+                            <div style="width:300px; color:red;" [hidden]="iamurl.valid || (iamurl.untouched)">IAM URL is required</div>
+                      </div>
+                      </div>
+
+                    </div>
+
+
+                     <div class="form-group less-margin">
+                         <div class="row">
+                             <div class="col-md-12">
+                                 <div class="col-md-4 no-padding"><span class="title">Usage Charges</span>
+                                 </div>
+                             </div>
+                         </div>
+                     </div>
+
+                     <div class="form-group margin-bottom-large">
+                         <div class="row">
+                           <div class="col-md-4">
+                             <div class="col-md-12 no-padding">
+                                   <label class="form-label">Charge Per CPU*</label>
+                             </div>
+                             <div class="col-md-12 no-padding">
+                                    <input type="text" class="form-control" [(ngModel)]="edgePresent.usageCharges.cpuCharge" name="cpuCharge" id="cpuCharge" #cpuCharge="ngModel" required pattern="[0-9]*">
+                            </div>
+                            <div style="width:300px; color:red;" *ngIf="cpuCharge.touched  && (edgePresent.usageCharges.cpuCharge==undefined || edgePresent.usageCharges.cpuCharge=='')">CPU charge is required.</div>
+                            <div style="width:300px; color:red;" *ngIf="!cpuCharge.valid && cpuCharge.dirty && (edgePresent.usageCharges.cpuCharge!='')">Enter a numeric value.</div>
+                            </div>
+
+                           <div class="col-md-4">
+                            <div class="col-md-12 no-padding">
+                                  <label class="form-label">Charge Per GB Memory*</label>
+                            </div>
+                            <div class="col-md-12 no-padding">
+                                   <input type="text" class="form-control" [(ngModel)]="edgePresent.usageCharges.memoryCharge" name="memoryCharge" id="memoryCharge" #memoryCharge="ngModel" required pattern="[0-9]*">
+                           </div>
+                           <div style="width:300px; color:red;" *ngIf="memoryCharge.touched  && (edgePresent.usageCharges.memoryCharge==undefined || edgePresent.usageCharges.memoryCharge=='')">Memory Charge is required.</div>
+                           <div style="width:300px; color:red;" *ngIf="!memoryCharge.valid && memoryCharge.dirty && (edgePresent.usageCharges.memoryCharge!='')">Enter a numeric value.</div>
+                         </div>
+
+                          <div class="col-md-4">
+                             <div class="col-md-12 no-padding">
+                                    <label class="form-label">Charge Per GB Storage*</label>
+                              </div>
+                              <div class="col-md-12 no-padding">
+                                     <input type="text" class="form-control"  [(ngModel)]="edgePresent.usageCharges.storageCharge" name="storageCharge" id="storageCharge" #storageCharge="ngModel" required pattern="[0-9]*">
+                             </div>
+                             <div style="width:300px; color:red;" *ngIf="storageCharge.touched  && (edgePresent.usageCharges.storageCharge==undefined || edgePresent.usageCharges.storageCharge=='')">Storage charge is required.</div>
+                             <div style="width:300px; color:red;" *ngIf="!storageCharge.valid && storageCharge.dirty && (edgePresent.usageCharges.storageCharge!='')">Enter a numeric value.</div>
+                         </div>
+                         </div>
+                      </div>
+
+                  <div class="form-group margin-bottom-large">
+                      <div class="row">
+                          <div class="col-md-2">
+                            <button type="button"  data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+                             data-backdrop="static" data-keyboard="false" class="btn-cancel" >Cancel</button>
+                          </div>
+                          <div class="col-md-2 col-md-offset-8">
+                                <button type="button" class="btn-next" [hidden]="!onEdgeBoardForm.valid || duplicateedgeName || iconFlag || imageDimensionsFlag" (click)="onNext()">Next</button>
+                                <button class="btn-next" style="cursor:not-allowed;" [hidden]="onEdgeBoardForm.valid && !iconFlag && !duplicateedgeName && !imageDimensionsFlag"
+             									 popover="{{configuration.mandatoryMsg}}" [popoverCloseOnClickOutside]="true">
+                 						 			Next
+               								</button>
+                          </div>
+                     </div>
+                  </div>
+               </form>
+           </div>
+
+
+             <div class="container" *ngIf="detailsFlag">
+                <form class="form-group form-signin">
+                  <div class="margin clearfix">
+                    <button type="button" class="close" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+                     data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+                  </div>
+                  <div class="row" >
+                      <div class="col-md-4">
+                        <h1 class="margin-bottom">Edge Onboarding</h1>
+                      </div>
+                    </div>
+                    <div class="row margin-large">
+                    	<div class="col-md-12">
+                                <div class="row edge-bs-wizard" style="border-bottom:0;">
+                                    <div class="col-xs-6 bs-wizard-step complete">
+                                        <!-- <div class="text-center bs-wizard-stepnum">Step 1</div> -->
+                                        <div class="progress"><div class="progress-bar"></div></div>
+                                        <a href="javascript:;" class="bs-wizard-dot">1</a>
+                                        <div class="bs-wizard-info text-color">Details</div>
+                                    </div>
+
+                               <div class="col-xs-6 bs-wizard-step disabled"><!-- active -->
+                                        <!-- <div class="text-center bs-wizard-stepnum">Step 4</div> -->
+                                        <div class="progress"><div class="progress-bar"></div></div>
+                                        <a href="javascript:;" class="bs-wizard-dot">2</a>
+                                        <div class="bs-wizard-info">Finalize</div>
+                                    </div>
+                                </div>
+                          </div>
+                    </div>
+
+                    <div class = "row margin-bottom">
+                          <div class="col-md-6"> <h4 style=" color: #979A9F;">Edge Details</h4></div>
+                    </div>
+
+                    <div class="row margin-bottom">
+
+                          <div class="col-md-2" *ngIf="edgePresent.icon!=undefined && edgePresent.icon!=null && edgePresent.icon!='empty' ">
+                              <img [src]="edgePresent.icon" class="img-rounded" width="100" height="100">
+                          </div>
+                          <div class="col-md-2" *ngIf="edgePresent.icon==undefined || edgePresent.icon==null  || edgePresent.icon=='empty'">
+                            <img id="imgAppIcon+{{i}}" class="img-rounded" width="100" height="100" src="assets/image/images.png">
+                           </div>
+                          <div class="col-md-8">
+                                <div class="col-md-12 no-padding"> <h2>{{edgePresent.edgeName}}</h2> </div>
+                                <div class="col-md-12 no-padding form-label  margin-bottom">
+                                    {{edgePresent.description}}
+                                </div>
+                              </div>
+                        </div>
+
+                         <div class="row margin-bottom-large">
+								<div class="col-md-8 col-md-offset-2">
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                         <div class="col-md-6 no-padding">
+                                         <label class="form-label">Operator:</label>
+                                         <label class="form-label-bold">{{edgePresent.operator}}</label>
+                                       </div>
+                                         <div class="col-md-6 no-padding">
+                                         <label class="form-label">User:</label>
+                                         <label class="form-label-bold">{{edgePresent.telcoUser}}</label>
+                                       </div>
+                                    </div>
+                                </div>
+                          </div>
+                        </div>
+
+                            <div class="row margin-bottom">
+                                   <div class="col-md-10 tab-data">Edge Details</div>
+							</div>
+
+
+                                <div class="row margin-bottom-large">
+                                    <div class="col-md-10">
+                                         <div class="col-md-3 no-padding"><label class="form-label">Edge Name</label></div>
+                                         <div class="col-md-9 form-label-bold">{{edgePresent.edgeName}}</div>
+                                    </div>
+
+                                    <div class="col-md-10">
+                                         <div class="col-md-3 no-padding"><label class="form-label">Username</label></div>
+                                         <div class="col-md-9 form-label-bold">{{edgePresent.iamUsername}}</div>
+                                    </div>
+
+                                    <div class="col-md-10">
+                                         <div class="col-md-3 no-padding"><label class="form-label">IAM URL</label></div>
+                                         <div class="col-md-9 form-label-bold">{{edgePresent.iamUrl}}</div>
+                                    </div>
+
+                                    <div class="col-md-10">
+                                         <div class="col-md-3 no-padding"><label class="form-label">Location</label></div>
+                                         <div class="col-md-9 form-label-bold">{{edgePresent.location}}</div>
+                                    </div>
+
+                                    <div class="col-md-10">
+                                         <div class="col-md-3 no-padding"><label class="form-label">Geolocation IP</label></div>
+                                         <div class="col-md-9 form-label-bold">{{edgePresent.geolocationip}}</div>
+                                    </div>
+
+                                    <div class="col-md-10">
+                                         <div class="col-md-3 no-padding"><label class="form-label">Latitude</label></div>
+                                         <div class="col-md-9 form-label-bold">{{edgePresent.latitude}}</div>
+                                    </div>
+
+                                    <div class="col-md-10">
+                                         <div class="col-md-3 no-padding"><label class="form-label">Longitude</label></div>
+                                         <div class="col-md-9 form-label-bold">{{edgePresent.longitude}}</div>
+                                    </div>
+
+                                </div>
+
+
+                                     <div class="row margin-bottom-large">
+                                          <div class="col-md-10">
+                                              <div class="table-responsive">
+                                                   <table class="table" style="border:none;">
+                                                        <thead>
+                                                            <tr style= "background-color: #D9D9D9;">
+                                                                <th></th>
+                                                                <th>No. of CPU</th>
+                                                                <th></th>
+                                                                <th>Memory</th>
+                                                                <th></th>
+                                                                <th>Storage</th>
+                                                                <th></th>
+                                                                <th></th>
+                                                            </tr>
+                                                      </thead>
+                                                      <tbody>
+                                                          <tr>
+                                                              <td class="title form-table text-center">
+                                                              <div class="text-dark">Resource</div>
+                                                              <div class="text-dark">Reservation</div>
+                                                              </td>
+                                                              <td class="form-table text-dark">{{edgePresent.resource.cpu}}</td>
+                                                              <td class="form-table text-dark"></td>
+                                                              <td class="form-table text-dark">{{edgePresent.resource.memory}}</td>
+                                                              <td class="form-table text-dark"></td>
+                                                              <td class="form-table text-dark">{{edgePresent.resource.storage}}</td>
+                                                              <td class="form-table text-dark"></td>
+                                                          </tr>
+                                                      </tbody>
+                                                      <thead>
+                                                          <tr style= "background-color: #D9D9D9;">
+                                                              <th></th>
+                                                              <th>Charge per CPU</th>
+                                                              <th></th>
+                                                              <th>Charge per GB Memory</th>
+                                                              <th></th>
+                                                              <th>Charge per GB Storage</th>
+                                                              <th></th>
+                                                              <th></th>
+                                                          </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        <tr>
+                                                            <td class="title form-table text-center">
+                                                            <div class="text-dark">Usage</div>
+                                                            <div class="text-dark">Charges</div>
+                                                            </td>
+                                                            <td class="form-table text-dark">{{edgePresent.usageCharges.cpuCharge}}</td>
+                                                            <td class="form-table text-dark"></td>
+                                                            <td class="form-table text-dark">{{edgePresent.usageCharges.memoryCharge}}</td>
+                                                            <td class="form-table text-dark"></td>
+                                                            <td class="form-table text-dark">{{edgePresent.usageCharges.storageCharge}}</td>
+                                                            <td class="form-table text-dark"></td>
+                                                        </tr>
+                                                    </tbody>
+                                                  </table>
+                                              </div>
+                                            </div>
+                                        </div>
+
+                    <div class="form-group margin-bottom-large">
+                        <div class="row">
+                            <div class="col-md-2">
+                              <button type="button"  data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+                               data-backdrop="static" data-keyboard="false" class="btn-cancel" >Cancel</button>
+                            </div>
+                            <div class="col-md-2 col-md-offset-6">
+                                  <button type="button" class="btn-back" (click)="onDetailsBack()">Back</button>
+                            </div>
+                              <div class="col-md-2">
+                              <button type="button" data-toggle="modal" data-dismiss="modal" data-target="#confirmationModal" data-backdrop="static" data-keyboard="false" class="btn-next">Submit</button>
+                       		 </div>
+
+
+                       </div>
+                    </div>
+                        <!--start of confirmation modal-->
+
+
+         <!--end of confirmation modal-->
+                </form>
+              </div>
+
+</div>
+</div>
+</div>
+</div>
+
+<!--start of confirmation modal-->
+<div class="modal fade" id="confirmationClose"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content text-center">
+
+
+ <div class="row margin-bottom">
+   <div class="col-xs-12"> <h3>Are you sure you want end this onboarding session?</h3></div>
+ </div>
+
+	 <div class="row margin-bottom-large">
+	   <div class="col-xs-12 dialogue-font">
+	 		Your progress will not be saved and your Edge Onboarding will not be completed.
+		</div>
+	</div>
+
+
+ <div class="row">
+
+ <div class="col-xs-10 col-xs-offset-1">
+   <div class="col-xs-6">
+    <button type="button" data-toggle="modal" data-dismiss="modal" href="#onBoardSteps" class="btn-cancel">No,Go Back</button>
+   </div>
+   <div class="col-xs-6">
+     <button type="button" id="nextBtnModal" class="btn-next" data-dismiss="modal" (click)="OnClose()">Yes, End</button>
+   </div>
+ </div>
+
+ </div>
+</div>
+</div>
+</div>
+
+<div class="modal fade" id="confirmationModal" style="background-color:#333333; opacity:1;" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content text-center">
+
+
+		 <div class="row margin-bottom">
+			 <div class="col-xs-12"><h3>Onboard Confirmation</h3></div>
+		 </div>
+
+
+       <div class="row margin-bottom-large">
+	        <div class="col-xs-12 dialogue-font">
+	        Are you sure you want to start edge onboard?
+	      </div>
+       </div>
+
+
+       <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+          <div class="col-xs-6">
+            <button type="button" id="cancelBtnModal" data-target="#onBoardSteps" data-toggle="modal" class="btn-cancel"  data-dismiss="modal" >CANCEL</button>
+          </div>
+          <div class="col-xs-6">
+            <button type="button" data-toggle="modal" data-dismiss="modal" data-target="#confirmationSuccess" class="btn-next"  (click)="confirmedOnboard()">YES</button>
+          </div>
+        </div>
+        </div>
+
+      </div>
+    </div>
+</div>
+
+<div class="modal fade" id="confirmationSuccess"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content text-center">
+
+
+	<div class="clearfix">
+		<button type="button" class="close" data-toggle="modal" (click)="OnCloseFinal()" data-dismiss="modal"
+		 data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+    </div>
+
+	<div class="row margin-bottom">
+	  <div class="col-xs-12" *ngIf="edgeStartFlag"><h3>Onboard Confirmation</h3></div>
+	  <div class="col-xs-12" *ngIf="!edgeStartFlag"><h3>Error</h3></div>
+	</div>
+
+
+
+		<div class="row margin-bottom-large">
+			  <div class="col-xs-12 dialogue-font" *ngIf="edgeStartFlag">
+			Your request was submitted successfully
+			</div>
+			<div class="col-xs-12 dialogue-font" *ngIf="!edgeStartFlag">
+			{{errorMessage}}
+
+			</div>
+		</div>
+
+	 <div class="row">
+		<div class="col-xs-4 col-xs-offset-4">
+		  <div class="col-xs-12">
+		    <button type="button" id="nextBtnModal" class="btn-next"  data-dismiss="modal" (click)="OnCloseFinal()">OK</button>
+		  </div>
+		</div>
+    </div>
+
+</div>
+</div>
+</div>

@@ -1,0 +1,477 @@
+
+
+			<div class="form-group margin-bottom clearfix">
+              <div class="row margin-bottom clearfix">
+                  <div class="col-xs-12 col-sm-7 col-md-7 col-lg-8 clearfix">
+                       <a class="tabs margin-right" *ngIf="!userApp" id="allApp" routerLink="/mobileApp" skipLocationChange (click)="setAppsFlag('allApps')">All Apps</a>
+                      <a class="tabs margin-right"  *ngIf="userApp" style="border-bottom:none;" id="allApp" routerLink="/mobileApp" skipLocationChange (click)="setAppsFlag('allApps')">All Apps</a>
+                      <a class="tabs" *ngIf="userApp" id="myApp" routerLink="/mobileApp" skipLocationChange (click)="setAppsFlag('myApps')" >My Apps</a>
+                      <a class="tabs" *ngIf="!userApp" style="border-bottom:none;" id="myApp" routerLink="/mobileApp" skipLocationChange (click)="setAppsFlag('myApps')" >My Apps</a>
+                  </div>
+									<div class="col-xs-12 col-sm-5 col-md-5 col-lg-4">
+										<div style="width:300px; color:red;"*ngIf="errorFlag">{{errorMessage}}</div>
+											<button type="button" class="btn-onboard"  (click)="redirect()">Onboard New App <i class="fa fa-angle-right" aria-hidden="true" style="font-size: 19pt; top: 9px; right: 7px; position: absolute;"></i> </button>
+									</div>
+              </div>
+          </div>
+					<app-loader [loading]="loading" *ngIf="loading"></app-loader>
+          <div *ngIf="!detailsError">
+	           <div class="form-group margin-bottom clearfix">
+	                      <div class="row margin-bottom clearfix" style="background-color: #e9e9e9; padding: 10px 0;">
+	                           <div class="col-md-6 col-lg-6">
+	                                <span class="margin-right">
+	                                    <label class="apps-label">Stage:</label>
+	                                    <label class="title-small">{{appDetailed.stage}}</label>
+	                                </span>
+	                                <span>
+	                                    <label class="apps-label">Status:</label>
+	                                    <label class="title-small">{{appDetailed.onBoardStatus}}</label>
+	                                </span>
+	                           </div>
+
+
+	                           <div class="col-md-2" *ngIf="userApp && (appDetailed.onBoardStatus=='failure' || appDetailed.onBoardStatus=='Failure' || appDetailed.onBoardStatus=='FAILURE'|| appDetailed.onBoardStatus=='failed' || appDetailed.onBoardStatus=='failed' || appDetailed.onBoardStatus=='FAILED')">
+	                               <button class="btn-apps" data-toggle="modal" data-target="#viewError" (click)="viewError(appDetailed.applicationName)">View Errors</button>
+		                               <!-- Modal -->
+		                              <div class="modal fade" id="viewError" role="dialog">
+		                                <div class="modal-dialog" style="width: 60%;">
+		                                  <div class="modal-content">
+		                                    <div class="modal-header" style="text-align: center; border: none;">
+		                                      <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                                      <h3 class="margin-bottom">View Errors</h3>
+		                                    </div>
+		                                     <div class="modal-body" *ngIf="!viewErrorError">
+		                                      <h4 class="margin-bottom" style="font-family: OpenSans-SemiBold !important;">{{errorDetails.applicationName}}</h4>
+		                                      <div class="panel-group" id="accordion2" role="tablist" aria-multiselectable="true">
+		                                          <div class="margin-bottom" *ngFor="let microService of errorDetails.metadata.microserviceMetadata; let i = index ">
+		                                               <div class="panel panel-default" style="border: none;">
+		                                                   <div class="panel-heading" role="tab" id="componentHeading1" style="background-color: #333647;">
+		                                                       <h4 class="panel-title">
+		                                                           <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#comp1" aria-expanded="true" aria-controls="componentOne" style="font-family: OpenSans; font-size: 14pt; color: #fff;">
+		                                                               {{microService.microServiceName}}
+		                                                           </a>
+		                                                       </h4>
+		                                                   </div>
+		                                                   <div id="comp1" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="componentHeadingOne">
+		                                                       <div class="panel-body">
+		                                                             <table class="table table-striped" style="border: none;">
+		                                                               <tr>
+		                                                                 <th style="text-align:center;">Workload Name</th>
+		                                                                 <th style="text-align:center;">Status</th>
+		                                                                 <th style="text-align:center;">Log URL</th>
+		                                                               </tr>
+		                                                                  <tr *ngFor="let workload of microService.metadata.workloads; let j = index ">
+		                                                                      <td style="text-align:center;">{{workload.workloadName}}</td>
+		                                                                      <td style="text-align:center;"><label style="color:green">{{workload.status}}</label></td>
+		                                                                      <td style="text-align:center;"><a target="_blank" href="{{workload.logURL}}">{{workload.logURL}}</a></td>
+		                                                                  </tr>
+		                                                              </table>
+		                                                          </div>
+		                                                    </div>
+		                                               </div>
+		                                           </div>
+		                                    </div>
+		                                  </div>
+		                                  <div class="modal-body" *ngIf="viewErrorError">
+		                                    <h2 style="text-align:center;color:grey">{{errorMessage}}</h2>
+		                                  </div>
+		                                </div>
+		                              </div>
+		                          </div>
+	                           </div>
+
+	                           <div class="col-md-2" *ngIf="userApp && (appDetailed.onBoardStatus=='sandboxed' || appDetailed.onBoardStatus=='Sandboxed')">
+	                               <button class="btn-apps" data-toggle="modal" data-target="#testFeedback" (click)="setModalFlags()">Test Feedback</button>
+		                             <!-- Modal -->
+		                             <div class="modal fade" id="testFeedback" role="dialog">
+		                               <div class="modal-dialog">
+		                                 <div class="modal-content">
+		                                   <div class="modal-header">
+		                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                                   </div>
+		                                   <div class="modal-body" style="text-align: center;">
+		                                      <h3 class="margin-bottom">Submit Test Feedback</h3>
+		                                      <div class="row margin-bottom" *ngIf="!approveErrorPopup && !approveSuccess">
+		                                          <div class="col-md-8 col-md-offset-2">
+		                                          		<label class="rad" style="margin-right: 10px;">
+				                                            <input type="radio" name="test" checked="checked" [(ngModel)]="approve" value="approve" />
+				                                            <i></i> <label class="form-label" style="color: #333647;  vertical-align: text-top;">Approve</label>
+				                                        </label>
+
+		                                          		<label class="rad">
+				                                            <input type="radio"  name="test" [(ngModel)]="approve" value="deny" />
+				                                            <i></i> <label class="form-label" style="color: #333647;  vertical-align: text-top;">Deny</label>
+				                                        </label>
+		                                          </div>
+		                                      </div>
+
+		                                      <div class="row" *ngIf="!approveErrorPopup && !approveSuccess">
+		                                          <div class="col-md-4 col-md-offset-4">
+		                                              <button type="button" class="btn-modal-state" (click)="approveFunc(approve)">Submit</button>
+		                                          </div>
+		                                      </div>
+		                                      <div class="row" *ngIf="approveSuccess">
+		                                          <h4 class="margin-bottom">Approval was submitted successfuly.</h4>
+		                                      </div>
+		                                      <div class="row" *ngIf="approveSuccess">
+		                                          <div class="col-md-4 col-md-offset-4">
+		                                              <button type="button" class="btn-modal-state" data-dismiss="modal" (click)="pageRedirect()">OK</button>
+		                                          </div>
+		                                      </div>
+		                                      <div class="row" *ngIf="approveErrorPopup">
+		                                          <h4 class="margin-bottom">Approval failed. {{errorMessage}}</h4>
+		                                      </div>
+		                                      <div class="row" *ngIf="approveErrorPopup">
+		                                          <div class="col-md-4 col-md-offset-4">
+		                                              <button type="button" class="btn-next" data-dismiss="modal"><a routerLink="/mobileappdetails" skipLocationChange style="color:#fff;">OK</a></button>
+		                                          </div>
+		                                      </div>
+		                                   </div>
+		                                 </div>
+		                               </div>
+		                             </div>    <!--  Modal End -->
+	                           </div>
+
+														 <!-- Endpoints -->
+														 <div class="col-md-2" *ngIf="userApp && (appDetailed.onBoardStatus=='sandboxed' || appDetailed.onBoardStatus=='Sandboxed') && (appDetailed.stage=='certify' || appDetailed.stage=='Certify')">
+	                               <button class="btn-apps" data-toggle="modal" data-target="#endpoints" (click)="getEndpoints()">Sandbox endpoints</button>
+		                             <!-- Modal -->
+		                             <div class="modal fade" id="endpoints" role="dialog">
+		                               <div class="modal-dialog modal-lg">
+		                                 <div class="modal-content">
+		                                   <div class="modal-header">
+		                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
+		                                   </div>
+		                                   <div class="modal-body" style="text-align: center;">
+		                                      <h2 class="margin-bottom">Sandbox Endpoints</h2>
+		                                      <div class="row margin-bottom" *ngIf="!sandboxError">
+																						<h3 class="margin-bottom">{{appDetailed.applicationName}}</h3>
+																						<div class="margin-bottom">
+																							<div class="panel-group" id="accordion3" role="tablist" aria-multiselectable="true">
+																								 <div class="margin-bottom" *ngFor="let microService of endpoints.microservices; let i = index ">
+																											<div class="panel panel-default" style="border: none;">
+																													<div class="panel-heading" role="tab" id="componentHeading2" style="background-color: #333647;">
+																															<h4 class="panel-title">
+																																	<a role="button" data-toggle="collapse" data-parent="#accordion3" href="#comp{{i}}" aria-expanded="true" aria-controls="componentOne" style="font-family: OpenSans; font-size: 14pt; color: #fff;">
+																																			{{microService.name}}
+																																	</a>
+																															</h4>
+																													</div>
+																													<div id="comp{{i}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="componentHeading2">
+																															<div class="panel-body">
+																															<table class="table table-striped" style="border: none;">
+																																<thead *ngIf="microService.networkBinding.length > 0">
+																																	<tr>
+																																		<th colspan="2"><h4><strong>Network Binding</strong></h4></th>
+																																	</tr>
+																																	<tr>
+																																		<th style="text-align:center;">Network Id</th>
+																																		<th style="text-align:center;">Endpoint</th>
+																																	</tr>
+																																</thead>
+																																<tbody *ngIf="microService.networkBinding.length > 0">
+																																	 <tr *ngFor="let nb of microService.networkBinding;">
+																																			 <td style="text-align:center;">{{nb.networkId}}</td>
+																																			 <td style="text-align:center;"><label style="color:green">{{nb.endpoint}}</label></td>
+																																	 </tr>
+																																 </tbody>
+																															 </table>
+																															<table class="table table-striped" style="border: none;table-layout:fixed;">
+																																 <thead *ngIf="microService.httpGateway.length > 0">
+																																	 <tr>
+																																		 <th colspan="5"><h4><strong>Http Gateway</strong></h4></th>
+																																	 </tr>
+																																	 <tr>
+																																		<th style="text-align:center;">HTTP API ID</th>
+																																		<th style="text-align:center;">Endpoint</th>
+																																		<th style="text-align:center;">Access Token</th>
+																																		<th style="text-align:center;">Refresh Token</th>
+																																		<th style="text-align:center;">Expires In</th>
+																																		</tr>
+																																 </thead>
+																																 <tbody *ngIf="microService.httpGateway.length > 0">
+																																		 <tr *ngFor="let gw of microService.httpGateway;">
+																																			 <td style="text-align:center;word-wrap:break-word;">{{gw.httpApiId}}</td>
+																																			 <td style="text-align:center;word-wrap:break-word;"><label style="color:green">{{gw.endpoint}}</label></td>
+																																			 <td style="text-align:center;word-wrap:break-word;">{{gw.accessToken}}</td>
+																																			 <td style="text-align:center;word-wrap:break-word;">{{gw.refreshToken}}</td>
+																																			 <td style="text-align:center;word-wrap:break-word;">{{gw.expiresIn}} sec</td>
+																																		 </tr>
+																																	 </tbody>
+																																 </table>
+																																 <table class="table table-striped" style="border: none;">
+																																 <thead *ngIf="microService.eventGateway.length > 0">
+																																	 <tr>
+																																		 <th colspan="2"><h4><strong>Event Gateway</strong></h4></th>
+																																	 </tr>
+																																	 <tr>
+																																			<th style="text-align:center;">Event Id</th>
+																																			<th style="text-align:center;">Endpoint</th>
+																																		</tr>
+																																 </thead>
+																																 <tbody *ngIf="microService.eventGateway.length > 0">
+																																		 <tr *ngFor="let eg of microService.eventGateway;">
+																																				 <td style="text-align:center;word-wrap:break-word;">{{eg.eventId}}</td>
+																																				 <td style="text-align:center;word-wrap:break-word;"><label style="color:green">{{eg.endpoint}}</label></td>
+																																		 </tr>
+																																	 </tbody>
+																															 </table>
+																																 </div>
+																													 </div>
+																											</div>
+																									</div>
+																					 </div>
+																						 </div>
+																					</div>
+																					<div class="row margin-bottom" *ngIf="sandboxError">
+																						<h4>{{errorMessage}}</h4>
+																					</div>
+		                                   </div>
+		                                 </div>
+		                               </div>
+		                             </div>    <!--  Modal End -->
+	                           </div>
+
+	                           <div class="col-md-2" *ngIf="userApp">
+	                           		<div class="col-md-12" style="text-align: right">
+	                               		<span><img src="assets/image/icons/edit.png" height = "27px" width ="26px" style=" margin-right: 10px;" (click) = "editMobileAppsFunc(appDetailed.applicationName)" data-toggle="modal" data-target="#onBoardSteps"></span>
+	                               		<span><img src="assets/image/icons/trash.png" height = "27px" width ="26px" data-toggle="modal" data-target="#deleteDetails"></span>
+	                               </div>
+	                               <!--  Modal Edit -->
+
+	                       			  <!-- <div class="modal fade" id="onBoardSteps" role="dialog" *ngIf="test">
+	         							   <div class="modal-dialog no-padding" style="width: 100%; margin: 0;">
+	         								 <div class="modal-content" style="border: none;">
+	         								   <div class="modal-body no-padding"  >
+
+	         										<app-mobile-apps-on-board> </app-mobile-apps-on-board>
+	         									</div>
+	                                      </div>
+	                                    </div>
+	                                  </div>  -->
+
+																		    <!-- <div   *ngIf="test">
+																						<app-mobile-apps-on-board> </app-mobile-apps-on-board>
+																				</div> -->
+																		 <!--  Modal end -->
+
+
+	                                  		<!--  Modal Delete -->
+
+                                  <div class="modal fade" id="deleteDetails" role="dialog" >
+			                         <div class="modal-dialog">
+			                           <div class="modal-content">
+			                             <div class="modal-header">
+			                               <button type="button" class="close" data-dismiss="modal">&times;</button>
+			                             </div>
+			                             <div class="modal-body" style="text-align: center;">
+			                                <span *ngIf="!deletePopup"><h3 class="margin-bottom">Are you sure you want to delete?</h3></span>
+			                                <div class="row margin-bottom" *ngIf="!deletePopup">
+			                                    <div class="col-md-3 col-md-offset-3">
+			                                        <button class="btn-cancel" data-dismiss="modal">Cancel</button>
+			                                    </div>
+			                                    <div class="col-md-3">
+			                                        <button class="btn-next" (click)="deleteDetails()">Delete</button>
+			                                    </div>
+			                                </div>
+			                                <div class="row margin-bottom" *ngIf="deletePopup">
+			                                    <h3  class="margin-bottom" *ngIf="!deleteFailed">Your delete request was submitted successfully</h3>
+			                                    <h3  class="margin-bottom" *ngIf="deleteFailed">{{errorMessage}}. Please try again later</h3>
+
+			                                    <div class="col-md-4 col-md-offset-4">
+			                                        <button class="btn-next" data-dismiss="modal" (click)="pageRedirect()">OK</button>
+			                                    </div>
+			                                </div>
+			                             </div>
+			                           </div>
+			                         </div>
+			                       </div>   <!--  Modal End-->
+
+	                           </div>
+	                         </div>
+
+	                         <div class="row margin-bottom-large">
+														 <div class="col-md-2 no-padding" *ngIf ="appDetailed.icon!=undefined && appDetailed.icon!=null">
+																	 <img [src]="'data:image/png;base64,'+appDetailed.icon"  class="img-rounded" width="100" height="100">
+															</div>
+															<div class="col-md-2 no-padding" *ngIf ="appDetailed.icon==undefined || appDetailed.icon==null">
+																	 <img src="assets/image/images.png" class="img-rounded" width="100" height="100">
+														 </div>
+
+	            		            <div class="col-md-8 no-padding">
+	            		                  <div class="col-md-12 no-padding"> <h2 style="margin-top: 0;">{{appDetailed.applicationName}}</h2> </div>
+
+	            		                  <!-- <div class="col-md-12 no-padding">
+	                                         <label class="font-small">Scalable SQL Database StreamDB</label>
+	                                      </div> -->
+
+	                                  <div class="col-md-12 no-padding">
+	                                       <div class="col-md-1 no-padding">
+	                                            <label class="form-label no-margin">Rating</label>
+	                                       </div>
+	                                       <div class="col-md-4 no-padding">
+	                                           <span [ngSwitch]="appDetailed.rating">
+				                                 <img *ngSwitchCase="1" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/1-Star.png" />
+				                                 <img *ngSwitchCase="2" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/2-Star.png" />
+				                                 <img *ngSwitchCase="3" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/3-Star.png" />
+				                                 <img *ngSwitchCase="4" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/4-Star.png" />
+				                                 <img *ngSwitchCase="5" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/5-Star.png" />
+				                                 <img *ngSwitchDefault id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/0-Star.png" />
+				                               </span>
+	                                     </div>
+	                                  </div>
+
+	                                  <div class="col-md-12 no-padding">
+	                                      <div class="col-md-1 no-padding">
+	                                          <label class="form-label no-margin">Users</label>
+	                                      </div>
+	                                      <div class="col-md-4 no-padding">
+	                                          <label class="title font-small text-color">150</label>
+	                                      </div>
+	                                  </div>
+
+	                            </div>
+	                        </div>
+
+	                        <div class="row margin-bottom">
+	                          <ul class="nav nav-tabs no-border">
+	                              <li class="active"><a class="custom-tabs" data-toggle="tab" href="#home">Overview</a></li>
+	                              <li><a class="custom-tabs" data-toggle="tab" href="#menu1" (click)="getSubscribedServices()">Microservices</a></li>
+	                              <li><a class="custom-tabs" data-toggle="tab" href="#menu2" (click)="getUsage()">Usage</a></li>
+	                          </ul>
+	                          <div class="tab-content" style="padding: 20px; border:1px solid #e9e9e9;">
+	                              <div id="home" class="tab-pane fade in active">
+	                                  <div class="row margin-bottom">
+	                                      <div class="col-md-12">
+	                                         <div class="title margin-bottom-medium">Description</div>
+	                                      </div>
+	                                      <div class="col-md-12">
+	                                           <label class="form-label">
+	                                                {{appDetailed.description}}
+	                                            </label>
+	                                      </div>
+	                                  </div>
+
+	                                  <div class="row margin-bottom">
+	                                      <div class="col-md-4">
+	                                           <div class="col-md-12 no-padding">
+	                                                <div class="title margin-bottom-medium">The App</div>
+	                                           </div>
+
+	                                           <div class="col-md-12 no-padding">
+	                                                <label class="small-form-label">Owner:</label>
+	                                                <label class="small-form-label">{{appDetailed.owner}}</label>
+	                                            </div>
+
+	                                           <!--  <div class="col-md-12 no-padding">
+	                                                <label class="small-form-label">Technical Owner:</label>
+	                                                <label class="small-form-label"> Jane Rose</label>
+	                                            </div> -->
+
+	                                            <div class="col-md-12 no-padding">
+	                                                <label class="small-form-label">Released on:</label>
+	                                                <label class="small-form-label">{{appDetailed.releaseDate}}</label>
+	                                            </div>
+
+	                                            <div class="col-md-12 no-padding">
+	                                                <label class="small-form-label">Country:</label>
+	                                                <label class="small-form-label">{{appDetailed.regions}}</label>
+	                                           </div>
+	                                           <!-- Commenting EdgeCR changes -->
+	                                            <div class="col-md-12 no-padding">
+	                                                <label class="small-form-label">Package Type:</label>
+	                                                <label class="small-form-label">{{appDetailed.deliveryMethod}}</label>
+	                                            </div>
+	                                    </div>
+
+	                                    <div class="col-md-4">
+	                                         <div class="col-md-12 no-padding">
+	                                              <div class="title margin-bottom-medium">Performance</div>
+	                                         </div>
+
+	                                         <div class="col-md-12 no-padding">
+	                                              <label class="small-form-label">Users:</label>
+	                                              <label class="small-form-label">150</label>
+	                                          </div>
+
+	                                         <!--  <div class="col-md-12 no-padding">
+	                                              <label class="small-form-label">Uptime:</label>
+	                                              <label class="small-form-label">3 days and 42 mins</label>
+	                                          </div> -->
+	                                  </div>
+
+	                                  <div class="col-md-4">
+	                                       <div class="col-md-12 no-padding">
+	                                            <div class="title margin-bottom-medium">Categories</div>
+	                                       </div>
+	                                       <div class="col-md-12 no-padding">
+	                                            <label class="small-form-label">{{appDetailed.category}}</label>
+	                                       </div>
+	                                </div>
+	                            </div>
+
+															<div class="row margin-bottom" *ngIf="appDetailed.documentation!=undefined">
+																	<div class="col-md-12">
+																		 <div class="title margin-bottom-medium"><a target="_blank" href="{{appDetailed.documentation}}" skipLocationChange><span style="font-weight:bold;color:black"><img src="assets/image/icons/download.png"> Download App Documentation</span></a></div>
+																	</div>
+															</div>
+
+	                            <!-- <div class="row margin-bottom">
+	                                <div class="col-md-12">
+	                                    <span style="margin-right: 10px;"> <input type="image" src="assets/image/icons/download.png" style="height: 21px;"></span>
+	                                    <a href="javascript:" class="download-doc">Download App Documentation</a>
+	                                </div>
+	                            </div> -->
+	                        </div>
+
+	                              <div id="menu1" class="tab-pane fade">
+	                                  <!-- <h3>Menu 1</h3>
+	                                  <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p> -->
+                                    <div class="form-group margin-bottom clearfix">
+                                            <div class="row clearfix" *ngIf="!subEmpty">
+                                                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 margin-bottom clearfix" *ngFor="let ms of subscribedServices | paginate: {itemsPerPage: initialItems, currentPage:page, id: '1'}; let i = index " style="cursor:pointer">
+                                                       <div class="app-box clearfix">
+                                                           <div class="small-box clearfix">
+                                                              <img id="imgAppIcon+{{i}}" style="width: 100%" [src]="'data:image/png;base64,'+ms.icon">
+                                                            </div>
+                                                           <div class="box-text clearfix">{{ms.microServiceName}}</div>
+                                                           <div class="stars">
+                                                                <span [ngSwitch]="ms.rating">
+                                                                   <img *ngSwitchCase="1" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/1-Star.png" />
+                                                                   <img *ngSwitchCase="2" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/2-Star.png" />
+                                                                   <img *ngSwitchCase="3" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/3-Star.png" />
+                                                                   <img *ngSwitchCase="4" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/4-Star.png" />
+                                                                   <img *ngSwitchCase="5" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/5-Star.png" />
+                                                                   <img *ngSwitchDefault id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/0-Star.png" />
+                                                               </span>
+                                                           </div>
+                                                           <div style="padding: 5px;"><img class="vertical" src="assets/image/icons/user.png"> <span class="box-value">{{ms.noOfUsers}}</span></div>
+                                                        </div>
+                                                  </div>
+                                                </div>
+                                    <div class="form-group margin-bottom" *ngIf="!subEmpty">
+                                        <div class="col-xs-12 col-sm-12 col-md-12">
+                                          <p style="text-align: center;">
+                                            <pagination-controls (pageChange)="page = $event" id="1"
+                                                maxSize="5"
+                                                directionLinks="true"
+                                                autoHide="false">
+                                            </pagination-controls>
+                                          </p>
+                                        </div>
+                                    </div>
+																		<div class="form-group margin-bottom" *ngIf="subEmpty">
+								 		                    <h3 style="font-color:grey;text-align:center">{{publicConfiguration.emptyString}}</h3>
+								 		              </div>
+                                  </div>
+	                              </div>
+	                              <div id="menu2" class="tab-pane fade" *ngIf="usageGraphFlag" style="min-height: 500px;">
+										<app-app-usage-graph></app-app-usage-graph>
+	                              </div>
+	                          </div>
+	                     </div>
+	                   </div>
+                   </div>
+                   <div class="form-group margin-bottom" *ngIf="detailsError">
+		                    <h2 style="font-color:grey;text-align:center">{{errorMessage}}</h2>
+		              </div>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration>
+    <Properties>
+        <Property name="log-path">/opt/dt/edge/MECPortal/logs</Property>
+        <Property name="archive">${log-path}/archive</Property>
+    </Properties>
+    
+    <Appenders>
+     <RollingFile name="RollingFile-Appender"
+             fileName="${log-path}/rollingfile.log"
+             filePattern="${archive}/rollingfile.log.%d{yyyy-MM-dd-hh-mm}.gz">
+    <PatternLayout pattern="[%-5level] %d{yyyy-MM-dd HH:mm:ss.SSS} %X{sessionId} %c{1} - %msg%n"/>
+        <Policies>
+        <!-- roll log file daily -->
+             <TimeBasedTriggeringPolicy/>
+               <!-- roll log file once it exceeds defined size -->
+             <!-- <SizeBasedTriggeringPolicy size="30 MB"/> -->
+        </Policies>
+        <!-- keep defined number of rolling files before deleting them -->
+        <DefaultRolloverStrategy max="30"/>
+</RollingFile>
+ </Appenders>
+
+ 
+    <Loggers>
+        <Logger name="com.dt.edge.mec.apps.portal" level="debug" additivity="false">
+            <AppenderRef ref="RollingFile-Appender"/>
+        </Logger>
+       <!--  <Root>
+            <AppenderRef ref="RollingFile-Appender"/>
+        </Root> -->
+    </Loggers>
+</Configuration>

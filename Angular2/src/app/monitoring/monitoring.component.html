@@ -1,0 +1,166 @@
+
+<body>
+          <div class="row margin-bottom clearfix">
+              <div class="col-md-12">
+                  <span class="monitor-report">Report:</span>
+                  <span class="monitor-history">{{globalServiceObj.timePeriod}}</span>
+              </div>
+          </div>
+          <app-loader [loading]="loading" *ngIf="loading"></app-loader>
+          <div class="row margin-bottom clearfix" *ngIf="!loading">
+              <div class="col-md-6 margin-bottom">
+                  <div class="col-md-12 monitor-box no-padding">
+                      <div class="monitor-head">
+                        <div *ngIf="globalServiceObj.selectedRole=='MobileAppsDeveloper'" class="title letter-spacing">Latency</div>
+                          <div *ngIf="globalServiceObj.selectedRole=='MicroServiceDeveloper'" class="title letter-spacing">Latency</div>
+                          <div class="measure">In milliseconds</div>
+                      </div>
+                      <div class="monitor-body" *ngIf = "!globalServiceObj.monitoringFailApp && globalServiceObj.selectedRole=='MobileAppsDeveloper'">
+                        <div style="display: block;">
+                        <canvas baseChart #myChart width="300" height="300" *ngIf="globalServiceObj.recordForMonitoring"
+                                    [datasets]="lineChartDataLatency"
+                                    [labels]="lineChartLabels"
+                                    [options]="lineChartOptions"
+                                    [colors]="lineChartColors"
+                                    [legend]="lineChartLegend"
+                                    [chartType]="lineChartType"></canvas>
+                                  </div>
+                      </div>
+                      <div class="monitor-body" *ngIf = "!globalServiceObj.monitoringFailMS && globalServiceObj.selectedRole=='MicroServiceDeveloper'">
+                        <div style="display: block;">
+                        <canvas baseChart #myChart width="300" height="300" *ngIf="globalServiceObj.recordForMonitoring"
+                                    [datasets]="lineChartDataLatency"
+                                    [labels]="lineChartLabels"
+                                    [options]="lineChartOptions"
+                                    [colors]="lineChartColors"
+                                    [legend]="lineChartLegend"
+                                    [chartType]="lineChartType"></canvas>
+                                  </div>
+                      </div>
+                      <div class="monitor-body" *ngIf="globalServiceObj.monitoringFailApp && globalServiceObj.selectedRole=='MobileAppsDeveloper'">
+                      	<h3 style="font-color:grey;text-align:center">{{publicConfiguration.emptyString}}</h3>
+                      </div>
+                      <div class="monitor-body" *ngIf="globalServiceObj.monitoringFailMS && globalServiceObj.selectedRole=='MicroServiceDeveloper'">
+                      	<h3 style="font-color:grey;text-align:center">{{publicConfiguration.emptyString}}</h3>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="col-md-6 margin-bottom">
+                  <div class="col-md-12 monitor-box no-padding">
+                      <div class="monitor-head">
+                        <div *ngIf="globalServiceObj.selectedRole=='MobileAppsDeveloper'" class="title letter-spacing">Session Length</div>
+                        <div *ngIf="globalServiceObj.selectedRole=='MicroServiceDeveloper'" class="title letter-spacing">Revenue</div>
+                          <div class="measure" *ngIf="globalServiceObj.selectedRole=='MobileAppsDeveloper' && globalServiceObj.timePeriod=='Last Hour'">In mins</div>
+                          <div class="measure" *ngIf="globalServiceObj.selectedRole=='MobileAppsDeveloper' && globalServiceObj.timePeriod=='Last 24 Hours'">In mins</div>
+                          <div class="measure" *ngIf="globalServiceObj.selectedRole=='MobileAppsDeveloper' && globalServiceObj.timePeriod=='Last 7 Days'">In hours</div>
+                          <div class="measure" *ngIf="globalServiceObj.selectedRole=='MobileAppsDeveloper' && globalServiceObj.timePeriod=='Last 30 Days'">In hours</div>
+						  <div class="measure" *ngIf="globalServiceObj.selectedRole=='MicroServiceDeveloper'">In $</div>
+                      </div>
+                      <div class="monitor-body" *ngIf = "!globalServiceObj.monitoringFailApp && globalServiceObj.selectedRole=='MobileAppsDeveloper'">
+                        <div style="display: block;">
+                        <canvas baseChart #myChart width="300" height="300"  *ngIf="globalServiceObj.recordForMonitoring"
+                                    [datasets]="lineChartSessionLength"
+                                    [labels]="lineChartLabels"
+                                    [options]="lineChartOptions"
+                                    [colors]="lineChartColors"
+                                    [legend]="lineChartLegend"
+                                    [chartType]="lineChartType"></canvas>
+                                  </div>
+                      </div>
+                      <div class="monitor-body" *ngIf = "!globalServiceObj.monitoringFailMS && globalServiceObj.selectedRole=='MicroServiceDeveloper'">
+                        <div style="display: block;">
+                        <canvas baseChart #myChart width="300" height="300"  *ngIf="globalServiceObj.recordForMonitoring"
+                                    [datasets]="lineChartSessionLength"
+                                    [labels]="lineChartLabels"
+                                    [options]="lineChartOptions"
+                                    [colors]="lineChartColors"
+                                    [legend]="lineChartLegend"
+                                    [chartType]="lineChartType"></canvas>
+                                  </div>
+                      </div>
+                      <div class="monitor-body" *ngIf="globalServiceObj.monitoringFailApp && globalServiceObj.selectedRole=='MobileAppsDeveloper'">
+                      	<h3 style="font-color:grey;text-align:center">{{publicConfiguration.emptyString}}</h3>
+                      </div>
+                      <div class="monitor-body" *ngIf="globalServiceObj.monitoringFailMS && globalServiceObj.selectedRole=='MicroServiceDeveloper'">
+                      	<h3 style="font-color:grey;text-align:center">{{publicConfiguration.emptyString}}</h3>
+                      </div>
+                  </div>
+              </div>
+
+              <div class="col-md-6 margin-bottom">
+                  <div class="col-md-12 monitor-box no-padding">
+                      <div class="monitor-head">
+                          <div class="title letter-spacing">CPU Usage</div>
+                          <div class="measure">In percentages</div>
+                      </div>
+                      <div class="monitor-body" *ngIf = "!globalServiceObj.monitoringFailApp && globalServiceObj.selectedRole=='MobileAppsDeveloper'">
+                        <div style="display: block;">
+                        <canvas baseChart #myChart width="300" height="300"  *ngIf="globalServiceObj.recordForMonitoring"
+                                    [datasets]="lineChartCPUUsage"
+                                    [labels]="lineChartLabels"
+                                    [options]="lineChartOptions"
+                                    [colors]="lineChartColors"
+                                    [legend]="lineChartLegend"
+                                    [chartType]="lineChartType"></canvas>
+                                  </div>
+                      </div>
+                      <div class="monitor-body" *ngIf = "!globalServiceObj.monitoringFailMS && globalServiceObj.selectedRole=='MicroServiceDeveloper'">
+                        <div style="display: block;">
+                        <canvas baseChart #myChart width="300" height="300"  *ngIf="globalServiceObj.recordForMonitoring"
+                                    [datasets]="lineChartCPUUsage"
+                                    [labels]="lineChartLabels"
+                                    [options]="lineChartOptions"
+                                    [colors]="lineChartColors"
+                                    [legend]="lineChartLegend"
+                                    [chartType]="lineChartType"></canvas>
+                                  </div>
+                      </div>
+                      <div class="monitor-body" *ngIf="globalServiceObj.monitoringFailApp && globalServiceObj.selectedRole=='MobileAppsDeveloper'">
+                      	<h3 style="font-color:grey;text-align:center">{{publicConfiguration.emptyString}}</h3>
+                      </div>
+                      <div class="monitor-body" *ngIf="globalServiceObj.monitoringFailMS && globalServiceObj.selectedRole=='MicroServiceDeveloper'">
+                      	<h3 style="font-color:grey;text-align:center">{{publicConfiguration.emptyString}}</h3>
+                      </div>
+                  </div>
+              </div>
+
+
+              <div class="col-md-6 margin-bottom">
+                  <div class="col-md-12 monitor-box no-padding">
+                      <div class="monitor-head">
+                          <div class="title letter-spacing">Memory Usage</div>
+                          <div class="measure">In percentages</div>
+                      </div>
+                      <div class="monitor-body" *ngIf = "!globalServiceObj.monitoringFailApp && globalServiceObj.selectedRole=='MobileAppsDeveloper'">
+                        <div style="display: block;">
+                        <canvas baseChart #myChart width="300" height="300"  *ngIf="globalServiceObj.recordForMonitoring"
+                                    [datasets]="lineChartDataMemoryUsage"
+                                    [labels]="lineChartLabels"
+                                    [options]="lineChartOptions"
+                                    [colors]="lineChartColors"
+                                    [legend]="lineChartLegend"
+                                    [chartType]="lineChartType"></canvas>
+                                  </div>
+                      </div>
+                      <div class="monitor-body" *ngIf = "!globalServiceObj.monitoringFailMS && globalServiceObj.selectedRole=='MicroServiceDeveloper'">
+                        <div style="display: block;">
+                        <canvas baseChart #myChart width="300" height="300"  *ngIf="globalServiceObj.recordForMonitoring"
+                                    [datasets]="lineChartDataMemoryUsage"
+                                    [labels]="lineChartLabels"
+                                    [options]="lineChartOptions"
+                                    [colors]="lineChartColors"
+                                    [legend]="lineChartLegend"
+                                    [chartType]="lineChartType"></canvas>
+                                  </div>
+                      </div>
+                      <div class="monitor-body" *ngIf="globalServiceObj.monitoringFailApp && globalServiceObj.selectedRole=='MobileAppsDeveloper'">
+                      	<h3 style="font-color:grey;text-align:center">{{publicConfiguration.emptyString}}</h3>
+                      </div>
+                      <div class="monitor-body" *ngIf="globalServiceObj.monitoringFailMS && globalServiceObj.selectedRole=='MicroServiceDeveloper'">
+                      	<h3 style="font-color:grey;text-align:center">{{publicConfiguration.emptyString}}</h3>
+                      </div>
+                  </div>
+              </div>
+          </div>
+        </body>

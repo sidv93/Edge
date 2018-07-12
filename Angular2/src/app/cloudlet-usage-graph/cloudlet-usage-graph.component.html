@@ -1,0 +1,171 @@
+<div *ngIf="globalServiceObj.selectedRole=='NewCoDeveloper'">
+<div class="form-group margin-bottom clearfix">
+                <div class="row clearfix">
+                  <div class="col-md-9 col-lg-9">
+						 <label class="form-label-bold">Usage Of Last 30 Days</label>
+              </div>
+
+				  <div class="col-md-3 col-lg-3">
+                    <select  class="form-control" [(ngModel)]="initialOperator" (change)="checkSel()" name="opeartorId">
+						<option value="All" id="All">All Operators</option>
+						<option *ngFor = "let optionValue of globalServiceObj.operatorsList;let i = index" [value]="optionValue" id="optionValue+{{i}}">{{optionValue}}
+						</option>
+					</select>
+					<i class="fa"><img src="assets/image/icons/arrow.png"></i>
+                  </div>
+
+                  </div>
+		</div>
+
+		<div class="form-group margin-bottom clearfix">
+          <div class="row clearfix">
+               <div class="col-md-11">
+                   <div class="table-responsive">
+                     <app-loader [loading]="loading" *ngIf="loading"></app-loader>
+                        <table class="table" style="border:none;" *ngIf="!loading">
+                             <thead>
+                                 <tr style= "background-color: #323544; color: #ffffff;">
+									<th>
+                                     <div>Cloudlet</div>
+                                     </th>
+                                     <th>
+                                     <div>Latency (ms)</div>
+                                     </th>
+                                     <th>
+                                     <div>CPU Usage (%)</div>
+                                     </th>
+                                     <th>
+                                     <div>GPU Usage (%)</div>
+                                     </th>
+                                     <th>
+                                     <div>Memory Usage (%)</div>
+                                     </th>
+                                     <th>
+                                     <div>Storage (%)</div>
+                                     </th>
+                                 </tr>
+                           </thead>
+
+                           <tbody>
+                             <tr *ngIf="ErrorInfoFlag">
+                               <td colspan="6" style="text-align:center"><h3>{{publicConfiguration.emptyString}}</h3></td>
+                             </tr>
+								<ng-container *ngFor="let item of usageData.paasUsageData| paginate: {itemsPerPage: initialItems, currentPage:page, id: '1'};  let i = index">
+                <tr *ngIf="((i%2)!=0) && !ErrorInfoFlag" style= "background-color: #D9D9D9;">
+									  <td class="form-table text-dark">{{item.cloudletName}}</td>
+									  <td class="form-table text-dark">{{item.clLatency}}</td>
+									  <td class="form-table text-dark">{{item.cpuUsage}}</td>
+									  <td class="form-table text-dark">{{item.gpuUsage}}</td>
+									  <td class="form-table text-dark">{{item.memoryUsage}}</td>
+									  <td class="form-table text-dark">{{item.storage}}</td>
+								</tr>
+								<tr *ngIf="((i%2)==0) && !ErrorInfoFlag">
+									  <td class="form-table text-dark">{{item.cloudletName}}</td>
+									  <td class="form-table text-dark">{{item.clLatency}}</td>
+									  <td class="form-table text-dark">{{item.cpuUsage}}</td>
+									  <td class="form-table text-dark">{{item.gpuUsage}}</td>
+									  <td class="form-table text-dark">{{item.memoryUsage}}</td>
+									  <td class="form-table text-dark">{{item.storage}}</td>
+								</tr>
+								</ng-container>
+                           </tbody>
+                         </table>
+                       </div>
+                    </div>
+					</div>
+				</div>
+	<div class="form-group margin-bottom" *ngIf="!ErrorInfoFlag && !loading">
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
+              <p style="text-align: center;">
+                <pagination-controls (pageChange)="page = $event" id="1"
+                    maxSize="5"
+                    directionLinks="true"
+                    autoHide="false">
+                </pagination-controls>
+              </p>
+            </div>
+    </div>
+</div>
+<div *ngIf="globalServiceObj.selectedRole=='TelcoDeveloper'">
+
+  <div class="form-group margin-bottom clearfix" *ngIf="!loading">
+        <div class="row clearfix">
+          <div class="col-md-9 col-lg-9">
+	            <label class="form-label-bold">Usage Of Last 30 Days</label>
+          </div>
+
+          <div class="col-xs-6 col-sm-3 col-md-4 col-lg-3 clearfix">
+           <input type="text" class="form-control" name="srchterm" #srchterm  placeholder="Search" (change)="search(srchterm.value)" style="background-image: url('assets/image/icons/search.png'); background-position: 5px; background-repeat: no-repeat; padding: 10px 30px !important;">
+          </div>
+      </div>
+  </div>
+      <app-loader [loading]="loading" *ngIf="loading"></app-loader>
+  		<div class="form-group margin-bottom clearfix" *ngIf="!loading">
+            <div class="row clearfix">
+                 <div class="col-md-11">
+                     <div class="table-responsive">
+                          <table class="table" style="border:none;">
+                               <thead>
+                                   <tr style= "background-color: #323544; color: #ffffff;">
+  									                   <th>
+                                         <div>Edge Name</div>
+                                       </th>
+                                       <th>
+                                         <div>Latency (ms)</div>
+                                       </th>
+                                       <th>
+                                         <div>CPU Usage (%)</div>
+                                       </th>
+                                       <th>
+                                         <div>GPU Usage (%)</div>
+                                       </th>
+                                       <th>
+                                         <div>Memory Usage (%)</div>
+                                       </th>
+                                       <th>
+                                         <div>Storage (%)</div>
+                                       </th>
+                                   </tr>
+                             </thead>
+                             <tbody>
+                                 <tr *ngIf="ErrorInfoFlag">
+                                   <td colspan="6" style="text-align:center"><h3>{{publicConfiguration.emptyString}}</h3></td>
+                                 </tr>
+                    								<ng-container *ngFor="let item of usageDataTelco.telcoUsageData| paginate: {itemsPerPage: initialItems, currentPage:page, id: '1'};  let i = index">
+                                      <tr *ngIf="((i%2)!=0) && !ErrorInfoFlag" style= "background-color: #D9D9D9;">
+                      									  <td class="form-table text-dark">{{item.edgeName}}</td>
+                      									  <td class="form-table text-dark">{{item.clLatency}}</td>
+                      									  <td class="form-table text-dark">{{item.cpuUsage}}</td>
+                      									  <td class="form-table text-dark">{{item.gpuUsage}}</td>
+                      									  <td class="form-table text-dark">{{item.memoryUsage}}</td>
+                      									  <td class="form-table text-dark">{{item.storage}}</td>
+                      								</tr>
+                      								<tr *ngIf="((i%2)==0) && !ErrorInfoFlag">
+                      									  <td class="form-table text-dark">{{item.edgeName}}</td>
+                      									  <td class="form-table text-dark">{{item.clLatency}}</td>
+                      									  <td class="form-table text-dark">{{item.cpuUsage}}</td>
+                      									  <td class="form-table text-dark">{{item.gpuUsage}}</td>
+                      									  <td class="form-table text-dark">{{item.memoryUsage}}</td>
+                      									  <td class="form-table text-dark">{{item.storage}}</td>
+                      								</tr>
+                    								</ng-container>
+                             </tbody>
+                           </table>
+                         </div>
+                      </div>
+  					</div>
+  				</div>
+  	<div class="form-group margin-bottom" *ngIf="!ErrorInfoFlag && !loading">
+
+              <div class="col-xs-12 col-sm-12 col-md-12">
+                <p style="text-align: center;">
+                  <pagination-controls (pageChange)="page = $event" id="1"
+                      maxSize="5"
+                      directionLinks="true"
+                      autoHide="false">
+                  </pagination-controls>
+                </p>
+              </div>
+      </div>
+</div>

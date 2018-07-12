@@ -1,0 +1,567 @@
+
+<button id="openModalButton" [hidden]="true" data-toggle="modal"  data-target="#onBoardSteps">Open Modal</button>
+<div class="modal fade no-padding"  tabindex="-1" id="onBoardSteps" role="dialog" style="overflow : auto;">
+	<div class="modal-dialog no-padding" style="width: 100%; height: 100%; margin: 0;">
+	<div class="modal-content no-padding" style="border: none; min-height: 100%;">
+			<div class="modal-body no-padding" >
+
+			<div class="container-fluid no-padding text-left">
+			    <div class="row logo-border">
+					<div class="col-sm-4 col-md-2 no-padding">
+						<div class="col-xs-12 col-md-12 no-padding"><img src="assets/image/logo/edge_logo_black.png"></div>
+					</div>
+			    </div>
+		   </div>
+
+
+       <div class="container" name="DetailsOn" id="DetailsOn" *ngIf="DetailsOn_Flag ">
+           <form class="form-group form-signin" name="onBoardForm" id="onBoardForm" #onBoardForm="ngForm" novalidate>
+
+           		<div class="margin clearfix">
+					<button type="button" class="close" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+					 data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+                </div>
+
+                <div class="row margin-large">
+                  <div class="col-md-12">
+                     <h1> Cloud Onboarding</h1>
+                   </div>
+                </div>
+
+
+                    <div class="row margin-large">
+              		 <div class="col-md-12">
+                           <div class="row edge-bs-wizard " style="border-bottom:0;">
+                               <div class="col-md-6 bs-wizard-step active" style= "float: left">
+                                   <!-- <div class="text-center bs-wizard-stepnum">Step 1</div> -->
+                                   <div class="progress"><div class="progress-bar"></div></div>
+                                   <a href="javascript:;" class="bs-wizard-dot">1</a>
+                                   <div class="bs-wizard-info text-color">Details</div>
+                               </div>
+                               <div class="col-md-6 bs-wizard-step disabled"><!-- complete -->
+                                   <!-- <div class="text-center bs-wizard-stepnum">Step 3</div> -->
+                                   <div class="progress"><div class="progress-bar"></div></div>
+                                   <a href="javascript:;" class="bs-wizard-dot">2</a>
+                                   <div class="bs-wizard-info">Finalize</div>
+                               </div>
+                           </div>
+                   </div>
+                 </div>
+
+                    <div class="form-group less-margin">
+		                 <div class="row">
+		                     <div class="col-md-12">
+		                         <div class="col-md-12 no-padding"><span class="title">Edge Details</span> </div>
+		                     </div>
+		                 </div>
+	               </div>
+
+                  <div class="form-group margin-bottom-large">
+                    	<div class="row less-margin">
+                        <div class="col-md-4">
+                          <div class="col-md-12 no-padding">
+                                <label class="form-label">Operator*</label>
+                          </div>
+                          <div class="col-md-12 no-padding">
+                                <select class="form-control" (change)="getEdgeList()" required name="operator" id="operator" #operator="ngModel" [(ngModel)]="cloudletMetaData.operator">
+																	<option selected hidden disabled style="display: none" value = "null">Select operator</option>
+                                  <option *ngFor="let operator of globalService.operatorsList"  [ngValue]="operator">{{operator}}</option>
+                                </select>
+                                <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+																 <div style="width:300px; color:red;" [hidden]="operator.valid || (operator.untouched )">Operator is required</div>
+                          </div>
+                         </div>
+                        <div class="col-md-4">
+                         <div class="col-md-12 no-padding">
+                               <label class="form-label">Edge*</label>
+                         </div>
+                         <div class="col-md-12 no-padding">
+                               <select class="form-control" required name="edgeName" id="edgeName" #edgeName="ngModel" [(ngModel)]="cloudletMetaData.edgeName">
+																 <option selected hidden disabled style="display: none" value = "null">Select edge</option>
+                                 <option *ngFor="let edgeName of edgeNameList" [ngValue]="edgeName">{{edgeName}}</option>
+                               </select>
+                               <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+															 <div style="width:300px; color:red;" [hidden]="edgeName.valid || (edgeName.untouched )">Edge Name is required</div>
+                       </div>
+                     </div>
+                    	</div>
+
+						<div class="row">
+							<div class="col-md-4">
+											<input type="checkbox" id="vmi1" name="vmi1" (click)="vmiEnable()" [(ngModel)]="vmi">
+											<label class="checkbox" for="vmi1"><span class="form-label">VMI Capable</span></label>
+											<!-- <label class="checkbox" for="vmi"> <span class="form-label text-grey" style="vertical-align: sub;">VMI Capable</span></label> -->
+							 </div>
+
+				 </div>
+                   </div>
+
+                   <div class="form-group less-margin">
+                       <div class="row">
+                           <div class="col-md-12">
+                               <div class="col-md-2 no-padding"><span class="title">Cloudlet Details</span>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+
+                       <div class="form-group margin-bottom-large">
+                           <div class="row margin-bottom">
+                             <div class="col-md-4">
+                               <div class="col-md-12 no-padding">
+                                     <label class="form-label">Name*</label>
+                               </div>
+															 <div class="col-md-12 no-padding">
+                                      <input type="text" required name="cloudletName" id="cloudletName" #cloudletName="ngModel" [(ngModel)]="cloudletMetaData.cloudletName" (change)="validateCloudletName()" class="form-control" >
+																			<div style="width:300px; color:red;" *ngIf="duplicateCloudletName && cloudletMetaData.cloudletName!=''">Name already exists</div>
+																			<div style="width:300px; color:red;" [hidden]="cloudletName.valid || (cloudletName.untouched )">Name is required</div>
+                              </div>
+                              </div>
+
+                              <div class="col-md-4">
+                          <div class="col-md-12 no-padding">
+                                 <label class="form-label">Orchestration Template*</label>
+                           </div>
+                           <div class="col-md-12 no-padding">
+                                <input type="file" class="form-control"  value= "Browse"  (change)="onChangeTemplate($event)" name="heatTemplate" id="heatTemplate">
+																<div style="color:grey;">Accepted format is yaml</div>
+																<div style="width:300px; color:red;" *ngIf="invalidTemp">Template is required</div>
+																<div style="width:300px; color:red;" *ngIf="formatFlag">Invalid format</div>
+													</div>
+                      		</div>
+
+                           </div>
+
+                           <div class="row margin-bottom">
+                        <div class="col-md-4">
+                           <div class="col-md-12 no-padding">
+                                  <label class="form-label">Policy File</label>
+                            </div>
+                            <div class="col-md-12 no-padding">
+                                 <input type="file" class="form-control" value= "Browse"  name="iconName" id ="inp" (change)="onChangePolicy($event)">
+																 <div style="color:grey;">Accepted format is yaml</div>
+																 <div style="width:300px; color:red;" *ngIf="policyFlag">Invalid format</div>
+                           </div>
+                       </div>
+
+                       <div class="col-md-4">
+										<div class="col-md-12 no-padding">
+													 <label class="form-label">Icon</label>
+										 </div>
+
+										 <div class="col-md-12 no-padding">
+													<input type="file" class="form-control" value= "Browse" accept="image/*" name="iconName" id ="inp" (change)="onChange($event)">
+													<label class="form-label" style="margin: 10px 0 0 0;">Icon Max Dimensions 100 x 100px</label>
+													<div style="color:grey;">Accepted formats are jpg,png,jpeg,tiff</div>
+													<div style="width:300px; color:red;" [hidden]="!imageDimensionsFlag">Please select an image of the given dimensions</div>
+													<div style="width:300px; color:red;" *ngIf="iconFlag">Invalid format</div>
+										</div>
+							</div>
+
+
+
+                     </div>
+
+                      <div class="row margin-bottom">
+
+                       <div class="col-md-4">
+                              <div class="col-md-12 no-padding">
+                                    <label class="form-label">Country*</label>
+                              </div>
+                              <div class="col-md-12 no-padding">
+																<div class="col-md-12 no-padding">
+															 <!-- <select multiple class="form-control" style="width:330px;" [(ngModel)]="cloudletMetaData.country" name="country" id="country" #country="ngModel" required>
+								<option *ngFor="let country of countries"  >{{country.name}}</option>
+							</select> -->
+								<!-- <div style="width:300px; color:red;" [hidden]="country.valid || (country.untouched )">Country is required</div> -->
+
+								<ss-multiselect-dropdown [texts]="myTexts" [settings]="mySettings" [options]="countries" name="country" id="country" #regions="ngModel" required [(ngModel)]="selectedCountries"></ss-multiselect-dropdown>
+													 </div>
+                            </div>
+                          </div>
+
+
+					</div>
+
+                      <div class="row">
+                          <div class="col-md-8">
+                               <div class="col-md-12 no-padding">
+                                      <label class="form-label">Description</label>
+                                </div>
+                                <div class="col-md-12 no-padding">
+                                    <textarea [(ngModel)]="cloudletMetaData.description" name="description" class="form-control" rows="6" id="description"></textarea>
+                               </div>
+                           </div>
+
+                      </div>
+                   </div>
+
+                   <div class="form-group less-margin">
+                       <div class="row">
+                           <div class="col-md-12">
+                               <div class="col-md-12 no-padding"><span class="title">Container Usage Charges</span>
+                               </div>
+                           </div>
+                       </div>
+                   </div>
+									 <div class="form-group margin-bottom-large">
+										<div class="row">
+											 <div class="col-md-4">
+												 <div class="col-md-12 no-padding">
+															 <label class="form-label">Compute Charge*</label>
+												 </div>
+												 <div class="col-md-12 no-padding">
+																<input type="text" name="computeCharge" id="computeCharge" required #computeCharge="ngModel" [(ngModel)]="cloudletMetaData.usageCharges.computeCharge" class="form-control" pattern="[0-9]*">
+																<div style="width:300px; color:red;" *ngIf="computeCharge.touched  && (cloudletMetaData.usageCharges.computeCharge==undefined || cloudletMetaData.usageCharges.computeCharge=='')">Compute charge is required.</div>
+																<div style="width:300px; color:red;" *ngIf="!computeCharge.valid && computeCharge.dirty && (cloudletMetaData.usageCharges.computeCharge!='')">Enter a numeric value.</div>
+												</div>
+												</div>
+											 <div class="col-md-4">
+												<div class="col-md-12 no-padding">
+															<label class="form-label">Charge Per GB Storage*</label>
+												</div>
+												<div class="col-md-12 no-padding">
+															 <input type="text" required name="storageCharge" id="storageCharge" #storageCharge="ngModel" [(ngModel)]="cloudletMetaData.usageCharges.storageCharge" class="form-control" pattern="[0-9]*">
+															 <div style="width:300px; color:red;" *ngIf="storageCharge.touched  && (cloudletMetaData.usageCharges.storageCharge==undefined || cloudletMetaData.usageCharges.storageCharge=='')">Storage charge is required.</div>
+															 <div style="width:300px; color:red;" *ngIf="!storageCharge.valid && storageCharge.dirty && (cloudletMetaData.usageCharges.storageCharge!='')">Enter a numeric value.</div>
+											 </div>
+										 </div>
+												<div class="col-md-4">
+													 <div class="col-md-12 no-padding">
+																	<label class="form-label">Resources Charges*</label>
+														</div>
+														<div class="col-md-12 no-padding">
+																	 <input type="text" name="resourceCharge" id="resourceCharge" required #resourceCharge="ngModel" [(ngModel)]="cloudletMetaData.usageCharges.resourceCharge" class="form-control" pattern="[0-9]*">
+																	 <div style="width:300px; color:red;" *ngIf="resourceCharge.touched  && (cloudletMetaData.usageCharges.resourceCharge==undefined || cloudletMetaData.usageCharges.resourceCharge=='')">Resource charge is required.</div>
+																	 <div style="width:300px; color:red;" *ngIf="!resourceCharge.valid && resourceCharge.dirty && (cloudletMetaData.usageCharges.resourceCharge!='')">Enter a numeric value.</div>
+													 </div>
+											 </div>
+										</div>
+										</div>
+
+                   <div class="form-group margin-bottom-large">
+                       <div class="row">
+                           <div class="col-md-2">
+                                 <button type="button"  data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+							 									 data-backdrop="static" data-keyboard="false" class="btn-cancel"> Cancel</button>
+                           </div>
+                           <div class="col-md-2 col-md-offset-6">
+                                 <button type="button" *ngIf="this.cloudletMetaData.edgeName != null" class="btn-back" data-toggle="modal" data-target="#testConnModal" (click)="testConnection()">Test Connection</button>
+																 <button type="button" *ngIf="this.cloudletMetaData.edgeName == null" class="btn-back" style="cursor:not-allowed;"
+              									 popover="Select edge" [popoverCloseOnClickOutside]="true">Test Connection</button>
+																 <!-- <div style="width:300px; color:red;" *ngIf="testConnectionSuccess == 'failure'">Test connection failed.</div> -->
+                           </div>
+                           <div class="col-md-2">
+                                 <button type="button" *ngIf="!invalidTemp && !formatFlag && !policyFlag && !iconFlag && onBoardForm.valid  && (testConnectionSuccess == 'success') && !duplicateCloudletName && !imageDimensionsFlag"  (click)="OnNext()" class="btn-next">Next</button>
+																 <button class="btn-next" style="cursor:not-allowed;" *ngIf="invalidTemp || formatFlag || policyFlag || iconFlag || !onBoardForm.valid || (testConnectionSuccess == 'not clicked') || duplicateCloudletName || imageDimensionsFlag"
+              									 popover="{{configuration.mandatoryMsg}}" [popoverCloseOnClickOutside]="true">
+                  						 			Next
+                								</button>
+																<button type="button" *ngIf="(testConnectionSuccess == 'failure') && !invalidTemp && !formatFlag && !policyFlag && !iconFlag && onBoardForm.valid && !duplicateCloudletName  && !imageDimensionsFlag" class="btn-next" style="cursor:not-allowed;"
+																popover="Selected edge is not reachable. Please check the edge connectivity." [popoverCloseOnClickOutside]="true">Next</button>
+                           </div>
+                      </div>
+                    </div>
+                </form>
+            </div>
+
+						<div class="container" name="Final" id="Final" *ngIf="Finalize_Flag">
+					      <form class="form-group form-signin" name="finalForm" id="finalForm" #finalForm="ngForm">
+
+					      <div class="margin clearfix">
+							<button type="button" class="close" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+							 data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+		                </div>
+
+						  <div class="row margin-large">
+			                  <div class="col-md-12">
+			                     <h1>Cloudlet Onboarding</h1>
+			                   </div>
+			              </div>
+
+			               <div class="row margin-large">
+	                    	<div class="col-md-12">
+	                                <div class="row edge-bs-wizard" style="border-bottom:0;">
+	                                    <div class="col-xs-6 bs-wizard-step complete">
+	                                        <!-- <div class="text-center bs-wizard-stepnum">Step 1</div> -->
+	                                        <div class="progress"><div class="progress-bar"></div></div>
+	                                        <a href="javascript:;" class="bs-wizard-dot">1</a>
+	                                        <div class="bs-wizard-info text-color">Details</div>
+	                                    </div>
+
+	                               <div class="col-xs-6 bs-wizard-step disabled"><!-- active -->
+	                                        <!-- <div class="text-center bs-wizard-stepnum">Step 4</div> -->
+	                                        <div class="progress"><div class="progress-bar"></div></div>
+	                                        <a href="javascript:;" class="bs-wizard-dot">2</a>
+	                                        <div class="bs-wizard-info">Finalize</div>
+	                                    </div>
+	                                </div>
+	                          </div>
+	                    </div>
+
+
+					          <div class="row margin-bottom">
+									<div class="col-md-6"> <h4 style=" color: #96999E;">Cloudlet Details</h4></div>
+							  </div>
+
+
+							      <div class="row margin-bottom">
+													<div class="col-md-2" *ngIf="cloudletMetaData.icon!=undefined && cloudletMetaData.icon!=null && cloudletMetaData.icon!='empty' ">
+															<img [src]="cloudletMetaData.icon" class="img-rounded" width="100" height="100">
+													</div>
+													<div class="col-md-2" *ngIf="cloudletMetaData.icon==undefined || cloudletMetaData.icon==null  || cloudletMetaData.icon=='empty'">
+														<img id="imgAppIcon+{{i}}" class="img-rounded" width="100" height="100" src="assets/image/images.png">
+													 </div>
+
+							            <div class="col-md-8">
+							                  <div class="col-md-12 no-padding"> <h2>{{cloudletMetaData.cloudletName}}</h2> </div>
+							                  <div class="col-md-12 no-padding form-label margin-bottom">
+					                          {{cloudletMetaData.description}}
+					                      </div>
+					                </div>
+					              </div>
+
+
+						  <div class="row margin-bottom-large">
+								<div class="col-md-8 col-md-offset-2">
+					                      <div class="row">
+					                          <div class="col-md-12">
+					                               <div class="col-md-6 no-padding"><label class="form-label">Operator:</label> <span class="font-small">{{cloudletMetaData.operator}}</span></div>
+					                               <div class="col-md-6 no-padding"><label class="form-label">Edge:</label> <span class="font-small">{{cloudletMetaData.edgeName}}</span></div>
+					                          </div>
+					                      </div>
+					                </div>
+					              </div>
+
+					                <div class="row margin-bottom">
+                                   		<div class="col-md-10 tab-data">Cloudlet Details</div>
+							       </div>
+
+					                      <div class="row margin-bottom">
+					                          <div class="col-md-10">
+					                               <div class="col-md-3 no-padding"><label class="form-label">Country</label></div>
+					                               <div class="col-md-9 font-small">{{cloudletMetaData.country}}</div>
+					                          </div>
+
+					                          <div class="col-md-10">
+					                               <div class="col-md-3 no-padding"><label class="form-label">Policy File</label></div>
+					                               <div class="col-md-9 font-small">{{cloudletMetaData.policyFileName}}</div>
+					                          </div>
+
+					                          <div class="col-md-10">
+					                               <div class="col-md-3 no-padding"><label class="form-label">Heat Template</label>
+																				 </div>
+					                               <div class="col-md-9 font-small">{{cloudletMetaData.heatTemplateName}}</div>
+					                          </div>
+					                      </div>
+
+					                           <div class="row margin-bottom-large">
+					                                <div class="col-md-10">
+					                                    <div class="table-responsive">
+					                                         <table class="table table-review" style="border:none;">
+					                                         			<thead>
+					                                             			<tr style= "background-color: #D9D9D9;">
+																															<th>Usage Charges</th>
+																										<th class="text-left">Compute Charge</th>
+																										<th></th>
+																										<th class="text-left">Charge per GB Storage</th>
+																										<th></th>
+																										<th class="text-left">Resource Storage</th>
+																										<th></th>
+																										<th></th>
+																								</tr>
+					                                         		</thead>
+					                                       			<tbody>
+																												<tr>
+																									<td class="title form-table" rowspan="2"></td>
+																									<td class="form-table text-dark text-left" style="padding: 15px 20px;">{{cloudletMetaData.usageCharges.computeCharge}}</td>
+																									<td class="form-table" style="padding: 15px 20px;"></td>
+																									<td class="form-table text-dark text-left" style="padding: 15px 20px;">{{cloudletMetaData.usageCharges.storageCharge}}</td>
+																									<td class="form-table" style="padding: 15px 20px;"></td>
+																									<td class="form-table text-dark text-left" style="padding: 15px 20px;">{{cloudletMetaData.usageCharges.resourceCharge}}</td>
+																									<td class="form-table" style="padding: 15px 20px;"></td>
+																							</tr>
+					                                       			</tbody>
+					                                   			</table>
+					                                    </div>
+					                                  </div>
+					                              </div>
+
+					          <div class="form-group margin-bottom-large">
+					              <div class="row">
+					                  <div class="col-md-2">
+					                        <button type="button"  data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+																	 data-backdrop="static" data-keyboard="false" class="btn-cancel">Cancel</button>
+					                  </div>
+					                  <div class="col-md-2 col-md-offset-6">
+					                        <button type="button" class="btn-back" (click)="OnBack()">Back</button>
+					                  </div>
+					                  <div class="col-md-2">
+															<button data-toggle="modal" href="#publishConfirmModal" data-dismiss="modal"
+															data-backdrop="static" data-keyboard="false" type="button" class="btn-next" >SUBMIT</button>
+					                  </div>
+					             </div>
+					          </div>
+					      </form>
+					    </div>
+
+
+
+          </div>
+          </div>
+          </div>
+          </div>
+
+					<!--start of confirmation modal-->
+					<div class="modal fade" id="publishConfirmModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+					<div class="modal-content text-center">
+
+					 <div class="row margin-bottom">
+						 <div class="col-xs-12"><h3>Publish Confirmation</h3></div>
+					 </div>
+					 <!-- <div class="row" *ngIf="!publishFlag">
+						 <div class="col-xs-11" style="font-weight:bold; font-size:20px;">Error</div>
+					 </div> -->
+
+
+					<div *ngIf="!disableFieldsOnEdit" class="row margin-bottom-large">
+						 <div class="col-xs-12 dialogue-font">
+						 Are you sure you want to start publishing?
+						 You can view the status in the Cloudlet page.
+						 </div>
+					</div>
+
+					<div  *ngIf="disableFieldsOnEdit " class="row margin-bottom-large">
+						<div class="col-xs-12 dialogue-font">
+						 Are you sure you want to edit publishing?
+						 You can view the status in the Cloudlet page.
+						</div>
+					</div>
+
+					<!-- <div  *ngIf="!publishFlag" class="modal-body modalBody">
+						{{errorMessage}}.Please try again later.
+					</div> -->
+
+					 <div class="row">
+					 <div class="col-xs-10 col-xs-offset-1">
+						 <div class="col-xs-6">
+							<button type="button" data-toggle="modal" data-dismiss="modal" data-target="#onBoardSteps" class="btn-cancel">Cancel</button>
+						 </div>
+						 <div class="col-xs-6">
+							 <button type="button" id="nextBtnModal" class="btn-next" data-dismiss="modal" data-toggle="modal" data-target="#confirmationSuccess" (click)="onSubmit()">YES</button>
+						 </div>
+					 </div>
+					 <!-- <div class="col-xs-6" *ngIf="!publishFlag">
+						 <div class="col-xs-6">
+							 <button type="button" id="nextBtnModal" class="btn-next" data-dismiss="modal">OK</button>
+						 </div>
+					 </div> -->
+
+					 </div>
+					</div>
+					</div>
+					</div>
+
+					<div class="modal fade" id="confirmationSuccess"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+					<div class="modal-content text-center">
+
+					<div class="row margin-bottom">
+					  <div class="col-xs-12" *ngIf="publishFlag"><h3>Onboard Confirmation</h3></div>
+					  <div class="col-xs-12" *ngIf="!publishFlag"><h3>Error</h3></div>
+					</div>
+
+
+					<div class="row margin-bottom-large">
+			 			  <div class="col-xs-12 dialogue-font"  *ngIf="publishFlag">
+							Your request was submitted successfully
+							</div>
+							<div class="col-xs-12 dialogue-font" *ngIf="!publishFlag">
+								{{errorMessage}}
+							</div>
+					</div>
+
+					<div class="row">
+
+					 <div class="col-xs-4 col-xs-offset-4">
+
+					    <button type="button" id="nextBtnModal" class="btn-next"  data-dismiss="modal" (click)="OnCloseCloudletOnboard()">OK</button>
+
+					</div>
+
+					</div>
+					</div>
+					</div>
+					</div>
+
+
+					<!--start of confirmation modal-->
+					<div class="modal fade" id="confirmationClose"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					<div class="modal-dialog">
+					<div class="modal-content text-center">
+
+
+					 <div class="row margin-bottom">
+						 <div class="col-xs-12"><h3>Are you sure you want end this onboarding session?</h3></div>
+					 </div>
+
+					  <div class="row margin-bottom-large">
+			   			<div class="col-xs-12 dialogue-font">
+							 Your progress will not be saved and your Cloudlet onboarding will not be completed.
+						</div>
+					</div>
+
+
+		 			<div class="row">
+					 <div class="col-xs-10 col-xs-offset-1">
+						 <div class="col-xs-6">
+							<button type="button" data-toggle="modal" data-dismiss="modal" href="#onBoardSteps" class="btn-cancel">No,Go Back</button>
+						 </div>
+						 <div class="col-xs-6">
+							 <button type="button" id="nextBtnModal" class="btn-next" data-dismiss="modal" (click)="OnCloseCloudletOnboard()">Yes, End</button>
+						 </div>
+					 </div>
+
+					 </div>
+					</div>
+					</div>
+					</div>
+
+					<div class="modal fade" id="testConnModal" role="dialog" >
+						<div class="modal-dialog">
+							<div class="modal-content text-center">
+
+								<div class="margin-bottom clearfix">
+									<button type="button" class="close" data-dismiss="modal"
+									 data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+				        </div>
+
+								<div class="row">
+										<div class="col-xs-8 col-xs-offset-2">
+
+
+								 <div class="row margin-bottom">
+									 <div class="col-xs-12"><h3>Cloudlet Onboarding Test Connection</h3></div>
+								 </div>
+
+
+									 <div class="row margin-bottom-large">
+											<div class="col-xs-12 dialogue-font font-semi-bold margin-bottom" *ngIf="testConnectionSuccess=='success'">Status: <span class="text-color">Successful</span></div>
+											 <div class="col-xs-12 dialogue-font" *ngIf="testConnectionSuccess=='success'">Test Connection is successful for cloudlet onboarding. You can review the details in the next step and submit the onboarding request.</div>
+											 <div class="col-xs-12 dialogue-font font-semi-bold margin-bottom" *ngIf="testConnectionSuccess == 'failure'">Status: <span class="text-error">Failed</span></div>
+											 <div class="col-xs-12 dialogue-font" *ngIf="testConnectionSuccess == 'failure'">Test Connection has encountered errors and has failed for cloudlet onboarding. You can fill in the details again and recheck the test connection.</div>
+								    </div>
+
+											  <div class="row margin-bottom-large">
+											 <div class="col-md-8 col-md-offset-2">
+													 <button class="btn-next" data-dismiss="modal">OK</button>
+											 </div>
+									     </div>
+
+										 </div>
+								</div>
+
+							</div>
+						</div>
+					</div>

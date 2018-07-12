@@ -1,0 +1,39 @@
+<body>  
+	<div class="row margin-bottom clearfix">
+              <div class="col-md-12">
+                  <span class="monitor-report">Client Report : </span>
+                  <span class="monitor-history">{{date | date:'yyyy-MM-dd T HH:mm:ss'}}</span>
+              </div>
+          </div>   
+    <div class="row margin-bottom clearfix">  
+	   <div *ngIf="globalServiceObj.recordForVmiMonitoring">
+	   	<div class="col-md-4">
+			<div class="col-md-12 monitor-box no-padding" *ngFor="let clientReport of Client_Report; let i = index">
+					<div>  User : {{clientReport.User}}</div>
+					<div>  Group : {{clientReport.Group}}</div>
+					<div>  Login_Count : {{clientReport.Login_Count}}</div>
+					<div>  Total_Duration : {{clientReport.Total_Duration}}</div>						
+					<div> <a (click)="getVmiData(i)">session_Details</a></div>	
+	            </div>
+	    </div>
+				<!-- <div *ngIf="arr[count]" id = "session" style="visibility: hidden">  -->	
+		<div class="col-md-4">
+			 <div id = "session" style="visibility: hidden; display: inline-block; border: 1px solid; ">
+					<table style="width:100%; "  class="table">
+						<tr>
+							<th>Duration</th>
+							<th>Logout_Time</th>
+							<th>Login_Time</th>
+						</tr>
+						<tr *ngFor="let sessionDetail of vmiData.client_Report[count].Session_Details">
+							<td>{{sessionDetail.Duration}}</td>
+							<td>{{sessionDetail.Logout_Time}}</td>
+							<td>{{sessionDetail.Login_Time}}</td>
+						</tr>											  
+					</table>
+			</div>
+		</div>
+		</div>
+	</div>
+         
+</body>

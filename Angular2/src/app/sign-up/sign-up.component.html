@@ -1,0 +1,278 @@
+<div id="grad" class="container-fluid no-padding">
+		<div class="row">
+			 <div class="col-md-2 no-padding">
+						<img src="assets/image/logo/edge_logo.png">
+			 </div>
+	 </div>
+<form name="signUpForm" id="signUpForm" #signUpForm="ngForm" novalidate>
+		<div class="row top-margin margin-bottom-large clearfix">
+				<div class="col- xs-12 col-sm-6 col-sm-offset-3 col-md-6 col-md-offset-3 margin-bottom-large clearfix">
+						<div class="account-info clearfix">
+								<h1 class="text-center login-title margin-bottom clearfix">Sign up for free account</h1>
+								<form class="form-group form-signin clearfix" style="max-width: 700px;">
+									<div class="row margin-bottom">
+											<div class="col-md-6">
+												<div class="col-md-12 no-padding">
+															<label class="form-label">First Name <span class="highlight2">*</span></label>
+												</div>
+												<div class="col-md-12 no-padding">
+														 <input type="text" class="form-control form-group" name="firstName" id="firstName"
+														  [(ngModel)]="signUp.firstName" required #firstName="ngModel" pattern="^[a-zA-Z]+$">
+														<div style="color:red;" *ngIf="!firstName.untouched && !signUpForm.submitted && (signUp.firstName == undefined || signUp.firstName == null || signUp.firstName == '')">FirstName is required</div>
+														<div style="color:red;" *ngIf="!firstName.valid && (signUp.firstName != undefined && signUp.firstName != null && signUp.firstName != '')">Only Alphabets Are Allowed!</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="col-md-12 no-padding">
+															<label class="form-label">Last Name <span class="highlight2">*</span></label>
+												</div>
+												<div class="col-md-12 no-padding">
+														 <input type="text" class="form-group form-control" name="lastName" id="lastName" [(ngModel)]="signUp.lastName" required #lastName="ngModel" pattern="^[a-zA-Z]+$">
+														 <div style="color:red;" *ngIf="!lastName.untouched && !signUpForm.submitted && (signUp.lastName == undefined || signUp.lastName == null || signUp.lastName == '')">LastName is required</div>
+														 <div style="color:red;" *ngIf="!lastName.valid && (signUp.lastName != undefined && signUp.lastName != null && signUp.lastName != '')">Only Alphabets Are Allowed!</div>
+												</div>
+											</div>
+									</div>
+
+									<div class="row margin-bottom">
+											<div class="col-md-6">
+												<div class="col-md-12 no-padding">
+															<label class="form-label">Email ID <span class="highlight2">*</span></label>
+												</div>
+												<div class="col-md-12 no-padding">
+														 <input type="text" class=" form-group form-control" name="emailId" id="emailId"
+														 [(ngModel)]="signUp.emailId" pattern="[^@]+@[^@\.]+\.[a-zA-Z]{2,}" required  #emailId="ngModel" >
+														 <div style="color:red;" *ngIf="!emailId.untouched && !signUpForm.submitted && (signUp.emailId == undefined || signUp.emailId == null || signUp.emailId == '')">Email is required</div>
+														 <div style="color:red;" *ngIf="!emailId.valid && (signUp.emailId != undefined && signUp.emailId != null && signUp.emailId != '')">Email is invalid (e.g. edge@mec.com)</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="col-md-12 no-padding">
+															<label class="form-label">Username <span class="highlight2">*</span></label>
+												</div>
+												<div class="col-md-12 no-padding">
+														 <input type="text" class="form-group form-control" name="username" id="username"
+
+														 [(ngModel)]="signUp.username" required pattern="^[a-zA-Z]([-a-z0-9A-Z]*[a-z0-9A-Z])?$"
+														 minlength="5" maxlength="32"  #username="ngModel" style="background-color:white;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+
+														 <div style="color:red;" *ngIf="!username.untouched && !signUpForm.submitted && (signUp.username == undefined || signUp.username == null || signUp.username == '')">Username is required</div>
+														 <div style="color:red;" *ngIf="!username.valid && (signUp.username != undefined && signUp.username != null && signUp.username != '')">{{configuration.requiredUserString}}</div>
+												</div>
+											</div>
+									</div>
+
+									<div class="row margin-bottom">
+											<div class="col-md-6">
+												<div class="col-md-12 no-padding">
+															<label class="form-label">Password <span class="highlight2">*</span></label>
+												</div>
+												<div class="col-md-12 no-padding">
+														 <input type="password" class="form-group form-control" name="password" id="password" [(ngModel)]="signUp.password" required maxlength="20" #password="ngModel"
+														 validateEqual="retypePassword" reverse="true" pattern="^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!*^&+=_\.]).*$"
+														 style="background-color:white;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+														 <div style="color:red;" [hidden]="password.valid || (password.untouched && !signUpForm.submitted)">
+															 Password is required ( minimum length: 8 characters, maximum length: 20 characters, should contain atleast 1 uppercase character, 1 lowercase character, 1 number and 1 special character )</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="col-md-12 no-padding">
+															<label class="form-label">Retype Password <span class="highlight2">*</span></label>
+												</div>
+												<div class="col-md-12 no-padding">
+														 <input type="password" class="form-group form-control" name="retypePassword" id="retypePassword"
+														 [(ngModel)]="signUp.retypePassword" validateEqual="password" required #retypePassword="ngModel"
+														 style="background-color:white;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+
+														 <div style="color:red;" [hidden]="retypePassword.valid ||  (retypePassword.untouched && !signUpForm.submitted)">
+        							 				Password mismatch</div>
+
+												</div>
+											</div>
+									</div>
+
+									<div class="row margin-bottom">
+											<div class="col-md-6">
+												<div class="col-md-12 no-padding">
+															<label class="form-label">Country<span class="highlight2">*</span></label>
+												</div>
+												<div class="col-md-12 no-padding">
+
+													<select class="text-grey form-control countries" name="country" id="country" [(ngModel)]="selectedCountry"
+														required #country="ngModel" (change)="onSelect(selectedCountry)">
+														<option selected hidden disabled style="display: none" value ="null">Select country</option>
+														<option *ngFor="let country of countries" [ngValue]="country">{{country.name}}</option>
+													</select>
+
+													<i class="fa"><img src="assets/image/icons/arrow.png"></i>
+													<div style="color:red;" [hidden]= "country.valid || (country.untouched && !signUpForm.submitted)">Country is required</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="col-md-12 no-padding">
+															<label class="form-label">State <span class="highlight2">*</span></label>
+												</div>
+												<div class="col-md-12 no-padding">
+
+													<select class="text-grey form-control states" name="state" id="state"
+													[(ngModel)]="signUp.state" required #state="ngModel">
+													<option selected hidden disabled style="display: none" value = "null">Select state</option>
+													<option *ngFor="let state of states " [ngValue]= "state.name">{{state.name}}	</option>
+													</select>
+													<i class="fa"><img src="assets/image/icons/arrow.png"></i>
+													<div style="color:red;" [hidden]="state.valid || (state.untouched && !state.submitted)">State is required</div>
+												</div>
+											</div>
+									</div>
+
+									<div class="row margin-bottom">
+											<div class="col-md-6">
+												<div class="col-md-12 no-padding">
+															<label class="form-label">Company Name <span class="highlight2">*</span></label>
+												</div>
+												<div class="col-md-12 no-padding">
+													<input type="text" name="companyName" class="form-group form-control" id="companyName"
+													[(ngModel)]="signUp.companyName" required #companyName="ngModel">
+													<div style="color:red;" [hidden]="companyName.valid || (companyName.untouched && !signUpForm.submitted)">Company Name is required</div>
+												</div>
+											</div>
+											<div class="col-md-6">
+												<div class="col-md-12 no-padding">
+															<label class="form-label">Signing Up For <span class="highlight2">*</span></label>
+												</div>
+												<div class="col-md-12 no-padding">
+													<select class="form-control text-grey" name="signingUpFor"  id="signingUpFor" [(ngModel)]="signUpFor" required #signingUpFor="ngModel">
+														<option selected hidden disabled style="display: none" value = "null">Select role</option>
+														<option>App Developer</option>
+														<option>MS Developer</option>
+														<option>PaaS Operator</option>
+														<option>MS Developer and App Developer</option>
+									</select>
+									<i class="fa"><img src="assets/image/icons/arrow.png"></i>
+									<div style="width:300px; color:red;" [hidden]="signingUpFor.valid || (signingUpFor.untouched && !signUpForm.submitted)">SignUpFor is required</div>
+
+
+												</div>
+											</div>
+									</div>
+
+										<div class="form-group info clearfix" >
+											<div class="row">
+													<div class="col-md-6 col-md-offset-3" [ngClass]="{'has-danger': termsnconditons.invalid && (termsnconditons.dirty || termsnconditons.touched),'has-success': termsnconditons.valid &&
+					(termsnconditons.dirty || termsnconditons.touched)}">
+														<div class="col-md-1 no-padding">
+															 <input type="checkbox"  id="termsnconditons" [(ngModel)]="signUp.termsnconditons" name="termsnconditons" formnovalidate required #termsnconditons="ngModel" (click)="setTerms()">
+															 <label class="checkbox" id="termsnconditionslabel" for="termsnconditons"></label>
+													   </div>
+
+													 <div class="col-md-11 text-grey" style="font-size: 12px;">Checking this box implies that you have read the <a target="_blank" href="termsandconditions.html">Terms of Service and Privacy Policy</a> </div>
+
+												 </div>
+											 </div>
+											 <div class="row">
+												<div class="col-xs-6 col-xs-offset-3">
+													<div  style="padding-top:5px; color:red; width:400px;" *ngIf="termsnconditons.errors && (termsnconditons.dirty || termsnconditons.touched)">
+														<span *ngIf="termsnconditons.errors.required">Terms and conditons is Required to be checked</span>
+													</div>
+												</div>
+											</div>
+									 </div>
+									 <div class="row">
+											 <div class="col-md-8 col-md-offset-2">
+									 <button class="login-btn" type="submit" formnovalidate [hidden]="!firstName.valid || !lastName.valid
+									 || !emailId.valid || !username.valid || !password.valid ||
+									 !retypePassword.valid || !country.valid || !state.valid || !signingUpFor.valid || !termsFlag || !companyName.valid"  (click)=submitForm()
+									 data-toggle="modal" href="#myModal"
+				 					 data-backdrop="static" data-keyboard="false">Signup</button>
+									 <!-- <button class="login-btn test" type="submit" *ngIf="!firstName.valid || !lastName.valid
+									 || !emailId.valid || !username.valid || !password.valid ||
+									 !retypePassword.valid || !country.valid || !state.valid || !signingUpFor.valid || !termsFlag || !companyName.valid"
+									 data-toggle="tooltip" data-placement="top" title="Please fill all the mandatory fields." href=""
+				 					 data-backdrop="static" data-keyboard="false" disabled>Signup</button> -->
+									 <button class="login-btn" formnovalidate style="cursor:not-allowed;" *ngIf="!firstName.valid || !lastName.valid
+									 || !emailId.valid || !username.valid || !password.valid ||
+									 !retypePassword.valid || !country.valid || !state.valid || !signingUpFor.valid || !companyName.valid"
+									 popover="{{configuration.mandatoryMsg}}" [popoverCloseOnClickOutside]="true">
+    						 			Signup
+  								</button>
+									<button class="login-btn" formnovalidate style="cursor:not-allowed;" *ngIf="firstName.valid && lastName.valid
+									&& emailId.valid && username.valid && password.valid &&
+									retypePassword.valid && country.valid && state.valid && signingUpFor.valid && !termsFlag && companyName.valid"
+									popover="Accept terms and conditions to continue." [popoverCloseOnClickOutside]="true">
+										 Signup
+								 </button>
+								 </div>
+							 </div>
+
+
+					<div id="myModal" class="modal fade" role="dialog" style="background-color:#333333; opacity:1;">
+						<div class="modal-dialog">
+							<div  class="modal-content text-center" *ngIf="showSuccessPopUp" >
+								<!--<div>
+									<button type="button" class="close" style="padding: 5px 5px 5px 5px;" data-dismiss="modal">&times;</button>
+								</div>-->
+
+								<div class="modal-body">
+
+									<div class="row">
+										<div class="col-xs-4 col-xs-offset-4"><img src="assets/image/icons/confirm-icon.png"/></div>
+									</div>
+
+									<div class="row margin-bottom">
+										<div class="col-xs-6 col-xs-offset-3"><h3>Congratulations!</h3> </div>
+									</div>
+
+									<div class="row margin-bottom-large">
+										<div class="col-xs-12 dialogue-font">	We are giving you <span class="bold magenta">$200 free </span>
+												on your successful account creation, Start exploring now!</div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-4 col-xs-offset-4">
+												<button type="button" id="great" name="great" class="btn-next" data-dismiss="modal" (click)="redirectToLogin()">GREAT</button>
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+
+							<div  *ngIf="!showSuccessPopUp" class="modal-content text-center" >
+								<div class="clearfix">
+									<button type="button" class="close" style="padding: 5px;" data-dismiss="modal">&times;</button>
+								</div>
+
+								<div class="modal-body">
+
+									<div class="row">
+										<div class="col-xs-4 col-xs-offset-4"><img src="assets/image/icons/error-icon.png"/></div>
+									</div>
+
+									<div class="row margin-bottom">
+										<div class="col-xs-8 col-xs-offset-2">
+											<h3>{{errorMessage}}</h3>
+										 </div>
+									</div>
+
+									<div class="row">
+										<div class="col-xs-4 col-xs-offset-4">
+												<button type="button" id="ok" name="ok" class="btn-next"  data-dismiss="modal">Ok</button>
+										</div>
+									</div>
+
+								</div>
+							</div>
+
+						</div>
+					</div>
+
+								</form>
+								<div class="sign-up clearfix">
+										<span>Already have an account?</span>
+										<a style="color: #1DCC92; text-decoration: none; cursor: pointer;" (click)="redirectToLogin()">Login </a>
+								</div>
+							</div>
+						</div>
+				</div>
+			</form>
+		</div>

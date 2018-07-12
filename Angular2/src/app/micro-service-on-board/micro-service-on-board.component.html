@@ -1,0 +1,1701 @@
+<button id="openModalButton" [hidden]="true" data-toggle="modal" data-target="#onBoardSteps">Open Modal</button>
+<div class="modal fade no-padding" id="onBoardSteps" role="dialog" style="overflow : auto;">
+  <div class="modal-dialog no-padding" style="width: 100%; height: 100%; margin: 0;">
+	<div class="modal-content no-padding" style="border: none; min-height: 100%;">
+      <div class="modal-body no-padding" >
+<div class="container-fluid no-padding text-left">
+    <div class="row logo-border">
+    <div class="col-sm-4 col-md-2 no-padding">
+      <div class="col-xs-12 col-md-12 no-padding"><img src="assets/image/logo/edge_logo_black.png"></div>
+    </div>
+    </div>
+</div>
+
+   <div class="container" name="DetailsOn" id="DetailsOn" [hidden]="!DetailsOn_Flag ">
+       <form class="form-group form-signin" name="onBoardForm" id="onBoardForm" #onBoardForm="ngForm" novalidate>
+    <div class="margin clearfix">
+                 <button type="button" class="close" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+                  data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+            </div>
+
+            	<div class="row margin-large">
+                  <div class="col-md-12">
+                     <h1>Onboard New Microservice</h1>
+                   </div>
+              </div>
+
+            <div class="row margin-large">
+              <div class="col-md-12">
+                    <div class="container">
+                        <div class="row microservice-bs-wizard" style="border-bottom:0;">
+                            <div class="col-xs-3 bs-wizard-step active">
+                                <!-- <div class="text-center bs-wizard-stepnum">Step 1</div> -->
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="javascript:;" class="bs-wizard-dot">1</a>
+                                <div class="bs-wizard-info text-color">Details</div>
+                            </div>
+
+                            <div class="col-xs-3 bs-wizard-step disabled"><!-- complete -->
+                                <!-- <div class="text-center bs-wizard-stepnum">Step 2</div> -->
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="javascript:;" class="bs-wizard-dot" style="margin-left: 5px">2</a>
+                                <div class="bs-wizard-info">Components</div>
+                            </div>
+
+                            <div class="col-xs-3 bs-wizard-step disabled"><!-- complete -->
+                                <!-- <div class="text-center bs-wizard-stepnum">Step 3</div> -->
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="javascript:;" class="bs-wizard-dot">3</a>
+                                <div class="bs-wizard-info">Review</div>
+                            </div>
+
+                            <div class="col-xs-3 bs-wizard-step disabled"><!-- active -->
+                                <!-- <div class="text-center bs-wizard-stepnum">Step 4</div> -->
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="javascript:;" class="bs-wizard-dot">4</a>
+                                <div class="bs-wizard-info">Finalize</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+          <div class="form-group less-margin">
+              <div class="row">
+                  <div class="col-md-12">
+                      <div class="col-md-12 no-padding"><span class="title">Lifecycle Stages</span>  <img src="assets/image/icons/more.png" style="margin-left: 10px; vertical-align: top;"></div>
+                  </div>
+              </div>
+          </div>
+
+
+              <div class="form-group margin-bottom-large">
+                  <div class="row">
+                      <div class="col-md-4">
+                          <div class="col-md-12 no-padding">
+                                <label class="form-label">Select a stage*</label>
+                          </div>
+
+                          <div class="col-md-12 no-padding">
+                                 <select class="form-control" [(ngModel)]="microserviceMetaData.stage" name="stage" id="stage" #stage="ngModel" required>
+                                     <option>Deploy</option>
+                                     <option value="Build">Build</option>
+                                     <option>Certify</option>
+                                 </select>
+                                 <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+               <div style="width:300px; color:red;" [hidden]="stage.valid || (stage.untouched )">Stage is required</div>
+                         </div>
+                      </div>
+
+                      <div class="col-md-4">
+                        <div class="col-md-12 no-padding">
+                          <label class="form-label">Tenancy*</label>
+                        </div>
+
+                        <div class="col-md-12 no-padding">
+                          <select class="form-control"  name="tenancy" required disabled>
+                           <option value="single">single</option>
+                           <option>Multiple</option>
+                         </select>
+                         <i class="fa" style="background-color: #eee;"><img src="assets/image/icons/arrow.png"></i>
+                        </div>
+
+                      </div>
+                  </div>
+               </div>
+
+               <div class="form-group margin-bottom">
+                  <div class="row less-margin">
+                      <div class="col-md-12"> <span class="title">General Details</span></div>
+                    </div>
+
+                    <div class="row margin-bottom">
+                      <div class="col-md-4">
+                           <div class="col-md-12 no-padding">
+                                  <label class="form-label">Microservice Name*</label>
+                            </div>
+
+                            <div class="col-md-12 no-padding">
+                                   <input type="text" class="form-control" pattern="^[a-zA-Z]([-a-z0-9A-Z]*[a-z0-9A-Z])?$"
+                                    maxlength="32"
+                                   [(ngModel)]="microserviceMetaData.microServiceName" name="microServiceName" #microServiceName="ngModel"
+                                    (change)="ValidateMicroserviceName()" [disabled]="disableFieldsOnEdit" required >
+                 <div style="width:300px; color:red;" [hidden]="microServiceName.valid || (microServiceName.untouched )">{{configuration.requiredString}}</div>
+                           <div style="width:300px; color:red;" *ngIf="duplicateMSName && microserviceMetaData.microServiceName!=''">Name already exists</div>
+                           </div>
+                      </div>
+
+                      <div class="col-md-4">
+                          <div class="col-md-12 no-padding">
+                                <label class="form-label">Categories*</label>
+                          </div>
+
+                          <div class="col-md-12 no-padding">
+                                <select class="form-control" [(ngModel)]="microserviceMetaData.category" name="category" id="category" #category="ngModel" required>
+                <option>Finance</option>
+                <option>Marketing</option>
+                                </select>
+                                <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+                <div style="width:300px; color:red;" [hidden]="category.valid || (category.untouched )">Category is required</div>
+                         </div>
+                     </div>
+                  </div>
+               </div>
+
+               <div class="form-group margin-bottom">
+                   <div class="row">
+                      <div class="col-md-4">
+                           <div class="col-md-12 no-padding">
+                                  <label class="form-label">Context Path</label>
+                            </div>
+
+                            <div class="col-md-12 no-padding">
+                                   <input type="text" class="form-control" [(ngModel)]="microserviceMetaData.contextPath" name="contextPath"   #contextPath="ngModel">
+                           </div>
+                       </div>
+                       <div class="col-md-4">
+                          <div class="col-md-12 no-padding">
+                                 <label class="form-label">Support Document Link</label>
+                           </div>
+
+                           <div class="col-md-12 no-padding">
+                                <!--  <input type="file" class="form-control" value= "Browse" [(ngModel)]="microserviceMetaData.documentation" name="documentation" #documentation="ngModel" id="genOwner"> -->
+                                  <input type="text" class="form-control" [(ngModel)]="microserviceMetaData.documentation" name="documentation"   #documentation="ngModel">
+                          </div>
+                      </div>
+                  </div>
+               </div>
+
+               <div class="form-group margin-bottom">
+                  <div class="row">
+                      <div class="col-md-4">
+                           <div class="col-md-12 no-padding">
+                                  <label class="form-label">Countries*</label>
+                            </div>
+
+                            <div class="col-md-12 no-padding">
+                               <!-- <select multiple class="form-control" style="width:330px;" [(ngModel)]="microserviceMetaData.regions" name="regions" id="regions" #regions="ngModel" required>
+                <option *ngFor="let country of countries"  [ngValue]="country.name">{{country.name}}</option>
+              </select> -->
+              <!-- <div style="width:300px; color:red;" [hidden]="regions.valid || (regions.untouched )">Country is required</div> -->
+
+              <ss-multiselect-dropdown [texts]="myTexts" [settings]="mySettings" [options]="countries" name="regions" id="regions" #regions="ngModel" required [(ngModel)]="selectedCountries"></ss-multiselect-dropdown>
+                           </div>
+
+                       </div>
+                       <div class="col-md-4">
+                          <div class="col-md-12 no-padding">
+                                 <label class="form-label">App Icon</label>
+                           </div>
+
+                           <div class="col-md-12 no-padding">
+                                <input type="file" class="form-control" value= "Browse" accept="image/*" name="iconName" id ="inp" (change)="onChange($event)">
+                                <label class="form-label" style="margin: 10px 0 0 0;">Icon Max Dimensions 100 x 100px</label>
+                                <div style="color:grey;">Accepted formats are jpg,png,jpeg,tiff</div>
+                                <div style="width:300px; color:red;" [hidden]="!imageDimensionsFlag">Please select an image of the given dimensions</div>
+                                <div style="width:300px; color:red;" *ngIf="iconFlag">Invalid format</div>
+                          </div>
+                      </div>
+                      </div>
+                       <!-- EdgeCR changes -->
+                       <div class="row">
+                       		<div class="col-md-4">
+                          <div class="col-md-12 no-padding">
+                                 <label class="form-label">Package Type*</label>
+                           </div>
+                           <div class="col-md-12 no-padding">
+                                 <select class="form-control" [disabled]="disableFieldsOnEdit" [(ngModel)]="microserviceMetaData.deliveryMethod" name="deliveryMethod" id="deliveryMethod" #deliveryMethod="ngModel" required>
+                                    <option value="vm">vm</option>
+                                    <option value="docker">docker</option>
+                                 </select>
+                                 <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+                                <div style="width:300px; color:red;" [hidden]="deliveryMethod.valid || (deliveryMethod.untouched )">PackageType is required</div>
+                          </div>
+                       </div>
+                       </div>
+
+               </div>
+
+               <div class="form-group margin-bottom-large">
+                  <div class="row">
+                      <div class="col-md-8">
+                           <div class="col-md-12 no-padding">
+                                  <label class="form-label">Description</label>
+                            </div>
+
+                            <div class="col-md-12 no-padding">
+                                <textarea class="form-control" rows="6" id="genDescription" [(ngModel)]="microserviceMetaData.description" name="description"></textarea>
+                           </div>
+
+                       </div>
+                  </div>
+               </div>
+
+               <div class="form-group less-margin">
+                   <div class="row">
+                       <div class="col-md-12">
+                           <div class="col-md-12 no-padding"><span class="title">Charging Details</span>  <img src="assets/image/icons/more.png" style="margin-left: 10px; vertical-align: top;"> </div>
+                       </div>
+              		</div>
+              </div>
+
+               <div class="form-group less-margin">
+               		<div class="row">
+                       <div class="col-md-12 no-padding">
+                           <div class="col-md-6">
+
+
+                                   <!-- <input type="checkbox" class="checkbox" name="downloadable" (click)="downloadLibrary()" [(ngModel)]="microserviceMetaData.downloadable"> Download as Library-->
+
+                               <input id="downloadable"  type="checkbox" name="downloadable" (click)="downloadLibrary()" [(ngModel)]="microserviceMetaData.downloadable">
+							   <label class="checkbox" for="downloadable"> <span class="form-label text-grey" style="vertical-align: sub;">Download as Library</span></label>
+
+                           </div>
+                      </div>
+                   </div>
+               </div>
+
+               <div class="form-group margin-bottom">
+                  <div class="row">
+                      <div class="col-md-4">
+                           <div class="col-md-12 no-padding">
+                                  <label class="form-label">Library URL*</label>
+                            </div>
+
+                            <div class="col-md-12 no-padding">
+                                <input type="text" class="form-control" [disabled]="!microserviceMetaData.downloadable"
+                                 [(ngModel)]="microserviceMetaData.downloadURL" name="downloadURL" required  #downloadURL="ngModel">
+                                 <div *ngIf="downloadURL.errors && (downloadURL.dirty || downloadURL.touched)">
+               <div style="width:300px; color:red;" [hidden]="downloadURL.valid || (downloadURL.untouched )">URL is required</div>
+               </div>
+                           </div>
+
+                       </div>
+                       <div class="col-md-4">
+                            <div class="col-md-12 no-padding">
+                                   <label class="form-label">Library Usage Charges(in $)*</label>
+                             </div>
+
+                             <div class="col-md-12 no-padding">
+                                    <input type="text" class="form-control"  [disabled]="!microserviceMetaData.downloadable" required
+                                    [(ngModel)]="microserviceMetaData.creditsForDownload" name="creditsForDownload" pattern="[0-9]*"  #creditsForDownload="ngModel">
+                                    <div style="width:300px; color:red;" *ngIf="creditsForDownload.touched  && (microserviceMetaData.creditsForDownload==undefined || microserviceMetaData.creditsForDownload=='')">Library Usage is required.</div>
+                                    <div style="width:300px; color:red;" *ngIf="!creditsForDownload.valid && creditsForDownload.dirty && (microserviceMetaData.creditsForDownload!='')">Enter a numeric value.</div>
+                            </div>
+                        </div>
+                  </div>
+               </div>
+
+               <div class="form-group margin-bottom">
+                   <div class="row">
+
+                       <div class="col-md-4">
+                          <div class="col-md-12 no-padding">
+                                 <label class="form-label">Microservice Per API Usage Charges(in $)*</label>
+                           </div>
+
+                           <div class="col-md-12 no-padding">
+                                <!--  <input type="file" class="form-control" value= "Browse" [(ngModel)]="microserviceMetaData.documentation" name="documentation" #documentation="ngModel" id="genOwner"> -->
+                                  <input type="text" class="form-control" [(ngModel)]="microserviceMetaData.creditsPerAPICall" required
+                                   name="creditsPerAPICall" pattern="[0-9]*"  #creditsPerAPICall="ngModel" (change)="validateCredit(false,microserviceMetaData.creditsPerAPICall)">
+                                   <div style="width:300px; color:red;" *ngIf="creditsPerAPICall.touched  && (microserviceMetaData.creditsPerAPICall==undefined || microserviceMetaData.creditsPerAPICall=='')">Microservice per API Usage charge is required.</div>
+                                   <div style="width:300px; color:red;" *ngIf="!creditsPerAPICall.valid && creditsPerAPICall.dirty && (microserviceMetaData.creditsPerAPICall!='')">Enter a numeric value.</div>
+                          </div>
+                      </div>
+                  </div>
+               </div>
+
+                 <div class="form-group margin-bottom">
+                   <div class="row">
+                      <div class="col-md-6">
+                           <div class="col-md-12 no-padding">
+                                  <label class="form-label">Choose*</label>
+                            </div>
+                            <div class="col-md-12 no-padding" *ngIf="disableFieldsOnEdit || disableRadio">
+                                <div class="col-md-4 no-padding">
+                                    <label class="rad">
+                                        <input type="radio" id="Event" name="microServiceType"   disabled [(ngModel)]="chooseCheckBox" value="event" />
+                                        <i></i> <label class="form-label" style="color: #333647;  vertical-align: text-top;">Event Based</label>
+                                    </label>
+                                </div>
+                                <div class="col-md-4 no-padding">
+                                    <label class="rad">
+                                        <input type="radio" id="API" name="microServiceType"  disabled   [(ngModel)]="chooseCheckBox" value="http" />
+                                        <i></i> <label class="form-label" style="color: #333647; vertical-align: text-top;">HTTP Based</label>
+                                    </label>
+                                </div>
+                                <div class="col-md-4 no-padding">
+                                    <label class="rad">
+                                        <input type="radio" id="Network" name="microServiceType"  disabled   [(ngModel)]="chooseCheckBox" value="network" />
+                                        <i></i> <label class="form-label" style="color: #333647; vertical-align: text-top;">Network Based</label>
+                                    </label>
+                                </div>
+
+                           </div>
+                           <div class="col-md-12 no-padding" *ngIf="!disableFieldsOnEdit && !disableRadio">
+                               <div class="col-md-4 no-padding">
+                                   <label class="rad">
+                                       <input type="radio" id="Event" name="microServiceType"    [(ngModel)]="chooseCheckBox" value="event" />
+                                       <i></i> <label class="form-label" style="color: #333647;  vertical-align: text-top;">Event Based</label>
+                                   </label>
+                               </div>
+                               <div class="col-md-4 no-padding">
+                                   <label class="rad">
+                                       <input type="radio" id="API" name="microServiceType"     [(ngModel)]="chooseCheckBox" value="http" />
+                                       <i></i> <label class="form-label" style="color: #333647; vertical-align: text-top;">HTTP Based</label>
+                                   </label>
+                               </div>
+                               <div class="col-md-4 no-padding">
+                                   <label class="rad">
+                                       <input type="radio" id="Network" name="microServiceType"    [(ngModel)]="chooseCheckBox" value="network" />
+                                       <i></i> <label class="form-label" style="color: #333647; vertical-align: text-top;">Network Based</label>
+                                   </label>
+                               </div>
+
+                          </div>
+                       </div>
+                  </div>
+               </div>
+
+               <div class="form-group margin-bottom-large">
+                   <div class="row">
+                       <div class="col-md-2">
+                             <button type="button" class="btn-cancel" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+                              data-backdrop="static" data-keyboard="false" >Cancel</button>
+                       </div>
+
+                       <div class="col-md-2 col-md-offset-6">
+                             <!-- <button type="button" class="btn-back">Back</button> -->
+                       </div>
+
+                       <div class="col-md-2">
+                             <button type="button" class="btn-next" name="next1" id="next1" (click)="OnNext()"
+                              [hidden]="!onBoardForm.valid || duplicateMSName || imageDimensionsFlag || iconFlag">Next</button>
+                              <button class="btn-next" style="cursor:not-allowed;" [hidden]="onBoardForm.valid && !duplicateMSName && !imageDimensionsFlag && !iconFlag"
+                             popover="{{configuration.mandatoryMsg}}" [popoverCloseOnClickOutside]="true">
+                                Next
+                            </button>
+                       </div>
+                  </div>
+               </div>
+
+            </form>
+        </div>
+
+        <!--
+
+      		Following Code will handle second part of Microservice Onboarding (Micro Services)
+      	-->
+
+      		<div class="container" name="MicroServices" id="MicroServices" [hidden]="!Microservice_Flag">
+                <form class="form-group" name="microserviceForm" id="microserviceForm" #microserviceForm="ngForm" novalidate>
+
+      				<div class="margin clearfix">
+		                <button type="button" class="close" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+		                 data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+                      </div>
+                      <div class="row margin-large">
+                          <div class="col-md-12">
+                             <h1>Onboard New Microservice</h1>
+                           </div>
+                      </div>
+                    	 <div class="row margin-large">
+                         <div class="col-md-12">
+                            <div class="container">
+                                <div class="row microservice-bs-wizard" style="border-bottom:0;">
+                                    <div class="col-xs-3 bs-wizard-step complete">
+                                        <!-- <div class="text-center bs-wizard-stepnum">Step 1</div> -->
+                                        <div class="progress"><div class="progress-bar"></div></div>
+                                        <a href="javascript:;" class="bs-wizard-dot">1</a>
+                                        <div class="bs-wizard-info text-color">Details</div>
+                                    </div>
+
+                                    <div class="col-xs-3 bs-wizard-step active"><!-- complete -->
+                                        <!-- <div class="text-center bs-wizard-stepnum">Step 2</div> -->
+                                        <div class="progress"><div class="progress-bar"></div></div>
+                                        <a href="javascript:;" class="bs-wizard-dot" style="margin-left: 5px;">2</a>
+                                        <div class="bs-wizard-info text-color">Components</div>
+                                    </div>
+
+                                    <div class="col-xs-3 bs-wizard-step disabled"><!-- complete -->
+                                        <!-- <div class="text-center bs-wizard-stepnum">Step 3</div> -->
+                                        <div class="progress"><div class="progress-bar"></div></div>
+                                        <a href="javascript:;" class="bs-wizard-dot">3</a>
+                                        <div class="bs-wizard-info">Review</div>
+                                    </div>
+
+                                    <div class="col-xs-3 bs-wizard-step disabled"><!-- active -->
+                                        <!-- <div class="text-center bs-wizard-stepnum">Step 4</div> -->
+                                        <div class="progress"><div class="progress-bar"></div></div>
+                                        <a href="javascript:;" class="bs-wizard-dot">4</a>
+                                        <div class="bs-wizard-info">Finalize</div>
+                                    </div>
+                                </div>
+                            </div>
+                          </div>
+                    	</div>
+
+      <!--
+                  Following Code will handle Add Microservice  part of Microservice Onboarding (Micro Services)
+                  -->
+
+          <div class="form-group margin-bottom clearfix">
+
+                       <!-- <div class="row margin-bottom">
+	                         <div class="col-md-12 title">
+	                         		<h3 style="font-family: OpenSans-SemiBold !important">Microservice Details</h3>
+	                         </div>
+                       </div> -->
+                       <div class="row" *ngFor="let workload of microserviceMetaData.metadata.workloads; let i = index;">
+                         <div class="col-md-11">
+                           <div class="panel-group" id="accordion2{{i}}" role="tablist" aria-multiselectable="true">
+                             <div class="panel panel-default" style="border-color: #D9D9D9">
+
+                               <div class="sub-panel-heading sub-panel" role="tab" id="componentHeadingOne{{i}}" style="background-color: #96999E;">
+                                 <h4 class="sub-panel-title">
+                                   <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#componentOne{{i}}" aria-expanded="true" aria-controls="componentOne">
+                                     Component {{i+1}}
+                                   </a>
+                                 </h4>
+                               </div>
+
+                               <div id="componentOne{{i}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="componentHeadingOne">
+                                 <div class="sub-panel-body">
+                                   <div class="row margin-bottom">
+                                     <div class="col-md-5">
+                                       <div class="col-md-12 no-padding">
+                                         <label class="form-label">Component Name*</label>
+                                       </div>
+
+                                       <div class="col-md-12 no-padding">
+                                         <input id="workLoadName{{i}}" name="workLoadName{{i}}" type="text" (change)="validateWorkloadName()"
+                                         pattern="^[a-zA-Z]([-a-z0-9A-Z]*[a-z0-9A-Z])?$"
+                                         maxlength="32"
+                                          [(ngModel)]="workload.workloadName" class="form-control" #workloadName="ngModel" required>
+                                          <div style="width:300px; color:red;" *ngIf="workloadVal[workload.workloadName]">Name is duplicate</div>
+                                          <div style="width:300px; color:red;" [hidden]="workloadName.valid || (workloadName.untouched)"> {{configuration.requiredString}} </div>
+                                       </div>
+                                     </div>
+ 						<!-- EdgeCR changes -->
+							<div class="col-md-5">
+    							 										 <div class="col-md-12 no-padding">
+    							 											 <label class="form-label">Package type*</label>
+    							 										 </div>
+
+    							 										 <div class="col-md-12 no-padding">
+    							 											 <select class="form-control" id="deliveryMethod{{i}}"
+    																		  name="deliveryMethod{{i}}"
+    																		 required disabled>
+    							 											 <option>{{microserviceMetaData.deliveryMethod}}</option>
+    							 											</select>
+    							 											<i class="fa"><img src="assets/image/icons/arrow.png"></i>
+    							 										 </div>
+
+    							 									 </div>
+    							 									 </div>
+
+    							 									 <div class="row margin-bottom">
+                                     <div class="col-md-5">
+                                       <div class="col-md-12 no-padding">
+                                         <label class="form-label">Hosted At*</label>
+                                       </div>
+
+                                       <div class="col-md-12 no-padding">
+                                         <select class="form-control" id="Repository{{i}}"  #respository="ngModel"
+                                         name="Repository{{i}}" (click) = "validateRepository()"
+                                         [(ngModel)]="workload.source.sourceRepo" required>
+      	                                     <option disabled [value]="defaultOption">Select Source Repository</option>
+      	                                     <option>Git</option>
+      	                                     <option>SVN</option>
+                                         </select>
+                                         <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+                                         <div style="width:300px; color:red;" *ngIf="repositoryVal[workload.source.sourceRepo]">Repository is invalid </div>
+                                       </div>
+                                     </div>
+
+                                     <div class="col-md-5">
+                                       <div class="col-md-12 no-padding">
+                                         <label class="form-label">Path*</label>
+                                       </div>
+                                       <div class="col-md-12 no-padding">
+                                         <input type="text" id="Path{{i}}" required #path="ngModel"
+                                          name="Path{{i}}" [(ngModel)]="workload.source.path" class="form-control">
+                                          <div style="width:300px; color:red;" [hidden]="path.valid || (path.untouched)">Path is required</div>
+                                       </div>
+                                     </div>
+
+                                   </div>
+
+                                   <!--<div class="row margin-bottom">
+
+                                   </div>-->
+
+                                   <div class="row margin-bottom-large">
+                                     <div class="col-md-5">
+                                       <div class="col-md-12 no-padding">
+                                         <label class="form-label">Username*</label>
+                                       </div>
+                                       <div class="col-md-12 no-padding">
+                                         <input type="text" id="userName{{i}}" name="userName{{i}}"
+                                         #username="ngModel" required
+                                         [(ngModel)]="workload.source.username" class="form-control" style="background-color:white;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                                         <div style="width:300px; color:red;" [hidden]="username.valid || (username.untouched)">Username is required</div>
+                                       </div>
+                                     </div>
+
+                                     <div class="col-md-5">
+                                       <div class="col-md-12 no-padding">
+                                         <label class="form-label">Password*</label>
+                                       </div>
+                                       <div class="col-md-12 no-padding">
+                                         <input type="password" id="password{{i}}" name="password{{i}}"
+                                         #password="ngModel" required
+                                          [(ngModel)]="workload.source.password" class="form-control" style="background-color:white;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                                         <div style="width:300px; color:red;" [hidden]="password.valid || (password.untouched)">Password is required</div>
+                                       </div>
+                                     </div>
+                                   </div>
+
+                                   <div class="row less-margin">                     <!--     Network Binding - Start   -->
+                                     <div class="col-md-12 title">Network Binding</div>
+                                   </div>
+
+                                   <div class="form-group" *ngFor="let network of workload.networks;let j=index">
+      	                             <div class="row margin-bottom">
+      	                               <div class="col-md-5">
+      	                                 <div class="col-md-12 no-padding">
+      	                                   <label class="form-label">Network Binding Name<span *ngIf="chooseCheckBox=='network'">*</span></label>
+      	                                 </div>
+      	                                 <div class="col-md-12 no-padding" *ngIf="chooseCheckBox=='network'">
+      	                                   <input type="text" id="NetworkName{{i}}{{j}}"
+      	                                   name="NetworkName{{i}}{{j}}" #name="ngModel" required (change)="validate()"
+      	                                   [(ngModel)]="network.name" class="form-control">
+      	                                   <div style="width:300px; color:red;" [hidden]="name.valid || (name.untouched)">Name is required</div>
+      	                                   <div style="width:300px; color:red;"  *ngIf="this.networkVal[network.name]">Name is duplicate</div>
+      	                                 </div>
+                                         <div class="col-md-12 no-padding" *ngIf="chooseCheckBox=='event' || chooseCheckBox=='http'">
+      	                                   <input type="text" id="NetworkName{{i}}{{j}}"
+      	                                   name="NetworkName{{i}}{{j}}" #name="ngModel" (change)="validate()"
+      	                                   [(ngModel)]="network.name" class="form-control">
+      	                                   <!-- <div style="width:300px; color:red;" [hidden]="name.valid || (name.untouched)">Name is required</div> -->
+      	                                   <div style="width:300px; color:red;"  *ngIf="this.networkVal[network.name]">Name is duplicate</div>
+                                           <div style="width:300px; color:red;"  *ngIf="mandatoryBind && network.name=='' && network.port!=''">Binding name is mandatory if port is entered</div>
+      	                                 </div>
+      	                                </div>
+
+
+      	                               <div class="col-md-5">
+      	                                 <div class="col-md-12 no-padding">
+      	                                   <label class="form-label">Protocol<span *ngIf="chooseCheckBox=='network'">*</span></label>
+      	                                 </div>
+      	                                 <div class="col-md-12 no-padding" *ngIf="chooseCheckBox=='network'">
+      	                                   <select class="form-control" id="protocol" name="protocol{{i}}{{j}}" [(ngModel)]="network.protocol" required #protocol="ngModel">
+      	                                     <option>tcp</option>
+      	                                     <option>udp</option>
+      	                                   </select>
+      	                                   <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+      	                                   <div style="width:300px; color:red;" [hidden]="protocol.valid || (protocol.untouched)">Protocol is required</div>
+      	                                 </div>
+                                         <div class="col-md-12 no-padding" *ngIf="chooseCheckBox=='event' || chooseCheckBox=='http'">
+      	                                   <select class="form-control" id="protocol" name="protocol{{i}}{{j}}" [(ngModel)]="network.protocol" #protocol="ngModel">
+      	                                     <option>tcp</option>
+      	                                     <option>udp</option>
+      	                                   </select>
+      	                                   <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+      	                                   <div style="width:300px; color:red;" [hidden]="protocol.valid || (protocol.untouched)">Protocol is required</div>
+      	                                 </div>
+      	                               </div>
+
+      	                               <div class="col-md-2 margin-top"  *ngIf="j> count">
+      	                               	 <span (click)="deleteNetwork(workload,network)"><img src="assets/image/icons/delete.png"  style="height: 35px"></span>
+      	                                 <!-- <span class="glyphicon glyphicon-remove-circle" (click)="deleteNetwork(workload,network)" style="font-size: 25pt; margin-top: 30px;"></span> -->
+      	                               </div>
+      	                              </div>
+
+      	                              <div class="row less-margin">
+      		                               <div class="col-md-5">
+      		                                 <div class="col-md-12 no-padding">
+      		                                   <label class="form-label">Port<span *ngIf="chooseCheckBox=='network'">*</span></label>
+      		                                 </div>
+
+      		                                 <div class="col-md-12 no-padding" *ngIf="chooseCheckBox=='network'">
+      		                                   <input type="text" [(ngModel)]="network.port" id="port{{i}}{{j}}" name="port{{i}}{{j}}" required #port="ngModel" pattern="[0-9]*" (change)="validatePort()" class="form-control">
+      		                                   <!-- <div style="width:300px; color:red;" [hidden]="port.valid || port.untouched">Port is required and must be numeric.</div> -->
+                                             <div style="width:300px; color:red;" *ngIf="port.touched  && (network.port==undefined || network.port=='')">Port is required.</div>
+                                             <div style="width:300px; color:red;" *ngIf="!port.valid && port.dirty && (network.port!='')">Enter a numeric value.</div>
+      		                                   <div style="width:300px; color:red;" *ngIf="networkPortVal[network.port]">Port is duplicate</div>
+      		                                 </div>
+                                           <div class="col-md-12 no-padding" *ngIf="chooseCheckBox=='event' || chooseCheckBox=='http'">
+      		                                   <input type="text" [(ngModel)]="network.port" id="port{{i}}{{j}}" name="port{{i}}{{j}}" #port="ngModel" pattern="[0-9]*" (change)="validatePort()" class="form-control">
+      		                                   <!-- <div style="width:300px; color:red;" [hidden]="port.valid || port.untouched">Port is required and must be numeric.</div> -->
+                                             <!-- <div style="width:300px; color:red;" *ngIf="port.touched  && (network.port==undefined || network.port=='')">Port is required.</div> -->
+                                             <div style="width:300px; color:red;" *ngIf="!port.valid && port.dirty && (network.port!='')">Enter a numeric value.</div>
+      		                                   <div style="width:300px; color:red;" *ngIf="networkPortVal[network.port]">Port is duplicate</div>
+                                             <div style="width:300px; color:red;"  *ngIf="mandatoryPort && (network.port=='' || network.port==null || network.port==undefined) && network.name!=''">Port is mandatory if Binding name is entered</div>
+      		                                 </div>
+      		                               </div>
+
+      		                               <div class="col-md-5">
+      		                                 <div class="col-md-12 no-padding">
+      		                                   <label class="form-label">Allow as External</label>
+      		                                 </div>
+
+      		                                 <div class="col-md-12 no-padding">
+      		                                   <!-- <input type="checkbox" class="checkbox" [(ngModel)]="network.external"  name="external{{i}}{{j}}"> -->
+
+      		                                   <input id="external{{i}}{{j}}"  type="checkbox" [(ngModel)]="network.external"  name="external{{i}}{{j}}">
+											   <label class="checkbox" for="external{{i}}{{j}}"></label>
+      		                                 </div>
+      		                               </div>
+      	                           </div>
+                                 </div>
+
+                                 <div class="row margin-bottom-large">
+                                    <div class="col-md-5">
+                                      <div class="col-md-12 no-padding">
+                                        <span (click)="addNetwork(workload)"><img src="assets/image/icons/plus.png" ></span>
+                                        <!-- <i class="fa fa-plus-square" (click)="addNetwork(workload)" aria-hidden="true" style="font-size: 20pt;"></i> -->
+                                        <span class="add-more">Add Another Network</span>
+                                      </div>
+                                    </div>
+                                 </div>                           <!--     Network Binding - End   -->
+
+
+                                   <div *ngIf="chooseCheckBox=='event'">
+      	                             <div class="row less-margin" >             <!--     Event Part - Start   -->
+      	                               	<div class="col-md-12 title">Event Name</div>
+      	                             </div>
+
+      	                            <div class="form-group" *ngFor="let event of workload.events;let j=index">
+      		                             <div class="row less-margin">
+      		                               <div class="col-md-5">
+      			                                 <div class="col-md-12 no-padding">
+      			                                   <label class="form-label">Event Name*</label>
+      			                                 </div>
+
+      			                                 <div class="col-md-12 no-padding">
+      			                                   <input type="text" name="eventName{{i}}{{j}}" [(ngModel)]="event.name" class="form-control" required #eventName="ngModel" (change)="validateEventName()">
+      			                                   <div style="width:300px; color:red;" *ngIf="eventVal[event.name]">Name is duplicate</div>
+      			                                   <div style="width:300px; color:red;" [hidden]="eventName.valid || (eventName.untouched)">Event Name is required</div>
+      			                                  </div>
+      		                                </div>
+
+      		                               <div class="col-md-5">
+      			                                 <div class="col-md-12 no-padding">
+      			                                   <label class="form-label">Reference*</label>
+      			                                 </div>
+
+      			                                 <div class="col-md-12 no-padding">
+      			                                   <input type="text" name="reference{{i}}{{j}}" #reference="ngModel" required [(ngModel)]="event.fn" class="form-control">
+      			                                   <div style="width:300px; color:red;" [hidden]="reference.valid || (reference.untouched)">Event Reference is required </div>
+      			                                 </div>
+      		                               </div>
+
+      		                               <div class="col-md-2 margin-top" *ngIf="j>count">
+      		                               <span (click)="deleteEvent(workload,event)"><img src="assets/image/icons/delete.png"  style="height: 35px"></span>
+      		                                 <!-- <span class="glyphicon glyphicon-remove-circle" (click)="deleteEvent(workload,event)" style="font-size: 25pt; margin-top: 30px;"></span> -->
+      		                               </div>
+      		                           </div>
+
+      		                           <div class="row less-margin">
+      		                               <div class="col-md-5">
+      		                                 <div class="col-md-12 no-padding">
+      		                                   <label class="form-label">Allow as External</label>
+      		                                 </div>
+      		                                 <div class="col-md-12 no-padding">
+      		                                   <!-- <input type="checkbox" class="checkbox" name="externalEvent{{i}}{{j}}" [(ngModel)]="event.external"> -->
+
+      		                                   <input id="externalEvent{{i}}{{j}}"  type="checkbox" name="externalEvent{{i}}{{j}}" [(ngModel)]="event.external">
+											   <label class="checkbox"  for="externalEvent{{i}}{{j}}"></label>
+
+      		                                 </div>
+      		                               </div>
+      		                             </div>
+      		                     </div>
+                                   <div class="row margin-bottom-large">
+                                     <div class="col-md-5">
+                                       <div class="col-md-12 no-padding">
+                                         <span (click)="addEvent(workload)"><img src="assets/image/icons/plus.png" ></span>
+                                         <!-- <i class="fa fa-plus-square" (click)="addEvent(workload)" aria-hidden="true" style="font-size: 20pt;"></i> -->
+                                         <span class="add-more">Add Another Event End Point</span>
+                                       </div>
+                                     </div>
+                                   </div>
+                                 </div>                        <!--     Event Part - End   -->
+
+
+                                 										 <!-- API Part starts here -->
+                                 <div *ngIf="chooseCheckBox=='http'">
+
+      	                            <div class="row less-margin" >
+      	                              <div class="col-md-12 title">HTTP</div>
+      	                            </div>
+
+      	                            <div class="row margin-bottom" >
+      	                              <div class="col-md-5">
+      	                                <div class="col-md-12 no-padding">
+      	                                  <label class="form-label">Port*</label>
+      	                                </div>
+      	                                <div class="col-md-12 no-padding">
+      	                                  <input type="text" name="apiPort{{i}}{{j}}"
+      	                                  [(ngModel)]="workload.httpApis.port" class="form-control" pattern="[0-9]*" required #apiPort="ngModel">
+      	                                  <!-- <div style="width:300px; color:red;" [hidden]="apiPort.valid || (apiPort.untouched)">Port is required and must be numeric.</div> -->
+                                          <div style="width:300px; color:red;" *ngIf="apiPort.touched  && (workload.httpApis.port==undefined || workload.httpApis.port=='')">Port is required.</div>
+                                          <div style="width:300px; color:red;" *ngIf="!apiPort.valid && apiPort.dirty && (workload.httpApis.port!='')">Enter a numeric value.</div>
+      	                                </div>
+      	                              </div>
+      	                            </div>
+
+                                    <div class="form-group" *ngFor="let endpnt of workload.httpApis.endpoints; let j=index">
+                                    <div class="row less-margin">
+                                      <div class="col-md-5">
+                                      <div class="col-md-12 no-padding">
+                                          <label class="form-label">HTTP Name*</label>
+                                      </div>
+
+                                    <div class="col-md-12 no-padding">
+                                               <input type="text" id="APIName{{i}}{{j}}{{k}}" name="APIName{{i}}{{j}}{{k}}" [(ngModel)]="endpnt.name"
+                                               class="form-control" required #apiName="ngModel" (change)="validateAPI(microservice)">
+                                               <div style="width:300px; color:red;" *ngIf="apiNameVal[endpnt.name]">Name is duplicate</div>
+                                               <div style="width:300px; color:red;" [hidden]="apiName.valid || (apiName.untouched)">HTTP Name is required</div>
+                                        </div>
+                                      </div>
+      	                              <div class="col-md-5">
+      		                                <div class="col-md-12 no-padding">
+      		                                  <label class="form-label">Context Path*</label>
+      		                                </div>
+
+      		                                <div class="col-md-12 no-padding">
+      		                                  <input type="text" id="contextPath{{i}}{{j}}" name="contextPath{{i}}{{j}}"
+      		                                  #contextPath="ngModel" required (change)="validateAPIName()"
+      		                                  [(ngModel)]="endpnt.fn" class="form-control">
+      		                                  <div style="width:300px; color:red;" [hidden]="contextPath.valid || (contextPath.untouched)">
+      		                                    Context Path is required
+      		                                  </div>
+      		                                  <div style="width:300px; color:red;" *ngIf="apiVal[endpnt.fn]">Path is duplicate</div>
+      		                                </div>
+      	                              </div>
+
+
+      	                              <div class="col-md-2 margin-top" *ngIf="j>count">
+      	                              	<span (click)="deleteAPI(workload,endpnt)"><img src="assets/image/icons/delete.png"  style="height: 35px"></span>
+      	                                <!-- <span class="glyphicon glyphicon-remove-circle" (click)="deleteAPI(workload,endpnt)" style="font-size: 25pt; margin-top: 30px;"></span> -->
+      	                              </div>
+
+      	                            </div>
+
+      	                           <div class="row less-margin">
+      	                              <div class="col-md-5">
+      		                                <div class="col-md-12 no-padding">
+      		                                  <label class="form-label">Allow as External</label>
+      		                                </div>
+      		                                <div class="col-md-12 no-padding">
+      		                                  <!-- <input type="checkbox" class="checkbox" name="externalAPI{{i}}{{j}}" [(ngModel)]="endpnt.external"> -->
+
+      		                                  <input id="externalAPI{{i}}{{j}}" type="checkbox" name="externalAPI{{i}}{{j}}" [(ngModel)]="endpnt.external">
+											  <label class="checkbox"  for="externalAPI{{i}}{{j}}"></label>
+
+      		                                </div>
+                                        </div>
+      	                           </div>
+                                  </div>
+
+                                  <div class="row margin-bottom-large">
+                                    <div class="col-md-5">
+                                      <div class="col-md-12 no-padding">
+                                        <span (click)="addAPI(workload)"  ><img src="assets/image/icons/plus.png" ></span>
+                                        <!-- <i class="fa fa-plus-square" (click)="addAPI(workload)" aria-hidden="true" style="font-size: 20pt;"></i> -->
+                                        <span class="add-more">Add Another HTTP End Point</span>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                                   				<!-- API Part ends here -->
+                                          <!-- Network type start -->
+                                          <!-- <div *ngIf="chooseCheckBox=='network'">
+
+               	                            <div class="row less-margin" >
+               	                              <div class="col-md-12 title">HTTP</div>
+               	                            </div>
+
+               	                            <div class="row margin-bottom" >
+               	                              <div class="col-md-5">
+               	                                <div class="col-md-12 no-padding">
+               	                                  <label class="form-label">Port*</label>
+               	                                </div>
+               	                                <div class="col-md-12 no-padding">
+               	                                  <input type="text" name="apiPort{{i}}{{j}}"
+               	                                  [(ngModel)]="workload.httpApis.port" class="form-control" pattern="[0-9]*" required #apiPort="ngModel">
+                                                   <div style="width:300px; color:red;" *ngIf="apiPort.touched  && (workload.httpApis.port==undefined || workload.httpApis.port=='')">Port is required.</div>
+                                                   <div style="width:300px; color:red;" *ngIf="!apiPort.valid && apiPort.dirty && (workload.httpApis.port!='')">Enter a numeric value.</div>
+               	                                </div>
+               	                              </div>
+               	                            </div>
+
+                                             <div class="form-group" *ngFor="let endpnt of workload.httpApis.endpoints; let j=index">
+                                             <div class="row less-margin">
+                                               <div class="col-md-5">
+                                               <div class="col-md-12 no-padding">
+                                                   <label class="form-label">HTTP Name*</label>
+                                               </div>
+
+                                             <div class="col-md-12 no-padding">
+                                                        <input type="text" name="APIName{{i}}{{j}}{{k}}" [(ngModel)]="endpnt.name"
+                                                        class="form-control" required #apiName="ngModel" (change)="validateAPI(microservice)">
+                                                        <div style="width:300px; color:red;" *ngIf="apiNameVal[endpnt.name]">Name is duplicate</div>
+                                                        <div style="width:300px; color:red;" [hidden]="apiName.valid || (apiName.untouched)">HTTP Name is required</div>
+                                                 </div>
+                                               </div>
+               	                              <div class="col-md-5">
+               		                                <div class="col-md-12 no-padding">
+               		                                  <label class="form-label">Context Path*</label>
+               		                                </div>
+
+               		                                <div class="col-md-12 no-padding">
+               		                                  <input type="text" name="contextPath{{i}}{{j}}"
+               		                                  #contextPath="ngModel" required (change)="validateAPIName()"
+               		                                  [(ngModel)]="endpnt.fn" class="form-control">
+               		                                  <div style="width:300px; color:red;" [hidden]="contextPath.valid || (contextPath.untouched)">
+               		                                    Context Path is required
+               		                                  </div>
+               		                                  <div style="width:300px; color:red;" *ngIf="apiVal[endpnt.fn]">Path is duplicate</div>
+               		                                </div>
+               	                              </div>
+
+
+               	                              <div class="col-md-2 margin-top" *ngIf="j>count">
+               	                              	<span (click)="deleteAPI(workload,endpnt)"><img src="assets/image/icons/delete.png"  style="height: 35px"></span>
+               	                              </div>
+
+               	                            </div>
+
+               	                           <div class="row less-margin">
+               	                              <div class="col-md-5">
+               		                                <div class="col-md-12 no-padding">
+               		                                  <label class="form-label">Allow as External</label>
+               		                                </div>
+               		                                <div class="col-md-12 no-padding">
+
+               		                                  <input id="externalAPI{{i}}{{j}}" type="checkbox" name="externalAPI{{i}}{{j}}" [(ngModel)]="endpnt.external">
+         											  <label class="checkbox"  for="externalAPI{{i}}{{j}}"></label>
+
+               		                                </div>
+                                                 </div>
+               	                           </div>
+                                           </div>
+
+                                           <div class="row margin-bottom-large">
+                                             <div class="col-md-5">
+                                               <div class="col-md-12 no-padding">
+                                                 <span (click)="addAPI(workload)"  ><img src="assets/image/icons/plus.png" ></span>
+                                                 <span class="add-more">Add Another HTTP End Point</span>
+                                               </div>
+                                             </div>
+                                           </div>
+                                           <div class="row less-margin" >
+                                              <div class="col-md-12 title">Event Name</div>
+                                           </div>
+
+                                          <div class="form-group" *ngFor="let event of workload.events;let j=index">
+                                             <div class="row less-margin">
+                                               <div class="col-md-5">
+                                                   <div class="col-md-12 no-padding">
+                                                     <label class="form-label">Event Name*</label>
+                                                   </div>
+
+                                                   <div class="col-md-12 no-padding">
+                                                     <input type="text" name="eventName{{i}}{{j}}" [(ngModel)]="event.name" class="form-control" required #eventName="ngModel" (change)="validateEventName()">
+                                                     <div style="width:300px; color:red;" *ngIf="eventVal[event.name]">Name is duplicate</div>
+                                                     <div style="width:300px; color:red;" [hidden]="eventName.valid || (eventName.untouched)">Event Name is required</div>
+                                                    </div>
+                                                </div>
+
+                                               <div class="col-md-5">
+                                                   <div class="col-md-12 no-padding">
+                                                     <label class="form-label">Reference*</label>
+                                                   </div>
+
+                                                   <div class="col-md-12 no-padding">
+                                                     <input type="text" name="reference{{i}}{{j}}" #reference="ngModel" required [(ngModel)]="event.fn" class="form-control">
+                                                     <div style="width:300px; color:red;" [hidden]="reference.valid || (reference.untouched)">Event Reference is required </div>
+                                                   </div>
+                                               </div>
+
+                                               <div class="col-md-2 margin-top" *ngIf="j>count">
+                                               <span (click)="deleteEvent(workload,event)"><img src="assets/image/icons/delete.png"  style="height: 35px"></span>
+                                               </div>
+                                           </div>
+
+                                           <div class="row less-margin">
+                                               <div class="col-md-5">
+                                                 <div class="col-md-12 no-padding">
+                                                   <label class="form-label">Allow as External</label>
+                                                 </div>
+                                                 <div class="col-md-12 no-padding">
+
+                                                   <input id="externalEvent{{i}}{{j}}"  type="checkbox" name="externalEvent{{i}}{{j}}" [(ngModel)]="event.external">
+                               <label class="checkbox"  for="externalEvent{{i}}{{j}}"></label>
+
+                                                 </div>
+                                               </div>
+                                             </div>
+                                     </div>
+                                         <div class="row margin-bottom-large">
+                                           <div class="col-md-5">
+                                             <div class="col-md-12 no-padding">
+                                               <span (click)="addEvent(workload)"><img src="assets/image/icons/plus.png" ></span>
+                                               <span class="add-more">Add Another Event End Point</span>
+                                             </div>
+                                           </div>
+                                         </div>
+                                         </div> -->
+
+                                         <!-- Network type end -->
+
+                                 							  <!--     Resource Profile - Start   -->
+
+                                   <div class="row less-margin">
+                                   		  <div class="col-md-12 title">Resource Profile</div>
+                                   </div>
+
+                                   <div class="form-group" *ngFor="let resource of workload.resources; let j = index">
+      	                             <div class="row margin-bottom">
+      		                               <div class="col-md-5">
+      		                                 <div class="col-md-12 no-padding">
+      		                                   <label class="form-label">Profile Name*</label>
+      		                                 </div>
+      		                                 <div class="col-md-12 no-padding">
+      		                                   <input type="text" id="profile{{i}}{{j}}" name="profile{{i}}{{j}}" [(ngModel)]="resource.name"#profileName="ngModel" (change)="validateResName()" required class="form-control">
+      	  	                                     <div style="width:300px; color:red;" [hidden]="profileName.valid || (profileName.untouched)">Name is required</div>
+      		                                     <div style="width:300px; color:red;" *ngIf="resourceVal[resource.name]">Name is duplicate</div>
+      		                                 </div>
+      		                               </div>
+
+      		                               <div class="col-md-5">
+      		                                 <div class="col-md-12 no-padding">
+      		                                   <label class="form-label">Virtual CPU Quanta*</label>
+      		                                 </div>
+      		                                 <div class="col-md-12 no-padding">
+      		                                   <input type="text" id="cpu{{i}}{{j}}" name="cpu{{i}}{{j}}" required #cpu="ngModel" pattern="[0-9]*" [(ngModel)]="resource.cpu" class="form-control">
+      		                                   <!-- <div style="width:300px; color:red;" [hidden]="cpu.valid || (cpu.untouched)">CPU is required and must be numeric.</div> -->
+                                             <div style="width:300px; color:red;" *ngIf="cpu.touched  && (resource.cpu==undefined || resource.cpu=='')">Virtual CPU Quanta is required.</div>
+                                             <div style="width:300px; color:red;" *ngIf="!cpu.valid && cpu.dirty && (resource.cpu!='')">Enter a numeric value.</div>
+      		                                 </div>
+      		                               </div>
+
+      		                               <div class="col-md-2 margin-top" *ngIf="j>count">
+      		                                  <span (click)="deleteResource(workload,resource)"><img src="assets/image/icons/delete.png"  style="height: 35px"></span>
+      		                                <!--  <span class="glyphicon glyphicon-remove-circle" (click)="deleteResource(workload,resource)" style="font-size: 25pt; margin-top: 30px;"></span> -->
+      		                               </div>
+      		                        </div>
+
+      		                        <div class="row margin-bottom">
+      	                               <div class="col-md-5">
+      	                                 <div class="col-md-12 no-padding">
+      	                                   <label class="form-label">Block Storage in GB*</label>
+      	                                 </div>
+      	                                 <div class="col-md-12 no-padding">
+      	                                   <input type="text" id="GB{{i}}{{j}}" name="GB{{i}}{{j}}" required #memory="ngModel" pattern="[0-9]*" [(ngModel)]="resource.memory"  class="form-control">
+      	                                   <!-- <div style="width:300px; color:red;" [hidden]="memory.valid || (memory.untouched)">Memory is required and must be numeric.</div> -->
+                                           <div style="width:300px; color:red;" *ngIf="memory.touched  && (resource.memory==undefined || resource.memory=='')">Block Storage is required.</div>
+                                           <div style="width:300px; color:red;" *ngIf="!memory.valid && memory.dirty && (resource.memory!='')">Enter a numeric value.</div>
+      	                                 </div>
+      	                               </div>
+
+      	                               <div class="col-md-5">
+      	                                 <div class="col-md-12 no-padding">
+      	                                   <label class="form-label">KV Storage in GB*</label>
+      	                                 </div>
+      	                                 <div class="col-md-12 no-padding">
+      	                                   <input type="text" id="KV{{i}}{{j}}" name="KV{{i}}{{j}}" required #storage="ngModel" pattern="[0-9]*"
+      	                                  [(ngModel)]="resource.storage"  class="form-control">
+      	                                  <!-- <div style="width:300px; color:red;" [hidden]="storage.valid || (storage.untouched)">Storage is required and must be numeric.</div> -->
+                                          <div style="width:300px; color:red;" *ngIf="storage.touched  && (resource.storage==undefined || resource.storage=='')">KV Storage is required.</div>
+                                   <div style="width:300px; color:red;" *ngIf="!storage.valid && storage.dirty && (resource.storage!='')">Enter a numeric value.</div>
+      	                                 </div>
+      	                               </div>
+      							 </div>
+
+      							 <div class="row less-margin">
+      	                               <div class="col-md-5">
+      	                                 <div class="col-md-12 no-padding">
+      	                                   <label class="form-label">Bandwidth in GB*</label>
+      	                                 </div>
+      	                                 <div class="col-md-12 no-padding">
+      	                                   <input type="text" id="bandwidth{{i}}{{j}}" name="bandwidth{{i}}{{j}}" required #bandwidth="ngModel" pattern="[0-9]*"
+      	                                  [(ngModel)]="resource.bandwidth"  class="form-control">
+      	                                  <!-- <div style="width:300px; color:red;" [hidden]="bandwidth.valid || (bandwidth.untouched)">Bandwidth is required and must be numeric.</div> -->
+                                          <div style="width:300px; color:red;" *ngIf="bandwidth.touched  && (resource.bandwidth==undefined || resource.bandwidth=='')">Bandwidth is required.</div>
+                                          <div style="width:300px; color:red;" *ngIf="!bandwidth.valid && bandwidth.dirty && (resource.bandwidth!='')">Enter a numeric value.</div>
+      	                                 </div>
+      	                               </div>
+      	                          </div>
+                             </div>
+
+                                <div class="row margin-bottom-large">
+                                  <div class="col-md-5">
+                                    <div class="col-md-12 no-padding">
+                                      <span (click)="addProfile(workload)" ><img src="assets/image/icons/plus.png" ></span>
+                                      <!-- <i class="fa fa-plus-square" aria-hidden="true" (click)="addProfile(workload)" style="font-size: 20pt;"></i> -->
+                                      <span class="add-more">Add Another Resource Profile</span>
+                                    </div>
+                                  </div>
+                                </div>
+                                                           <!--     Resource Profile - End   -->
+                           </div>
+                         </div>
+                       </div>
+                     </div>
+                   </div>
+
+                   <div class="col-md-1" >
+                   	 	<span (click)="deleteWorkload(workload)"><img src="assets/image/icons/delete.png"  style="height: 35px"></span>
+                    <!--  <span class="glyphicon glyphicon-remove-circle" (click)="deleteWorkload(workload)"  style="font-size: 25pt;"></span> -->
+                   </div>
+                 </div>
+
+                 <div class="row margin-bottom-large">
+                   <div class="col-md-3">
+                     <div class="col-md-12 no-padding">
+                       <button class="btn-add-component" (click)="OnDone(microservice)">Add Another Component</button>
+                     </div>
+                   </div>
+                 </div>
+
+      <!--End here -->
+      <div class="form-group margin-bottom">
+      <div class="row">
+      <div class="col-md-2">
+        <button type="button" class="btn-cancel" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+         data-backdrop="static" data-keyboard="false" >Cancel</button>
+      </div>
+      <div class="col-md-2 col-md-offset-6">
+      <button type="button" class="btn-back" name="back2" id="back2" (click)="displayPage1()">Back</button>
+      </div>
+      <div class="col-md-2">
+      <button type="button" class="btn-next" name="next2"
+        [hidden]="!microserviceForm.valid  ||
+        apiCheck || workloadCheck || networkPortCheck || networkCheck
+        || MSCheck || eventCheck || resourceCheck || respositoryCheck || apiNameCheck" id="next2" (click)="showPublish()" >Next</button>
+        <button class="btn-next" style="cursor:not-allowed;" [hidden]="microserviceForm.valid  &&
+        !apiCheck && !workloadCheck && !networkPortCheck && !networkCheck
+        && !MSCheck && !eventCheck && !resourceCheck && !respositoryCheck && !apiNameCheck"
+       popover="{{configuration.mandatoryMsg}}" [popoverCloseOnClickOutside]="true">
+          Next
+      </button>
+      </div>
+      </div>
+      </div>
+	  </div>
+      </form>
+
+      </div>
+
+
+      					<!--start of review page -->
+
+                <div class="container" name="Review" id="Review" *ngIf="Review_Flag">
+                      				  <form class="form-group form-signin" name="reviewForm" id="reviewForm" #reviewForm="ngForm">
+                      					  <div class="margin clearfix">
+                                    <button type="button" class="close" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+                                     data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+                                      		</div>
+
+                                      		<div class="row margin-large">
+								                  <div class="col-md-12">
+								                     <h1> Onboard New Microservice </h1>
+								                   </div>
+								              </div>
+
+
+                      					  <div class="row margin-large">
+                      						  <div class="col-md-12">
+                      							  <div class="container">
+                                        <div class="row microservice-bs-wizard" style="border-bottom:0;">
+                                            <div class="col-xs-3 bs-wizard-step complete">
+                                                <!-- <div class="text-center bs-wizard-stepnum">Step 1</div> -->
+                                                <div class="progress"><div class="progress-bar"></div></div>
+                                                <a href="javascript:;" class="bs-wizard-dot">1</a>
+                                                <div class="bs-wizard-info text-color">Details</div>
+                                            </div>
+
+                                            <div class="col-xs-3 bs-wizard-step complete"><!-- complete -->
+                                                <!-- <div class="text-center bs-wizard-stepnum">Step 2</div> -->
+                                                <div class="progress"><div class="progress-bar"></div></div>
+                                                <a href="javascript:;" class="bs-wizard-dot" style="margin-left: 5px;">2</a>
+                                                <div class="bs-wizard-info text-color">Components</div>
+                                            </div>
+
+                                            <div class="col-xs-3 bs-wizard-step active"><!-- complete -->
+                                                <!-- <div class="text-center bs-wizard-stepnum">Step 3</div> -->
+                                                <div class="progress"><div class="progress-bar"></div></div>
+                                                <a href="javascript:;" class="bs-wizard-dot">3</a>
+                                                <div class="bs-wizard-info text-color">Review</div>
+                                            </div>
+
+                                            <div class="col-xs-3 bs-wizard-step disabled"><!-- active -->
+                                                <!-- <div class="text-center bs-wizard-stepnum">Step 4</div> -->
+                                                <div class="progress"><div class="progress-bar"></div></div>
+                                                <a href="javascript:;" class="bs-wizard-dot">4</a>
+                                                <div class="bs-wizard-info">Finalize</div>
+                                            </div>
+                                        </div>
+                      							  </div>
+                      						  </div>
+                      					  </div>
+                      					  <div class = "row margin-bottom">
+                      							<div class="col-md-4"> <h4 style=" color: #96999E;">Microservice Details</h4></div>
+                      						  </div>
+
+                      						  <div class="row margin-bottom">
+                      								<div class="col-md-2" *ngIf="microserviceMetaData.icon!=undefined && microserviceMetaData.icon!=null && microserviceMetaData.icon!='empty' ">
+                      									  <img [src]="microserviceMetaData.icon" class="img-rounded" width="100" height="100">
+                      								</div>
+                                      <div class="col-md-2" *ngIf="microserviceMetaData.icon==undefined || microserviceMetaData.icon==null  || microserviceMetaData.icon=='empty'">
+                            						<img id="imgAppIcon+{{i}}" class="img-rounded" width="100" height="100" src="assets/image/images.png">
+                            				   </div>
+
+                      								<div class="col-md-8">
+                      									  <div class="col-md-12 no-padding"> <h2>{{microserviceMetaData.microServiceName}}</h2> </div>
+                      									  <div class="col-md-12 no-padding form-label margin-bottom">
+                      									     {{microserviceMetaData.description}}
+                      								      </div>
+                      								 </div>
+                      					     </div>
+
+
+											  <div class="row margin-bottom-large">
+													<div class="col-md-8 col-md-offset-2">
+
+                      								  <div class="row">
+                      									  <div class="col-md-12 margin-bottom-medium no-padding">
+                      										   <div class="col-md-8 no-padding">
+                      										   		<label class="form-label">Context path:</label>
+                      										  		<span class="title-small">{{microserviceMetaData.contextPath}}</span>
+                      										   </div>
+                      										   <div class="col-md-4  no-padding">
+                      			                                   <label class="form-label">Categories</label>
+                      			                                   <span class="title-small">{{microserviceMetaData.category}}</span>
+                      			                               </div>
+                      									  </div>
+                      								  </div>
+
+                      								  <div class="row">
+                      									  <div class="col-md-12 margin-bottom-medium no-padding">
+                      											<div class="col-md-8 no-padding">
+                      										   		<label class="form-label">Support Document Link:</label>
+                      										  		<span class="title-small">{{microserviceMetaData.documentation}}</span>
+                      										   </div>
+                      										   <div class="col-md-4 no-padding">
+                      			                                   <label class="form-label">Countries:</label>
+                      			                                   <span class="title-small">{{microserviceMetaData.regions}}</span>
+                      			                               </div>
+                      									  </div>
+                      								  </div>
+
+                      								  <div class="row">
+                      									  <div class="col-md-12 margin-bottom-medium no-padding">
+                      									  		<div class="col-md-8 no-padding">
+                      										   		<label class="form-label">Type</label>
+                      										  		<span class="title-small">{{microserviceMetaData.microServiceType}}</span>
+                      										   </div>
+                      										   <div class="col-md-4 no-padding">
+                      			                                   <label class="form-label">Lifecycle Stage:</label>
+                      			                                   <span class="title-small">{{microserviceMetaData.stage}}</span>
+                      			                               </div>
+                      									  </div>
+                      								  </div>
+                                        <div class="row">
+                      									  <div class="col-md-12 margin-bottom-medium no-padding">
+                      									  		<div class="col-md-8 no-padding">
+                      										   		<label class="form-label">Library URL</label>
+                      										  		<span class="title-small">{{microserviceMetaData.downloadURL}}</span>
+                      										   </div>
+                      									  </div>
+                      								  </div>
+											 <!-- EdgeCR changes -->
+													  <div class="row">
+                                         <div class="col-md-12 margin-bottom-medium no-padding">
+                                             <div class="col-md-8 no-padding">
+                                               <label class="form-label">Package Type</label>
+                                               <span class="title-small">{{microserviceMetaData.deliveryMethod}}</span>
+                                            </div>
+                                         </div>
+                                       </div>
+                      							  </div>
+                      						</div>
+
+                      			<!--start of multiple microservices display-->
+
+                               				  <!--start of components loop -->
+           						<div class="margin-bottom-large" *ngFor="let workloads of microserviceMetaData.metadata.workloads; let k = index">
+           						   <div class="panel-group" id="accordion{{k}}" role="tablist" aria-multiselectable="true">
+           							   <div class="panel panel-default">
+
+           							   <div class="panel-heading main-panel" role="tab" id="componentHeading2">
+                                		   <h4 class="panel-title">
+	                         				   <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{k}}" aria-expanded="true" aria-controls="componentOne">
+	                         					   Component {{k+1}} Details
+	                         				   </a>
+	                         			   </h4>
+                       		   			</div>
+
+                            		   <div id="collapseOne{{k}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="componentHeading2">
+                            			   <div class="sub-panel-body">
+
+                            					<div class="row">
+                            						  <div class="col-md-2">
+                            							  <label class="form-label">Component Name</label>
+                            						  </div>
+                            						  <div class="col-md-10"><span class="title-small">{{workloads.workloadName}}</span></div>
+                            					 </div>
+                            					  <!-- EdgeCR changes -->
+												 <div class="row">
+                             						  <div class="col-md-2">
+                             							  <label class="form-label">Package Type</label>
+                             						  </div>
+                             						  <div class="col-md-10"><span class="title-small">{{workloads.deliveryMethod}}</span></div>
+                             					 </div>
+
+                            					 <div class="row">
+                            						  <div class="col-md-2">
+                            							  <label class="form-label">Hosted At</label>
+                            						  </div>
+                            						  <div class="col-md-10"><span class="title-small">{{workloads.source.sourceRepo}}</span></div>
+                            					 </div>
+
+                            					 <div class="row">
+                            						  <div class="col-md-2">
+                            							  <label class="form-label">Path</label>
+                            						  </div>
+                            						  <div class="col-md-10"><span class="title-small">{{workloads.source.path}}</span></div>
+                            					 </div>
+
+                            					 <div class="row margin-bottom">
+                            						  <div class="col-md-2">
+                            							  <label class="form-label">Username</label>
+                            						  </div>
+                            						  <div class="col-md-10"><span class="title-small">{{workloads.source.username}}</span></div>
+                            					 </div>
+
+                            					 <div class="row">
+                            						  <div class="col-md-11">
+                            							  <div class="table-responsive">
+                      										<table class="table" style="border:none;">
+                      											<thead *ngIf="microserviceMetaData.metadata.workloads[k].networks.length > 0">
+                      												<tr style= "background-color: #d8d8d8;">
+                      													<th >Network Binding</th>
+                      													<th >Name</th>
+                      													<th >Protocol</th>
+                      													<th >Port</th>
+                      													<th >Allowed External</th>
+                                                <th></th>
+                      												</tr>
+                      											</thead>
+                      											<tbody *ngIf="microserviceMetaData.metadata.workloads[k].networks.length > 0">
+                      												<tr *ngFor="let networks of microserviceMetaData.metadata.workloads[k].networks;">
+                      													<td></td>
+                      													<td class="form-table">{{networks.name}}</td>
+                      													<td class="form-table">{{networks.protocol}}</td>
+                      													<td class="form-table">{{networks.port}}</td>
+                      													<td class="form-table">{{networks.external}}</td>
+                                                <td></td>
+
+                      												</tr>
+                      											</tbody>
+                      		       <!-- <div *ngIf="microserviceMetaData.microServiceType == 'Event'"> -->
+                      											<thead *ngIf="microserviceMetaData.microServiceType == 'event'">
+                      												<tr style= "background-color: #D9D9D9">
+                      													<th >Events</th>
+                      													<th >Name</th>
+                      													<th >Reference</th>
+                      													<th >Allowed External</th>
+                      													<th ></th>
+                                                <th ></th>
+
+                      												</tr>
+                      											</thead>
+                                            <thead *ngIf="microserviceMetaData.microServiceType == 'http'">
+                      												<tr style= "background-color: #D9D9D9">
+                      													<th >HTTP</th>
+                      													<th >Port</th>
+                                                <th>Name</th>
+                      													<th >Context Path</th>
+                      													<th >Allowed External</th>
+                      													<th ></th>
+
+                      												</tr>
+                      											</thead>
+                      											<tbody *ngIf="microserviceMetaData.microServiceType == 'event'">
+                      												<tr *ngFor="let events of microserviceMetaData.metadata.workloads[k].events;">
+                      													<td></td>
+                      													<td class="form-table">{{events.name}}</td>
+                      													<td class="form-table">{{events.fn}}</td>
+                      													<td class="form-table">{{events.external}}</td>
+                      													<td></td>
+                                                <td></td>
+
+                      												</tr>
+                      											</tbody>
+                                            <tbody *ngIf="microserviceMetaData.microServiceType == 'http'">
+                      												<tr *ngFor="let endpnt of microserviceMetaData.metadata.workloads[k].httpApis.endpoints;">
+                      													<td></td>
+                      													<td class="form-table">{{microserviceMetaData.metadata.workloads[k].httpApis.port}}</td>
+                                                <td class="form-table">{{endpnt.name}}</td>
+                      													<td class="form-table">{{endpnt.fn}}</td>
+                      													<td class="form-table">{{endpnt.external}}</td>
+                      													<td></td>
+                      												</tr>
+                      											</tbody>
+                      										<!-- </div> -->
+                      												<thead>
+                      													<tr style= "background-color: #D9D9D9;">
+                      														<th >Resource Profile</th>
+                      														<th style="vertical-align:top">Name</th>
+                      														<th >Virtual CPU Quanta</th>
+                      														<th >Block Storage(GB)</th>
+                      														<th >KV Storage(GB)</th>
+                      														<th >Bandwidth(GB)</th>
+                      													</tr>
+                      												</thead>
+                      												<tbody>
+                      													<tr *ngFor="let resources of microserviceMetaData.metadata.workloads[k].resources;">
+                      														<td class="title form-table"></td>
+                      														<td class="form-table">{{resources.name}}</td>
+                      														<td class="form-table">{{resources.cpu}}</td>
+                      														<td class="form-table">{{resources.memory}}</td>
+                      														<td class="form-table">{{resources.storage}}</td>
+                      														<td class="form-table">{{resources.bandwidth}}</td>
+
+                      													</tr>
+                      											    </tbody>
+                      											</table>
+                      										  </div>
+                      										  </div>
+
+                      										 </div>
+                      									   </div>
+                      								   </div>
+                      							  </div>
+                      							</div>
+                      					  </div><!--end of components loop -->
+                      				<!-- end of if condition -->
+                      				                        				<!-- end of microservices added by user -->
+                	 <!--mobileOnBrd loop ends-->
+                      						<!--</div>-->
+
+                      									<!-- end of panel body-->
+
+                      								<!--end of first/outer panel group -->
+                      							<!--end of for loop for multiple microservices display -->
+
+
+                      					  <div class="form-group margin-bottom-large">
+                      						  <div class="row">
+                      							  <div class="col-md-2">
+                                        <button type="button" class="btn-cancel" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+                                         data-backdrop="static" data-keyboard="false" >Cancel</button>
+                      							  </div>
+                      							  <div class="col-md-2 col-md-offset-6">
+                      									<button type="button" class="btn-back" (click)="displayPage2()">Back</button>
+                      							  </div>
+                      							  <div class="col-md-2" *ngIf="!disableFieldsOnEdit">
+                      									<button type="button" class="btn-next" (click)="nextFinalize()">Next</button>
+                      							  </div>
+                                      <div class="col-md-2" *ngIf="disableFieldsOnEdit">
+                                            <button data-toggle="modal" href="#publishConfirmModal" data-dismiss="modal"
+                                             data-backdrop="static" data-keyboard="false" type="button" class="btn-next" (click)="OnSubmit()">SUBMIT</button>
+                                      </div>
+                      						 </div>
+                      					  </div>
+
+                      					<!--end of confirmation modal-->
+
+                      				  </form>
+                         				 </div>
+
+                                 <div class="container" name="Finalize" id="Finalize" *ngIf="Finalize_Flag">
+        <form class="form-group form-signin" name="finalForm" id="finalForm" #finalForm="ngForm">
+     <div class="margin clearfix">
+       <button type="button" class="close" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+        data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+           </div>
+
+              <h1 class="margin-bottom">Onboard New Microservice</h1>
+               <div class="row margin-large">
+                   <div class="col-md-12">
+
+                       <div class="container">
+                           <div class="row microservice-bs-wizard" style="border-bottom:0;">
+                               <div class="col-xs-3 bs-wizard-step complete">
+                                   <!-- <div class="text-center bs-wizard-stepnum">Step 1</div> -->
+                                   <div class="progress"><div class="progress-bar"></div></div>
+                                   <a href="javascript:;" class="bs-wizard-dot">1</a>
+                                   <div class="bs-wizard-info text-color">Details</div>
+                               </div>
+
+                               <div class="col-xs-3 bs-wizard-step complete"><!-- complete -->
+                                   <!-- <div class="text-center bs-wizard-stepnum">Step 2</div> -->
+                                   <div class="progress"><div class="progress-bar"></div></div>
+                                   <a href="javascript:;" class="bs-wizard-dot" style="margin-left: 5px;">2</a>
+                                   <div class="bs-wizard-info text-color">Microservices</div>
+                               </div>
+
+                               <div class="col-xs-3 bs-wizard-step complete"><!-- complete -->
+                                   <!-- <div class="text-center bs-wizard-stepnum">Step 3</div> -->
+                                   <div class="progress"><div class="progress-bar"></div></div>
+                                   <a href="javascript:;" class="bs-wizard-dot">3</a>
+                                   <div class="bs-wizard-info text-color">Review</div>
+                               </div>
+
+                               <div class="col-xs-3 bs-wizard-step complete"><!-- active -->
+                                   <!-- <div class="text-center bs-wizard-stepnum">Step 4</div> -->
+                                   <div class="progress"><div class="progress-bar"></div></div>
+                                   <a href="javascript:;" class="bs-wizard-dot">4</a>
+                                   <div class="bs-wizard-info text-color">Finalize</div>
+                               </div>
+
+                           </div>
+                       </div>
+                   </div>
+               </div>
+
+               <div class="row margin-bottom">
+                     <div class="col-md-4"> <h4 style=" color: #979A9F;">Microservice Details</h4></div>
+               </div>
+
+               <div class="row margin-bottom-large">
+                 <div class="col-md-2" *ngIf="microserviceMetaData.icon!=undefined && microserviceMetaData.icon!=null  && microserviceMetaData.icon!='empty'">
+                     <img [src]="microserviceMetaData.icon" class="img-rounded" width="100" height="100">
+                 </div>
+                 <div class="col-md-2" *ngIf="microserviceMetaData.icon==undefined || microserviceMetaData.icon==null || microserviceMetaData.icon=='empty'">
+                   <img id="imgAppIcon+{{i}}" class="img-rounded" width="100" height="100" src="assets/image/images.png">
+                  </div>
+
+                     <div class="col-md-10">
+                         <div class="col-md-6">
+                               <h3 style="margin-top: 0;">{{microserviceMetaData.microServiceName}}</h3>
+                               <div class="col-md-12 no-padding">
+                                    <label class="form-label">Lifecycle Stage:</label>
+                                    <label class="title-small" style="font-size: 12pt;">{{microserviceMetaData.stage}}</label>
+                               </div>
+                           </div>
+
+                         <div class="col-md-6">
+                               <div class="col-md-12 no-padding">
+                                   <div class="table-responsive margin-bottom">
+                                       <table class="table table-credits" style="border: none;">
+                                            <thead>
+                                                <tr>
+                                                   <th colspan="2"> <span class="title-small font-bold">Cost</span></th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                  <tr>
+                                                      <td>
+                                                         <label class="form-label text-dark">Default Onboarding Charges</label>
+                                                      </td>
+                                                      <td>
+                                                          <label class="text-dark title-small">
+														  ${{globalservice.onBoardCharges}}</label>
+                                                      </td>
+                                                  </tr>
+                                            </tbody>
+                                       </table>
+                                   </div>
+                               </div>
+                               <div class="col-md-12 total-credits">
+                                   <div class="col-md-6">
+                                       <label>Total Cost:</label>
+                                   </div>
+                                   <div class="col-md-6 text-right">
+                                       <label>${{globalservice.onBoardCharges}}</label>
+                                   </div>
+                              </div>
+                              <div class="col-md-12" style="padding: 10px 15px;">
+                                  <div class="col-md-8">
+                                      <label class="form-label">Available:</label>
+                                  </div>
+                                  <div class="col-md-4">
+                                      <label class="form-label">${{globalservice.creditsAvailable}}</label>
+                                  </div>
+                             </div>
+                          </div>
+                     </div>
+                </div>
+                <div class="form-group margin-bottom-large">
+                    <div class="row">
+                        <div class="col-md-2">
+                          <button type="button" class="btn-cancel" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+                           data-backdrop="static" data-keyboard="false" >Cancel</button>
+                        </div>
+                        <div class="col-md-2 col-md-offset-6">
+                              <button type="button" class="btn-back" (click)="displayPage3()">Back</button>
+                        </div>
+                        <div class="col-md-2">
+                              <button data-toggle="modal" href="#publishConfirmModal" data-dismiss="modal"
+                               data-backdrop="static" data-keyboard="false" type="button" class="btn-next" (click)="OnSubmit()">SUBMIT</button>
+                        </div>
+                   </div>
+                </div>
+
+
+         <!--end of confirmation modal-->
+
+
+          </form>
+        </div>
+      </div>
+    </div>
+    </div>
+    </div>
+
+
+
+<!--start of confirmation modal-->
+<div class="modal fade" id="publishConfirmModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content text-center">
+
+		 <div class="clearfix">
+				<button type="button" class="close" data-toggle="modal" data-dismiss="modal" data-target="#onBoardSteps"
+				 data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+      </div>
+
+      <div class="row">
+			   <div class="col-xs-8 col-xs-offset-2">
+
+
+ <!-- <div class="modal-header"> -->
+ 			<div class="row">
+			   <div class="col-xs-12"><h3>Publish Confirmation</h3></div>
+			 </div>
+ <!-- </div> -->
+
+		<div *ngIf="!disableFieldsOnEdit" class="modal-body">
+			<div class="row margin-bottom-large">
+				<div class="col-xs-12 dialogue-font">
+		 			Are you sure you want to start publishing?
+		 			You can view the status in the My Microservices page.
+				</div>
+
+			</div>
+		</div>
+
+<div  *ngIf="disableFieldsOnEdit" class="modal-body">
+	<div class="row margin-bottom-large">
+		<div class="col-xs-12 dialogue-font">
+ 			Are you sure you want to edit publishing?
+ 			You can view the status in the My Microservices page.
+ 		</div>
+
+	</div>
+</div>
+
+ <div class="row">
+
+   <div class="col-xs-12">
+     <div class="col-xs-6" >
+      <button type="button" data-toggle="modal" data-dismiss="modal" data-target="#onBoardSteps" class="btn-cancel">Cancel</button>
+     </div>
+     <div class="col-xs-6" >
+       <button type="button" id="nextBtnModal" class="btn-next" data-toggle="modal" data-dismiss="modal" data-target="#confirmationSuccess"  (click)="confirmedOnboard()">YES</button>
+
+     </div>
+
+   </div>
+
+ </div>
+ </div>
+</div>
+</div>
+</div>
+</div>
+
+
+	<!--start of confirmation modal-->
+	<div class="modal fade" id="confirmationClose"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+	<div class="modal-content text-center">
+
+    <!-- <div class="clearfix">
+       <button type="button" class="close"   data-toggle="modal" data-dismiss="modal" href="#onBoardSteps"
+        data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+     </div> -->
+
+  <div class="row">
+     <div class="col-xs-8 col-xs-offset-2">
+
+  	 <div class="row margin-bottom">
+  	   <div class="col-xs-12"><h3>Are you sure you want end this onboarding session?</h3></div>
+  	 </div>
+
+
+  		 <div class="row margin-bottom-large">
+  		   <div class="col-xs-12 dialogue-font">
+  		 		Your progress will not be saved and your Microservice will not be completed.
+  			</div>
+  		</div>
+
+
+  	 <div class="row">
+       <div class="col-xs-12">
+  	   <div class="col-xs-6">
+  	    <button type="button" data-toggle="modal" data-dismiss="modal" href="#onBoardSteps" class="btn-cancel">No,Go Back</button>
+  	   </div>
+  	   <div class="col-xs-6">
+  	     <button type="button" id="nextBtnModal" class="btn-next" data-dismiss="modal" (click)="OnClose()">Yes, End</button>
+  	   </div>
+  	 </div>
+     </div>
+    </div>
+
+  	 </div>
+	</div>
+	</div>
+	</div>
+
+
+
+<!--start of confirmation modal-->
+<div class="modal fade" id="confirmationSuccess"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content text-center">
+
+	  <div class="clearfix">
+			<button type="button" class="close" data-toggle="modal" (click)="navigate()" data-dismiss="modal"
+			 data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+	 </div>
+
+   <div class="row">
+      <div class="col-xs-8 col-xs-offset-2">
+
+	 <div class="row margin-bottom">
+	   <div class="col-xs-12"><h3>Microservice Onboarding Confirmation</h3></div>
+	 </div>
+
+
+	<div class="row margin-bottom-large">
+		   <div class="col-xs-12 dialogue-font " *ngIf="!viewError">
+		 <span class="font-semi-bold">Lifecycle Stage : <span class="text-color">{{microserviceMetaData.stage}}</span></span>
+   <br>
+		 This process can take time. Check the "My Microservices" page to see the onboarding status
+		</div>
+		<div class="col-xs-12 dialogue-font" *ngIf="viewError">
+		{{errorMessage}}
+		</div>
+	</div>
+
+
+	 <div class="row">
+		 <div class="col-xs-8 col-xs-offset-2">
+		     <button type="button" id="nextBtnModal" class="btn-next" (click)="navigate()" data-dismiss="modal" >OK</button>
+		 </div>
+	 </div>
+
+ </div>
+ </div>
+
+</div>
+</div>
+</div>

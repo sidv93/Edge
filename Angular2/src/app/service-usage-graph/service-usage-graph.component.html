@@ -1,0 +1,36 @@
+
+	<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12">
+		<div class="col-xs-12 col-sm-4 col-md-4 col-lg-3">
+			<select  class="form-control" [(ngModel)]="initialType" (change)="checkType()" name="selType">
+				<option *ngFor = "let typeOpValue of metricType;let i = index" [value]="typeOpValue" id="typeOpValue">{{typeOpValue}}
+				</option>
+			</select>
+			<img class="fa" src="assets/image/icons/arrow.png" >
+		</div>
+
+		<div class="col-xs-12 col-sm-4 col-sm-offset-2 col-md-4 col-md-offset-4 col-lg-3 col-lg-offset-6">
+			<select  class="form-control" [(ngModel)]="initialDurSel" (change)="checkDur()" name="selDuration">
+				<option *ngFor = "let optionValue of timeCycle;let i = index" [value]="optionValue" id="optionValue">{{optionValue}}
+				</option>
+			</select>
+			<img class="fa" src="assets/image/icons/arrow.png" >
+		</div>
+	</div>
+<app-loader [loading]="loading" *ngIf="loading"></app-loader>
+<div class="row" *ngIf="recordPresentFlag  && divToShow">
+  <div class="col-md-12">
+    <div style="display: block;">
+    <canvas baseChart width="300" height="150"
+                [datasets]="lineChartData"
+                [labels]="lineChartLabels"
+                [options]="lineChartOptions"
+                [colors]="lineChartColors"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartType"></canvas>
+    </div>
+  </div>
+</div>
+
+<div class="row" *ngIf="!recordPresentFlag && divToShow">
+	<h3 style="font-color:grey;text-align:center">{{publicConfiguration.emptyString}}</h3>
+</div>

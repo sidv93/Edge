@@ -1,0 +1,360 @@
+
+       <div class="form-group margin-bottom clearfix">
+				   <div class="row clearfix">
+				<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 clearfix" style="padding-right: 0;">
+					<h1> Revenue </h1>
+				</div>
+			</div>
+      </div>
+
+        <div class="form-group margin-bottom clearfix">
+                <div class="row clearfix">
+                  <div class="col-md-2 col-lg-2">
+                    <h4> Select Period*</h4>
+                  </div>
+                  <div class="bootstrap-iso">
+                    <div class="col-xs-6 col-sm-3 col-md-4 col-lg-3 clearfix">
+                     <form method="post">
+                        <!--<div class="form-group">
+                          <input class="form-control" id="date" name="date" placeholder="MM/YYYY" type="text" [(ngModel)]="calenderValue"/>
+                        </div> -->
+                        <!--<div class="form-group">
+                          <select class="form-control text-grey" [(ngModel)]="calendarValue" id="date" name="date" (change)="fetchRevenueDetails(calendarValue)">
+                          <option>Jan</option><option>Feb</option><option>Mar</option><option>Apr</option>
+                          <option>May</option><option>Jun</option><option>Jul</option><option>Aug</option>
+                          <option>Sep</option><option>Oct</option><option>Nov</option><option>Dec</option>
+                          </select>
+                        </div>-->
+				<!--
+                      <ng2-datepicker  id="date" name="date" placeholder="MM/YYYY" [ngModel]="calendarValue"
+                        (ngModelChange)="changeEvent($event)"
+
+                      [options]="calenderOptions"
+                        ></ng2-datepicker>
+
+				-->
+						<select  class="form-control" [(ngModel)]="calendarValue" (change)="checkDate()" name="selDuration">
+						<option *ngFor = "let optionValue of finalDateArray;let i = index" [value]="optionValue.value" id="optionValue.month">{{optionValue.month}}
+						</option>
+					</select>
+						<i class="fa"><img src="assets/image/icons/arrow.png"></i>
+                      </form>
+                    </div>
+                  </div>
+                  </div>
+		</div>
+
+		<div class="form-group margin-bottom clearfix" [hidden]="loading">
+          <div class="row clearfix">
+               <div class="col-md-11">
+                   <div class="table-responsive">
+                        <table class="table" style="border:none;" *ngIf="roleType=='MobileAppsDeveloper'">
+
+                             <thead>
+                                 <tr style= "background-color: #323544; color: #ffffff;">
+									<th>
+                                     <div>App</div>
+                                     <div>Name</div>
+                                     </th>
+                                     <th>
+                                     <div>Onboard</div>
+                                     <div>Charges*</div>
+                                     </th>
+                                     <th>
+                                     <div>Infra</div>
+                                     <div>Charges</div>
+                                     </th>
+                                     <th>
+                                     <div>Region</div>
+                                     <div>Charges</div>
+                                     </th>
+                                     <th>
+                                     <div>SLA</div>
+                                     <div>Charges</div>
+                                     </th>
+                                     <th>
+                                     <div>Microservice API</div>
+                                     <div>Usage Charges</div>
+                                     </th>
+                                     <th>
+                                     <div>Total Amount</div>
+                                     <div>Spent**</div>
+                                     </th>
+                                 </tr>
+                           </thead>
+
+                           <tbody>
+                             <tr *ngIf="errorApp">
+                               <td colspan="7" style="text-align:center;"><h3 style="font-color:grey;">{{configuration.emptyString}}</h3></td>
+                             </tr>
+                             <ng-container *ngFor="let item of tableDetails.monthly;  let i = index">
+                                <tr *ngIf="((i%2)!=0) && !errorApp" style="background-color: #D9D9D9;">
+                									  <td class="form-table text-dark">{{item.applicationName}}</td>
+                									  <td class="form-table text-dark">{{item.onBoardCharges}}</td>
+                									  <td class="form-table text-dark">{{item.infraCharges}}</td>
+                									  <td class="form-table text-dark">{{item.regionCharges}}</td>
+                									  <td class="form-table text-dark">{{item.slaCharges}}</td>
+                									  <td class="form-table text-dark">{{item.apiUsageCharges}}</td>
+                									  <td class="form-table text-dark">{{item.creditsConsumed}}</td>
+            								     </tr>
+
+                                 <tr *ngIf="((i%2)==0) && !errorApp">
+                 									  <td class="form-table text-dark">{{item.applicationName}}</td>
+                 									  <td class="form-table text-dark">{{item.onBoardCharges}}</td>
+                 									  <td class="form-table text-dark">{{item.infraCharges}}</td>
+                 									  <td class="form-table text-dark">{{item.regionCharges}}</td>
+                 									  <td class="form-table text-dark">{{item.slaCharges}}</td>
+                 									  <td class="form-table text-dark">{{item.apiUsageCharges}}</td>
+                 									  <td class="form-table text-dark">{{item.creditsConsumed}}</td>
+             								     </tr>
+                              </ng-container>
+                           </tbody>
+                         </table>
+
+						 <table class="table" style="border:none;" *ngIf="roleType=='MicroServiceDeveloper'">
+                             <thead>
+                                 <tr style= "background-color: #323544; color: #ffffff;">
+                                     <th>
+                                     <div>Microservice</div>
+                                     <div>Name</div>
+                                     </th>
+                                     <th>
+                                     <div>Onboard</div>
+                                     <div>Charges</div>
+                                     </th>
+                                     <th>
+                                     <div>Infra</div>
+                                     <div>Charges</div>
+                                     </th>
+                                     <th>
+                                     <div>Region</div>
+                                     <div>Charges</div>
+                                     </th>
+                                     <th>
+                                     <div>SLA</div>
+                                     <div>Charges</div>
+                                     </th>
+                                     <th>
+                                     <div>API Usage</div>
+                                     <div>Charges</div>
+                                     </th>
+                                     <th>
+                                     <div>Net</div>
+                                     <div>Earning*</div>
+                                     </th>
+                                 </tr>
+                           </thead>
+                           <tbody>
+                              <tr *ngIf="errorMS">
+                                <td colspan="7" style="text-align:center;"><h3 style="font-color:grey;">{{configuration.emptyString}}</h3></td>
+                              </tr>
+                                  <ng-container *ngFor="let item of tableDetailsMS.monthly;  let i = index ">
+                                   <tr *ngIf="((i%2)!=0) && !errorMS" style= "background-color: #D9D9D9;">
+                  									  <td class="form-table text-dark">{{item.microServiceName}}</td>
+                  									  <td class="form-table highlight1">{{item.onBoardCharges}}</td>
+                  									  <td class="form-table highlight1">{{item.infraCharges}}</td>
+                  									  <td class="form-table text-dark">{{item.regionCharges}}</td>
+                  									  <td class="form-table text-dark">{{item.slaCharges}}</td>
+                  									  <td class="form-table highlight2">{{item.apiUsageCharges}}</td>
+                  									  <td class="form-table text-dark">{{item.creditsEarned}}</td>
+    								               </tr>
+                                   <tr *ngIf="((i%2)==0) && !errorMS">
+                  									  <td class="form-table text-dark">{{item.microServiceName}}</td>
+                  									  <td class="form-table highlight1">{{item.onBoardCharges}}</td>
+                  									  <td class="form-table highlight1">{{item.infraCharges}}</td>
+                  									  <td class="form-table text-dark">{{item.regionCharges}}</td>
+                  									  <td class="form-table text-dark">{{item.slaCharges}}</td>
+                  									  <td class="form-table highlight2">{{item.apiUsageCharges}}</td>
+                  									  <td class="form-table text-dark">{{item.creditsEarned}}</td>
+    								               </tr>
+                                 </ng-container>
+                           </tbody>
+                         </table>
+
+
+                         <table class="table" style="border:none;" *ngIf="roleType=='TelcoDeveloper'">
+                              <thead>
+                                  <tr style= "background-color: #323544; color: #ffffff;">
+                   <th>
+                                      <div>EDGE</div>
+                                      <div>Name</div>
+                                      </th>
+                                      <th>
+                                      <div>CPU</div>
+                                      <div>Revenue</div>
+                                      </th>
+                                      <th>
+                                      <div>Memory</div>
+                                      <div>Revenue</div>
+                                      </th>
+                                      <th>
+                                      <div>Storage</div>
+                                      <div>Revenue</div>
+                                      </th>
+                                      <th>
+                                      <div>SLA</div>
+                                      <div>Revenue</div>
+                                      </th>
+                                      <th>
+                                      <div>Region</div>
+                                      <div>Revenue</div>
+                                      </th>
+                                      <th>
+                                      <div>Net</div>
+                                      <div>Earning*</div>
+                                      </th>
+                                  </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngIf="errorTelco">
+                                <td colspan="7" style="text-align:center;"><h3 style="font-color:grey;">{{configuration.emptyString}}</h3></td>
+                              </tr>
+                              <ng-container *ngFor="let item of tableDetailsTelco.monthly;  let i = index ">
+                                <tr *ngIf="((i%2)!=0) && !errorTelco" style= "background-color: #D9D9D9;">
+                                     <td class="form-table text-dark">{{item.edgeName}}</td>
+                                     <td class="form-table text-dark">{{item.cpuCharges}}</td>
+                                     <td class="form-table text-dark">{{item.memoryCharges}}</td>
+                                     <td class="form-table text-dark">{{item.storageCharges}}</td>
+                                     <td class="form-table text-dark">{{item.slaCharges}}</td>
+                                     <td class="form-table text-dark">{{item.regionCharges}}</td>
+                                     <td class="form-table text-dark">{{item.creditsEarned}}</td>
+                                </tr>
+                                <tr *ngIf="((i%2)==0) && !errorTelco">
+                                     <td class="form-table text-dark">{{item.edgeName}}</td>
+                                     <td class="form-table text-dark">{{item.cpuCharges}}</td>
+                                     <td class="form-table text-dark">{{item.memoryCharges}}</td>
+                                     <td class="form-table text-dark">{{item.storageCharges}}</td>
+                                     <td class="form-table text-dark">{{item.slaCharges}}</td>
+                                     <td class="form-table text-dark">{{item.regionCharges}}</td>
+                                     <td class="form-table text-dark">{{item.creditsEarned}}</td>
+                                </tr>
+                              </ng-container>
+                            </tbody>
+                          </table>
+
+						<table class="table" style="border:none;" *ngIf="roleType=='NewCoDeveloper'">
+                              <thead>
+                                  <tr style= "background-color: #323544; color: #ffffff;">
+									<th>
+                                      <div>EDGE Name</div>
+                                      </th>
+                                      <th>
+                                      <div>Cloudlet Name</div>
+                                      </th>
+                                      <th>
+                                      <div>Usage Revenue</div>
+                                      </th>
+                                      <th>
+                                      <div>Operator Charges</div>
+                                      </th>
+                                      <th>
+                                      <div>Net Earning*</div>
+                                      </th>
+                                  </tr>
+                            </thead>
+                            <tbody>
+                              <tr *ngIf="errorNewCo">
+                                <td colspan="5" style="text-align:center;"><h3 style="font-color:grey;">{{configuration.emptyString}}</h3></td>
+                              </tr>
+                              <ng-container *ngFor="let item of tableDetailsNewco.monthly;  let i = index ">
+                                <tr *ngIf="((i%2)!=0) && !errorNewCo " style= "background-color: #D9D9D9;">
+                                     <td class="form-table text-dark">{{item.edgeName}}</td>
+                                     <td class="form-table text-dark">{{item.cloudletName}}</td>
+                                     <td class="form-table text-dark">{{item.usageRevenue}}</td>
+                                     <td class="form-table text-dark">{{item.telcoCharges}}</td>
+                                     <td class="form-table text-dark">{{item.netRevenue}}</td>
+                                </tr>
+                                <tr *ngIf="((i%2)==0) && !errorNewCo">
+                                     <td class="form-table text-dark">{{item.edgeName}}</td>
+                                     <td class="form-table text-dark">{{item.cloudletName}}</td>
+                                     <td class="form-table text-dark">{{item.usageRevenue}}</td>
+                                     <td class="form-table text-dark">{{item.telcoCharges}}</td>
+                                     <td class="form-table text-dark">{{item.netRevenue}}</td>
+                                </tr>
+                              </ng-container>
+                            </tbody>
+                          </table>
+
+
+                       </div>
+
+						<div class="row" style= "background-color: #dff2fa; padding: 20px;" *ngIf="roleType=='MobileAppsDeveloper' && !errorApp">
+							 <div class="col-md-9"> <span class="rev font-bold" >Total Amount Spent</span></div>
+               <div class="col-md-1 col-md-offset-2 pad"> <span class="rev font-bold">${{tableDetails.totalCreditsConsumed}}</span></div>
+            </div>
+					   <div class="row" style= "background-color: #dff2fa; padding: 20px;" *ngIf="roleType=='MicroServiceDeveloper' && !errorMS">
+                 <div class="col-md-9"> <span class="rev font-bold" >Total Earning</span></div>
+                 <div class="col-md-1 col-md-offset-2"> <span class="rev font-bold">${{tableDetailsMS.totalCreditsEarned}}</span></div>
+              </div>
+
+              <div class="row" style= "background-color: #dff2fa; padding: 20px;" *ngIf="roleType=='TelcoDeveloper' && !errorTelco">
+                  <div class="col-md-9"> <span class="rev font-bold" >Total Earning</span></div>
+                  <div class="col-md-1 col-md-offset-2"> <span class="rev font-bold">${{tableDetailsTelco.totalCreditsEarned}}</span></div>
+               </div>
+
+			   <div class="row" style= "background-color: #dff2fa; padding: 20px;" *ngIf="roleType=='NewCoDeveloper' && !errorNewCo">
+                  <div class="col-md-9"> <span class="rev font-bold" >Total Earning</span></div>
+                  <div class="col-md-1 col-md-offset-2"> <span class="rev font-bold">${{tableDetailsNewco.totalCreditsEarned}}</span></div>
+               </div>
+
+              </div>
+					</div>
+				</div>
+        <app-loader [loading]="loading" *ngIf="loading"></app-loader>
+			<div class="form-group margin-bottom clearfix" *ngIf="!loading">
+                   <div class="row" *ngIf="roleType=='MobileAppsDeveloper' && !errorApp">
+                     <div class="col-md-12">
+                          <span>**Total Amount Spent = Onboard charges + Region charges + SLA charges + API Usage charges</span>
+                     </div>
+                     <div class="col-md-12">
+                           <span>*Onboard charges are one time charges and is applicable only once while onboarding.</span>
+                     </div>
+                   </div>
+
+				    <div class="row" *ngIf="roleType=='MicroServiceDeveloper'  && !errorMS">
+						 <div class="col-md-12">
+							  <span>*Net Earning = API Usage Charges - total of (Onboard + Infra + Region + SLA charges)</span>
+						 </div>
+					</div>
+
+					<div class="row" *ngIf="roleType=='NewCoDeveloper' && !errorNewCo">
+						 <div class="col-md-12">
+							  <span>*Net Earning = Usage Revenue - Operator Charges</span>
+						 </div>
+					</div>
+
+					<div class="row" *ngIf="roleType=='TelcoDeveloper' && !errorTelco">
+						 <div class="col-md-12">
+							  <span>*Net Earning = Total Of CPU, Memory, Storage, SLA and Region Revenue.</span>
+						 </div>
+					</div>
+          <div class="row margin-bottom-medium" *ngIf="roleType=='NewCoDeveloper' && !errorNewCo">
+                       <div class="col-md-8 no-padding font-status text-right">
+                             <span class="font-semi-bold" style="margin-right: 15px; ">Total Revenue</span>
+                                 <span class="font-bold" style="font-size: 20pt !important;">${{totalRevenue}}</span>
+                               </div>
+                               <div class="col-md-3">
+                                 <button class="btn-next" type="submit">Transfer Revenue</button>
+                               </div>
+                             </div>
+
+                             <div class="row margin-bottom" *ngIf="roleType=='NewCoDeveloper' && !errorNewCo">
+                               <div class="col-md-8 no-padding font-bold font-status text-right">
+                                 <span class="font-semi-bold" style="margin-right: 15px;">Total Charges</span>
+                                 <span class="font-bold" style="font-size: 20pt !important;">${{totalCharges}}</span>
+                               </div>
+                               <div class="col-md-3">
+                                 <button class="btn-next" type="submit">Pay Bill</button>
+                               </div>
+                             </div>
+			<div class="row margin-bottom-medium" *ngIf="roleType=='TelcoDeveloper' && !errorTelco">
+                       <div class="col-md-8 no-padding font-status text-right">
+                             <span class="font-semi-bold" style="margin-right: 15px; "></span>
+                                 <span class="font-bold" style="font-size: 20pt !important;"></span>
+                               </div>
+                               <div class="col-md-3">
+                                 <button class="btn-next" type="submit">Transfer Revenue</button>
+                               </div>
+              </div>
+
+          </div>

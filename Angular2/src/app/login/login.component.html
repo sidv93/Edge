@@ -1,0 +1,44 @@
+
+
+      <div id="grad" class="container-fluid no-padding clearfix" style="min-height: 100%; !important;">
+        <div class="row">
+             <div class="col-md-2 col-lg-2 no-padding">
+                  <img src="assets/image/logo/edge_logo.png">
+             </div>
+         </div>
+
+         <div class="row top-margin clearfix">
+              <div class="col- xs-12 col-sm-6 col-sm-offset-3 col-md-4 col-md-offset-4 col-lg-4 col-lg-offset-4 clearfix">
+                  <div class="account-info clearfix">
+                      <h1 class="text-center login-title clearfix">Log in to your account</h1>
+                      <form class="form-group form-signin clearfix" name="loginForm" id="loginForm" #loginForm="ngForm" (ngSubmit)="login(loginForm)" style="max-width: 380px;" >
+
+                          <div class="info clearfix">
+                             <div class="col-xs-12 bold error clearfix" *ngIf="errorMessage" style="color: red; font-size:16px; text-align: center" id="errorDiv">
+    										                {{errorMessage}}
+    								        </div>
+                              <label class="form-label">Username</label>
+                              <!-- <input type="text" class="form-control" name="username" id="username" [(ngModel)]="user.username" minlength="5" maxlength="20" #username="ngModel"required> -->
+                              <input type="text" class="form-control" name="username" id="username" style="background-color:white;" [(ngModel)]="user.username"  #username="ngModel" required autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                               <div class="clearfix" style="width:300px; color:red;" [hidden]="username.valid || (username.untouched && !loginForm.submitted)">Username is required.</div>
+                          </div>
+                          <div class="form-group info">
+                              <label class="form-label">Password</label>
+                              <!-- <input type="password" class="form-control" name="password" id="password" [(ngModel)]="user.password" maxlength="20" #password="ngModel" pattern="^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#!*$%^&+=\.]).*$" required> -->
+                              <input type="password" class="form-control" name="password" id="password" style="background-color:white;" [(ngModel)]="user.password" #password="ngModel" required autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                              <div class="clearfix" style="width:300px; color:red;" [hidden]="password.valid || (password.untouched && !loginForm.submitted)">Password is required.</div>
+                          </div>
+                          <button class="login-btn" type="submit">Login</button>
+                          <div class="form-group info" style="text-align: center;">
+                             <label class="form-label" style="font-size: 14px;">Having Trouble in logging in? <span class="text-color">Forgot Password</span></label>
+                          </div>
+
+                      </form>
+                      <div class="sign-up">
+                          <span>New to Edge?</span>
+                           <a style="color: #1DCC92; text-decoration: none; cursor: pointer;" (click)="redirectToSignUp()">Sign Up </a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+      </div>

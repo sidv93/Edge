@@ -1,0 +1,163 @@
+
+			  <div class="row margin-bottom clearfix" *ngIf="!loading">
+				  <div class="col-md-6">
+					  <!-- <div class="monitor-report">Average Last 24 hours</div> -->
+				  </div>
+				  <div class="col-md-5 col-md-offset-1 text-right" *ngIf="!detailsError7">
+					  <span class="credits-avialable">${{creditsObj.creditsAvailable}}</span>
+					  <span style="vertical-align: super;">  Available </span>
+				  </div>
+				  <div class="col-md-5 col-md-offset-1 text-right" *ngIf="detailsError7">
+					  <span style="vertical-align: super;">$ Available </span>
+				  </div>
+			  </div>
+				<app-loader [loading]="loading" *ngIf="loading"></app-loader>
+		  <div class="row margin-bottom-large clearfix" *ngIf="!loading">
+
+			 <div class="col-md-4">
+				  <div class="col-md-12 monitor-box tex no-padding" style="text-align: center">
+					 <div class="monitor-head">
+						  <div class="monitor-title">Latency</div>
+					  </div>
+					  <div class="monitor-body" *ngIf="!detailsError1">
+							<span><img src="assets/image/icons/latency-icon.png"></span>
+						  {{latencyData.usage}}ms
+					  </div>
+					  <div class="monitor-body" *ngIf="detailsError1">
+							<span><img src="assets/image/icons/latency-icon.png"></span>
+					  </div>
+				  </div>
+			  </div>
+
+			  <div class="col-md-4">
+				  <div class="col-md-12 monitor-box tex no-padding"  style="text-align: center">
+					 <div class="monitor-head">
+						  <div class="monitor-title">Users Per Day</div>
+					  </div>
+					  <div class="monitor-body" *ngIf="!detailsError2">
+					  <span><img src="assets/image/icons/storage.png"></span>
+						  {{userPerDay.usage}}
+					  </div>
+					  <div class="monitor-body" *ngIf="detailsError2">
+					  <span><img src="assets/image/icons/storage.png"></span>
+					  </div>
+				  </div>
+			  </div>
+
+			   <div class="col-md-4">
+				  <div class="col-md-12 monitor-box tex no-padding"  style="text-align: center">
+					 <div class="monitor-head">
+						  <div class="monitor-title">Subscribed Microservices</div>
+					  </div>
+					  <div class="monitor-body" *ngIf="!detailsError3">
+					  <span><img src="assets/image/icons/storage.png"></span>
+						  {{totalSub.totalSubscriptions}}
+					  </div>
+					  <div class="monitor-body" *ngIf="detailsError3">
+					  <span><img src="assets/image/icons/storage.png"></span>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+
+			<div class="row margin-bottom clearfix" *ngIf="!loading">
+		  	<div class="col-md-12 font-semi-bold font-large">
+			  Top Performance in the Last 24 Hours
+			  </div>
+			</div>
+
+		  <div class="row margin-bottom clearfix" *ngIf="!loading">
+		  	<div class="col-md-12">
+              <div class="col-md-12 monitor-box margin-bottom no-padding">
+                  <div class="monitor-head">
+                      <div class="monitor-title letter-spacing">APP Latency</div>
+                      <div class="measure">Top 3 in milliseconds</div>
+                  </div>
+                  <div class="monitor-body" *ngIf="lineLatencyFlag && divLatencyShow">
+                       <canvas baseChart width="300" height="150"
+                [datasets]="lineChartDataLatency"
+                [labels]="labelArrayLatency"
+                [options]="lineChartOptionsLatency"
+                [colors]="lineChartColorsLatency"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartTypeLatency"></canvas>
+                  </div>
+				  <div class="monitor-body" *ngIf="!lineLatencyFlag && divLatencyShow">
+                       <h3 style="font-color:grey;text-align:center">{{publicConfiguration.emptyString}}</h3>
+                  </div>
+              </div>
+              </div>
+		 </div>
+
+          <div class="row margin-bottom clearfix" *ngIf="!loading">
+			 <div class="col-md-6">
+				  <div class="col-md-12 monitor-box margin-bottom no-padding">
+					  <div class="monitor-head">
+						  <div class="monitor-title letter-spacing">API Calls for Microservices</div>
+						  <div class="measure">Top 3 microservices</div>
+					  </div>
+					  <div class="monitor-body" *ngIf="!detailsError6">
+						  <table class="table" style="border:none;">
+                             <thead>
+                                 <tr style= "color:green">
+									<th>
+                                     <div>Microservice Name</div>
+                                     </th>
+                                     <th>
+                                     <div>No. Of API Calls</div>
+                                     </th>
+                                 </tr>
+                           </thead>
+                           <tbody>
+								<ng-container *ngFor="let item of topMicroService.topEntities;  let i = index">
+                               <tr *ngIf="(i%2)!=0" style= "background-color: #D9D9D9;">
+									  <td class="form-table text-dark">{{item.name}}</td>
+									  <td class="form-table text-dark">{{item.metricValue}}</td>
+								</tr>
+								<tr *ngIf="(i%2)==0">
+									  <td class="form-table text-dark">{{item.name}}</td>
+									  <td class="form-table text-dark">{{item.metricValue}}</td>
+								</tr>
+								</ng-container>
+                           </tbody>
+                         </table>
+					  </div>
+					  <div class="monitor-body" *ngIf="detailsError6">
+						  <!-- <table class="table" style="border:none;">
+                             <thead>
+                                 <tr style= "color:green">
+									<th>
+                                     <div>Microservice Name</div>
+                                     </th>
+                                     <th>
+                                     <div>No. Of API Calls</div>
+                                     </th>
+                                 </tr>
+                           </thead>
+                         </table> -->
+								<h3 style="font-color:grey;text-align:center">{{publicConfiguration.emptyString}}</h3>
+					  </div>
+				  </div>
+			  </div>
+
+			  <div class="col-md-6">
+				  <div class="col-md-12 margin-bottom monitor-box no-padding">
+					  <div class="monitor-head">
+						  <div class="monitor-title letter-spacing">Daily APP Users</div>
+						  <div class="measure">Top 3 with the most users </div>
+					  </div>
+					  <div class="monitor-body" *ngIf="barRecordFlag && divBarShow">
+						  <canvas baseChart width="100" height="100"
+							[datasets]="barChartData"
+							[labels]="labelArray"
+							[options]="barChartOptions"
+							[colors]="barChartColors"
+
+							[chartType]="barChartType"></canvas>
+					  </div>
+					  <div class="monitor-body" *ngIf="!barRecordFlag && divBarShow">
+						  <h3 style="font-color:grey;text-align:center">{{publicConfiguration.emptyString}}</h3>
+					  </div>
+				  </div>
+			</div>
+          </div>

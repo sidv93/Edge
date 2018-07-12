@@ -1,0 +1,300 @@
+
+
+			<!-- <div class="form-group margin-bottom clearfix">
+              <div class="row margin-bottom clearfix">
+                  <div class="col-xs-6 col-sm-6 col-md-5 col-lg-3 clearfix" style="padding-right: 0;">
+                       <a class="tabs margin-right" *ngIf="!userApp" id="allApp" routerLink="/mobileApp" (click)="setAppsFlag('allApps')">All Apps</a>
+                      <a class="tabs margin-right"  *ngIf="userApp" style="border-bottom:none;" id="allApp" routerLink="/mobileApp" (click)="setAppsFlag('allApps')">All Apps</a>
+                      <a class="tabs" *ngIf="userApp" id="myApp" routerLink="/mobileApp" (click)="setAppsFlag('myApps')" >My Apps</a>
+                      <a class="tabs" *ngIf="!userApp" style="border-bottom:none;" id="myApp" routerLink="/mobileApp" (click)="setAppsFlag('myApps')" >My Apps</a>
+                  </div>
+              </div>
+          </div> -->
+
+               <div class="form-group margin-bottom clearfix">
+                  <div class="row margin-bottom clearfix">
+          					<div class="col-xs-12 col-sm-6 col-md-7 col-lg-8 clearfix">
+          						  <a class="tabs margin-right" *ngIf="cloudletsFlag==1" id="cloudlet" >Cloudlets</a>
+          						  <a class="link margin-right" *ngIf="cloudletsFlag!=1" id="cloudlet" (click)="setTab('cloudlet')" style="cursor:pointer;">Cloudlets</a>
+          						  <a class="tabs margin-right" *ngIf="cloudletsFlag==2" id="cloudletImage">Cloudlet Image</a>
+          						  <a class="link margin-right" *ngIf="cloudletsFlag!=2" id="cloudletImage" (click)="setTab('cloudletImage')" style="cursor:pointer;">Cloudlet Image</a>
+          						  <a class="tabs margin-right" *ngIf="cloudletsFlag==3" id="usage">Usage</a>
+          						  <a class="link margin-right" *ngIf="cloudletsFlag!=3" id="usage" (click)="setTab('usage')" style="cursor:pointer;">Usage</a>
+          					</div>
+                     <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4" *ngIf="cloudletsFlag==1">
+                            <button type="button" class="btn-onboard" (click)="redirect()">Onboard New Cloudlet<i class="fa fa-angle-right" aria-hidden="true" style="font-size: 19pt; top: 9px; right: 7px; position: absolute;"></i></button>
+                      </div>
+                       <div class="col-xs-12 col-sm-6 col-md-5 col-lg-4" *ngIf="cloudletsFlag==2">
+                           <button type="button" class="btn-onboard" (click)="redirectToImage()">Add Cloudlet Image<i class="fa fa-angle-right" aria-hidden="true" style="font-size: 19pt; top: 9px; right: 7px; position: absolute;"></i></button>
+                       </div>
+                  </div>
+               </div>
+
+          <app-loader [loading]="loading" *ngIf="loading"></app-loader>
+          <div *ngIf="!detailsError">
+
+	           <div class="form-group margin-bottom clearfix" *ngIf="cloudletsFlag==1">
+	                      <div class="row margin-bottom clearfix" style="background-color: #e9e9e9; padding: 10px 0;">
+	                           <div class="col-md-6 col-lg-6">
+	                                <span>
+	                                    <label class="apps-label">Status:</label>
+	                                    <label *ngIf="cloudletsFlag==1" class="title-small">{{selectedCloudletDetails.onBoardStatus}}</label>
+                                      <label *ngIf="cloudletsFlag==2" class="title-small">{{selectedCloudletDetails.onBoardStatus}}</label>
+	                                </span>
+	                           </div>
+
+	                           <div class="col-md-6" *ngIf="cloudletsFlag==1">
+	                           		<div style="text-align: right">
+	                               		<span><img src="assets/image/icons/trash.png" height = "27px" width ="26px" data-toggle="modal" data-target="#deleteDetails"></span>
+	                               </div>
+
+
+                              <div class="modal fade" id="deleteDetails" role="dialog" >
+			                         <div class="modal-dialog">
+			                           <div class="modal-content">
+			                             <div class="modal-header">
+			                               <button type="button" class="close" data-dismiss="modal">&times;</button>
+			                             </div>
+                                   <div class="modal-body" style="text-align: center;">
+                                      <span *ngIf="!deletePopup"><h3 class="margin-bottom">Are you sure you want to delete?</h3></span>
+                                      <div class="row margin-bottom" *ngIf="!deletePopup">
+                                          <div class="col-md-3 col-md-offset-3">
+                                              <button class="btn-cancel" data-dismiss="modal">Cancel</button>
+                                          </div>
+                                          <div class="col-md-3">
+                                              <button class="btn-next" (click)="deleteDetails()">Delete</button>
+                                          </div>
+                                      </div>
+                                      <div class="row margin-bottom" *ngIf="deletePopup">
+                                          <h3  class="margin-bottom" *ngIf="!deleteFailed">Your delete request was submitted successfully</h3>
+                                          <h3  class="margin-bottom" *ngIf="deleteFailed">{{errorMessage}}. Please try again later</h3>
+
+                                          <div class="col-md-4 col-md-offset-4">
+                                              <button class="btn-next" data-dismiss="modal" (click)="pageRedirect()">OK</button>
+                                          </div>
+                                      </div>
+                                   </div>
+			                           </div>
+			                         </div>
+			                       </div>   <!--  Modal End-->
+
+	                           </div>
+	                         </div>
+
+	                         <div class="row margin-bottom-large">
+	            		            <div class="col-md-2 no-padding" *ngIf ="selectedCloudletDetails.icon!=undefined && selectedCloudletDetails.icon!=null">
+	            		                  <img [src]="'data:image/png;base64,'+selectedCloudletDetails.icon"  class="img-rounded" width="100" height="100">
+	            		            </div>
+
+	            		            <div class="col-md-2 no-padding" *ngIf ="selectedCloudletDetails.icon==undefined || selectedCloudletDetails.icon==null">
+	            		                  <img src="assets/image/images.png"  class="img-rounded" width="100" height="100">
+	            		            </div>
+
+	            		            <div class="col-md-8 no-padding" *ngIf="cloudletsFlag==1">
+	            		                  <div class="col-md-12 no-padding">
+                                      <h2 style="margin-top: 0;">{{selectedCloudletDetails.cloudletName}}</h2>
+                                    </div>
+                                     <div class="col-md-12 no-padding">
+                                          <label class="small-form-label">Operator:</label>
+                                          <label class="small-form-label"><span *ngIf="selectedCloudletDetails.operator != null">{{selectedCloudletDetails.operator}}</span></label>
+                                      </div>
+	                            </div>
+                              <div class="col-md-8 no-padding" *ngIf="cloudletsFlag==2">
+	            		                  <div class="col-md-12 no-padding">
+                                      <h2 style="margin-top: 0;">{{selectedCloudletImageDetails.imageName}}</h2>
+                                    </div>
+                                     <div class="col-md-12 no-padding">
+                                          <label class="small-form-label">Edge:</label>
+                                          <label class="small-form-label">{{selectedCloudletImageDetails.edgeName}}</label>
+                                      </div>
+	                            </div>
+	                        </div>
+
+	                        <div class="row margin-bottom">
+	                          <ul class="nav nav-tabs no-border">
+	                              <li class="active"><a class="custom-tabs" data-toggle="tab" href="#home">Overview</a></li>
+	                          </ul>
+	                          <div class="tab-content" style="padding: 20px; border:1px solid #e9e9e9;">
+	                              <div id="home" class="tab-pane fade in active">
+	                                  <div class="row margin-bottom">
+	                                      <div class="col-md-12">
+	                                         <div class="title margin-bottom-medium">Description</div>
+	                                      </div>
+	                                      <div class="col-md-12">
+	                                           <label class="form-label">
+	                                                <span *ngIf="selectedCloudletDetails.description != null">{{selectedCloudletDetails.description}}</span>
+	                                            </label>
+	                                      </div>
+	                                  </div>
+
+	                                  <div class="row margin-bottom">
+	                                      <div class="col-md-4">
+	                                           <div class="col-md-12 no-padding">
+	                                                <div class="title margin-bottom-medium">The Cloudlet</div>
+	                                           </div>
+
+	                                           <div class="col-md-12 no-padding">
+	                                                <label class="small-form-label">Edge:</label>
+	                                                <label class="small-form-label"><span *ngIf="selectedCloudletDetails.edgeName != null">{{selectedCloudletDetails.edgeName}}</span></label>
+	                                            </div>
+
+
+	                                            <div class="col-md-12 no-padding">
+	                                                <label class="small-form-label">List of Countries:</label>
+	                                                <label class="small-form-label"><span *ngIf="selectedCloudletDetails.regions != null">{{selectedCloudletDetails.regions.lowLatency}}</span></label>
+	                                           </div>
+	                                    </div>
+
+	                                    <div class="col-md-4">
+	                                         <div class="col-md-12 no-padding">
+	                                              <div class="title margin-bottom-medium">Files</div>
+	                                         </div>
+	                                         <div class="col-md-12 no-padding">
+	                                              <label class="small-form-label">Orchestration Template:</label>
+	                                              <label class="small-form-label"><span *ngIf="selectedCloudletDetails.heatTemplateName != null">{{selectedCloudletDetails.heatTemplateName}}</span></label>
+	                                          </div>
+
+                                            <div class="col-md-12 no-padding">
+ 	                                              <label class="small-form-label">Policy File:</label>
+ 	                                              <label class="small-form-label"><span *ngIf="selectedCloudletDetails.policyFileName != null">{{selectedCloudletDetails.policyFileName}}</span></label>
+ 	                                          </div>
+	                                  </div>
+
+	                                  <div class="col-md-4">
+	                                       <div class="col-md-12 no-padding">
+	                                            <div class="title margin-bottom-medium">Usage Charges</div>
+	                                       </div>
+	                                       <div class="col-md-12 no-padding">
+                                           <label class="small-form-label">Compute Charges:</label>
+                                           <label class="small-form-label"><span *ngIf="selectedCloudletDetails.usageCharges != null">${{selectedCloudletDetails.usageCharges.computeCharge}}</span></label>
+	                                       </div>
+
+                                         <div class="col-md-12 no-padding">
+                                           <label class="small-form-label">Charge per GB storage:</label>
+                                           <label class="small-form-label"><span *ngIf="selectedCloudletDetails.usageCharges != null">${{selectedCloudletDetails.usageCharges.storageCharge}}</span></label>
+	                                       </div>
+
+                                         <div class="col-md-12 no-padding">
+                                           <label class="small-form-label">Resource Charges:</label>
+                                           <label class="small-form-label"><span *ngIf="selectedCloudletDetails.usageCharges != null">${{selectedCloudletDetails.usageCharges.resourceCharge}}</span></label>
+	                                       </div>
+	                                </div>
+	                            </div>
+	                        </div>
+	                          </div>
+	                     </div>
+	                   </div>
+
+                     <div class="form-group margin-bottom clearfix" *ngIf="cloudletsFlag==2">
+        	                      <div class="row margin-bottom clearfix" style="background-color: #e9e9e9; padding: 10px 0;">
+        	                           <div class="col-md-6 col-lg-6">
+        	                                <span>
+        	                                    <label class="apps-label">Status:</label>
+                                              <label class="title-small">{{selectedCloudletImageDetails.status}}</label>
+        	                                </span>
+        	                           </div>
+                                     <div class="col-md-6" >
+        	                           		<div style="text-align: right">
+        	                               		<span><img src="assets/image/icons/trash.png" height = "27px" width ="26px" data-toggle="modal" data-target="#deleteDetails"></span>
+        	                               </div>
+
+
+                                      <div class="modal fade" id="deleteDetails" role="dialog" >
+        			                         <div class="modal-dialog">
+        			                           <div class="modal-content">
+        			                             <div class="modal-header">
+        			                               <button type="button" class="close" data-dismiss="modal">&times;</button>
+        			                             </div>
+                                           <div class="modal-body" style="text-align: center;">
+                                              <span *ngIf="!deletePopup"><h3 class="margin-bottom">Are you sure you want to delete?</h3></span>
+                                              <div class="row margin-bottom" *ngIf="!deletePopup">
+                                                  <div class="col-md-3 col-md-offset-3">
+                                                      <button class="btn-cancel" data-dismiss="modal">Cancel</button>
+                                                  </div>
+                                                  <div class="col-md-3">
+                                                      <button class="btn-next" (click)="deleteDetails()">Delete</button>
+                                                  </div>
+                                              </div>
+                                              <div class="row margin-bottom" *ngIf="deletePopup">
+                                                  <h3  class="margin-bottom" *ngIf="!deleteFailed">Your delete request was submitted successfully</h3>
+                                                  <h3  class="margin-bottom" *ngIf="deleteFailed">{{errorMessage}}. Please try again later</h3>
+
+                                                  <div class="col-md-4 col-md-offset-4">
+                                                      <button class="btn-next" data-dismiss="modal" (click)="pageRedirect()">OK</button>
+                                                  </div>
+                                              </div>
+                                           </div>
+        			                           </div>
+        			                         </div>
+        			                       </div>   <!--  Modal End-->
+
+        	                           </div>
+        	                         </div>
+
+        	                         <div class="row margin-bottom-large">
+        	            		            <div class="col-md-2 no-padding">
+                                        <img  src="assets/image/button/__radio button selected.png" class="img-rounded" width="100" height="100" >
+        	            		            </div>
+
+        	            		            <div class="col-md-8 no-padding">
+        	            		                  <div class="col-md-12 no-padding">
+                                              <h2 style="margin-top: 0;">{{selectedCloudletImageDetails.imageName}}</h2>
+                                            </div>
+                                             <div class="col-md-12 no-padding">
+                                                  <label class="small-form-label">Edge:</label>
+                                                  <label class="small-form-label">{{selectedCloudletImageDetails.edgeName}}</label>
+                                              </div>
+        	                            </div>
+        	                        </div>
+
+        	                        <div class="row margin-bottom">
+        	                          <ul class="nav nav-tabs no-border">
+        	                              <li class="active"><a class="custom-tabs" data-toggle="tab" href="#home">Overview</a></li>
+        	                          </ul>
+        	                          <div class="tab-content" style="padding: 20px; border:1px solid #e9e9e9;">
+        	                              <div id="home" class="tab-pane fade in active">
+        	                                  <div class="row margin-bottom">
+        	                                      <div class="col-md-12">
+        	                                         <div class="title margin-bottom-medium">Description</div>
+        	                                      </div>
+        	                                      <div class="col-md-12">
+        	                                           <label class="form-label">
+        	                                                {{selectedCloudletImageDetails.description}}
+        	                                            </label>
+        	                                      </div>
+        	                                  </div>
+
+        	                                  <div class="row margin-bottom">
+        	                                      <div class="col-md-4">
+        	                                           <div class="col-md-12 no-padding">
+        	                                                <div class="title margin-bottom-medium">The Cloudlet Image</div>
+        	                                           </div>
+
+        	                                           <div class="col-md-12 no-padding">
+        	                                                <label class="small-form-label">Edge:</label>
+        	                                                <label class="small-form-label">{{selectedCloudletImageDetails.edgeName}}</label>
+        	                                            </div>
+        	                                            <div class="col-md-12 no-padding">
+        	                                                <label class="small-form-label">Uploaded on:</label>
+        	                                                <label class="small-form-label"></label>
+        	                                            </div>
+        	                                    </div>
+
+        	                                    <div class="col-md-4">
+        	                                         <div class="col-md-12 no-padding">
+        	                                              <div class="title margin-bottom-medium">Files:</div>
+        	                                         </div>
+                                                   <div class="col-md-12 no-padding">
+                                                   		<label class="small-form-label">File Name:</label>
+                                                        <label class="small-form-label">{{selectedCloudletImageDetails.fileName}}</label>
+                                                    </div>
+        	                                  </div>
+        	                            </div>
+        	                        </div>
+        	                          </div>
+        	                     </div>
+        	                   </div>
+                   </div>
+                   <div class="form-group margin-bottom" *ngIf="detailsError">
+		                    <h2 style="font-color:grey;text-align:center">{{errorMessage}}</h2>
+		              </div>

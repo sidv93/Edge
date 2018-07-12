@@ -1,0 +1,21 @@
+{
+  "userID": "userID21255",
+  "firstName": "First",
+  "lastName": "Last",
+  "profilePic": "SmF2YWNvZGVnZWVrcw==",
+  "credits": 250,
+  "password": "Password",
+  "email": "Email",
+  "contactNumber": "ContactNumber",
+  "address": "Address",
+  "companyName": "CompanyName",
+  "country": "Country",
+  "state": "State",
+  "userType": "AppDeveloper",
+  "cardInfo": {
+    "cardType": "Visa",
+    "cardNumber": "CardNumber",
+    "cardHolderName": "CardHolderName",
+    "cardExpiryDate": "2018-02-03"
+  }
+} 

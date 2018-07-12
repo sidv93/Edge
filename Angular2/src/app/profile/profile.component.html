@@ -1,0 +1,779 @@
+
+		 <div class="row clearfix">
+
+			 <div class="form-group no-margin">
+				 <div class="row">
+						 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 clearfix">
+								 <a class="tabs" id="userDetail" *ngIf="(tabStatus=='userDetail')" (click)="setTabFlag('userDetail')">User Detail</a>
+								 <a class="link" id="userDetail" *ngIf="!(tabStatus=='userDetail')" (click)="setTabFlag('userDetail')" style="cursor:pointer;">User Detail</a>
+
+							 <a class="tabs" id="payBill" *ngIf="(tabStatus=='payBill')" (click)="setTabFlag('payBill')">Pay Bill</a>
+							 <a class="link" id="payBill" *ngIf="!(tabStatus=='payBill')" (click)="setTabFlag('payBill')" style="cursor:pointer;">Pay Bill</a>
+
+								 <a class="tabs" id="credits" *ngIf="(tabStatus=='credits')" (click)="setTabFlag('credits')">Add $</a>
+								 <a class="link" id="credits" *ngIf="!(tabStatus=='credits')" (click)="setTabFlag('credits')" style="cursor:pointer;">Add $</a>
+						 </div>
+				 </div>
+			</div>
+
+				 <div class="form-group margin-bottom clearfix" *ngIf="(tabStatus=='userDetail')">
+						 <div class="margin-large clearfix">
+							 <div class="row margin-bottom">
+									 <div class="col-md-2">
+											 <div class="col-md-12 no-padding" style="position: relative" *ngIf="!editableImage">
+													 <img *ngIf ="userDetails.profilePic!=undefined && userDetails.profilePic!='' " [src]="userDetails.profilePic" class="img-rounded" width="100" height="100">
+													 <img *ngIf ="userDetails.profilePic==undefined || userDetails.profilePic=='' " src="assets/image/images.png" class="img-rounded" width="100" height="100">
+													 <span style="position: absolute; bottom: 0px;">
+													 <img src="assets/image/icons/edit.png" width="26px" height="27px" (click)="editImage()">
+													 </span>
+											 </div>
+
+											 <div class="col-md-12 no-padding" style="position: relative" *ngIf="editableImage">
+													<img [src]="userDetails.profilePic" class="img-rounded" width="100" height="100">
+													<span style="position: absolute; bottom: 0px;">
+													</span>
+											</div>
+									 </div>
+
+
+									 <div class="col-md-10">
+											 <div class="col-md-12">
+													 <span style="font-size: 14pt"> Welcome!<span class="offer" style="vertical-align: bottom;"> {{userDetails.firstName}} {{userDetails.lastName}}</span></span>
+											 </div>
+
+										 <div class="col-md-12 margin-top-small">
+												 <span class="font-small" *ngIf="userDetails.credits < 0"> Payment Due: </span> <span class="font-large margin-right font-bold" *ngIf="userDetails.credits < 0"> ${{paymentDue}} </span>
+												 <span class="font-small" *ngIf="userDetails.credits >= 0"> Available: </span> <span class="font-large font-bold" *ngIf="userDetails.credits >= 0"> ${{userDetails.credits}} </span>
+										 </div>
+										 <div class="col-md-12 margin-top-small text-grey">
+											 Please Note: Due date of the oustanding balance is 10th of every month.
+										 </div>
+								 </div>
+							</div>
+										 <div class="row"  *ngIf="editableImage">
+												<div class="col-md-4">
+												 <input type="file" class="form-control" value= "Browse" accept="image/*" name="profilePic" id ="profilePic" (change)="onChange($event)">
+												 <label class="form-label" style="margin: 10px 0 0 0;"></label>
+												</div>
+												<img src="assets/image/icons/tick.png" height ="27px" width ="26px" (click)="saveImageInfo()" style="margin-left: 10px;">
+												<img src="assets/image/icons/delete.png" height ="27px" width ="26px" (click)="cancelImageInfo()" style="margin-left: 10px;">
+										 </div>
+			 </div>
+
+
+				 <div class="form-group margin-bottom clearfix">
+						 <div class="row clearfix">
+
+								 <div class="form-group margin-bottom" *ngIf="nonEditablePersonalInfo">
+									 <div class="row margin-bottom">
+										 <div class="col-md-12">
+											 <div class="title">Personal Information <span  style="vertical-align: super; margin-left: 10px;"><img src="assets/image/icons/edit.png" height ="27px" width ="26px" (click)="personalInfoEdit()"></span></div>
+										 </div>
+									 </div>
+
+
+								 <div class="row">
+									 <div class="col-md-12 no-padding margin-bottom-medium">
+												<div class="col-md-2">
+													<label class="form-label">Company</label>
+												</div>
+												<div class="col-md-10" *ngIf = "userDetails.companyName != undefined && userDetails.companyName != null">
+													<span class="title">
+														{{userDetails.companyName}}
+													</span>
+												</div>
+									 </div>
+							 </div>
+
+						 <div class="row">
+								 <div class="col-md-12 no-padding margin-bottom-medium">
+											<div class="col-md-2">
+												<label class="form-label">Email ID</label>
+											</div>
+											<div class="col-md-10" *ngIf="userDetails.email != undefined && userDetails.email != null">
+												<span class="title">
+													{{userDetails.email}}
+												</span>
+											</div>
+								 </div>
+						 </div>
+
+					 <div class="row">
+							 <div class="col-md-12 no-padding margin-bottom-medium">
+										<div class="col-md-2">
+											<label class="form-label">Mobile</label>
+										</div>
+										<div class="col-md-10">
+											<span class="title" *ngIf="userDetails.email != undefined && userDetails.email != null">
+												{{userDetails.contactNumber}}
+											</span>
+										</div>
+							 </div>
+					 </div>
+
+					 <div class="row">
+						 <div class="col-md-12 no-padding margin-bottom-medium">
+									<div class="col-md-2">
+										<label class="form-label">Location</label>
+									</div>
+									<div class="col-md-10" *ngIf="userDetails.state != undefined && userDetails.state != null && userDetails.country != undefined && userDetails.country != null">
+										<span class="title" >{{userDetails.state}}, {{userDetails.country}}</span>
+									</div>
+						 </div>
+				 </div>
+		 </div>
+
+		 <div class="form-group margin-bottom" [hidden]="nonEditablePersonalInfo">
+			 <div class="row margin-bottom">
+				 <div class="col-md-12">
+					 <div >
+						 <span class="title">Personal Information </span>
+						 <img src="assets/image/icons/tick.png" height ="27px" width ="26px" (click)="savePersonalInfo()" style="margin-left: 10px;">
+						 <img src="assets/image/icons/delete.png" height ="27px" width ="26px" (click)="cancelPersonalInfo()" style="margin-left: 10px;">
+
+					 </div>
+				 </div>
+			 </div>
+
+		 <div class="row">
+			 <div class="col-md-12 no-padding margin-bottom-medium">
+						<div class="col-md-2">
+							<label class="form-label">Company</label>
+						</div>
+						<div class="col-md-10">
+							<input type="text" class="form-control" name="companyName" id="companyName"
+							 [(ngModel)]="userDetails.companyName" required #companyName="ngModel" >
+						</div>
+			 </div>
+	 </div>
+
+ <div class="row">
+		 <div class="col-md-12 no-padding margin-bottom-medium">
+					<div class="col-md-2">
+						<label class="form-label">Email ID</label>
+					</div>
+					<div class="col-md-10">
+						<input type="text" class="form-control" name="email" id="email"
+						 pattern="[^@]+@[^@\.]+\.[a-zA-Z]{2,}" [(ngModel)]="userDetails.email" required #email="ngModel" (change)="checkEmail()">
+						 <!-- <div style="color:red;" [hidden]="email.valid || (email.untouched)">Email is required (e.g. edge@mec.com)</div> -->
+						 <div style="color:red;" *ngIf="!email.untouched && (userDetails.email == undefined || userDetails.email == null || userDetails.email == '')">Email is required</div>
+						 <div style="color:red;" *ngIf="!email.valid && email.touched && (userDetails.email != undefined && userDetails.email != null && userDetails.email != '')">Email is invalid (e.g. edge@mec.com)</div>
+					</div>
+		 </div>
+ </div>
+
+<div class="row">
+	 <div class="col-md-12 no-padding margin-bottom-medium">
+				<div class="col-md-2">
+					<label class="form-label">Mobile</label>
+				</div>
+				<div class="col-md-10">
+					<div class="col-md-4" style="padding-left:0px;">
+						<div id="container">
+    					<input id="input" disabled class="form-control" name="input" type="" style="width: 80%;background-color:white;" [(ngModel)]="callingCode" required #input="ngModel">
+    					<br>
+							<select id="select" class="text-grey form-control" style="width: 100%;padding-right:10px;"
+							 (change)="onChangeCC()" [(ngModel)]="cc" required #code="ngModel">
+								<option  disabled  value = "null">Select Country code</option>
+								<option *ngFor="let codes of countries" [ngValue]="codes">{{codes.name}}</option>
+							</select>
+							<i class="fa" style="position:relative;padding-right:13px;margin-top:0px;"><img src="assets/image/icons/arrow.png"></i>
+						</div>
+					 </div>
+					<div class="col-md-8" style="padding-left:10px;padding-right:0px;">
+						<input type="text" class="form-control " name="contactNumber" id="contactNumber"
+						 [(ngModel)]="mobileNumber" required #contactNumber="ngModel" pattern="[0-9]*" maxlength="50">
+						 <div style="width:300px; color:red;" *ngIf="!contactNumber.valid && contactNumber.dirty && (mobileNumber!='')">Enter a numeric value.</div>
+					</div>
+
+				</div>
+	 </div>
+</div>
+
+<div class="row">
+ <div class="col-md-12 no-padding margin-bottom-medium">
+			<div class="col-md-2">
+				<label class="form-label">Location</label>
+			</div>
+			<div class="col-md-10">
+				<div class="col-md-6" style="padding-left:0px;">
+					<select class="text-grey form-control countries" name="country" id="country" [(ngModel)]="selectedCountry"
+						required #country="ngModel" (change)="onSelect(selectedCountry)">
+						<option selected disabled value = ''>Select Country</option>
+						<option *ngFor="let country of countries" [ngValue]="country">{{country.name}}</option>
+					</select>
+					<i class="fa"><img src="assets/image/icons/arrow.png"></i>
+
+				</div>
+				<div class="col-md-6" style="padding-left:0px;padding-right:0px;">
+					<select class="text-grey form-control states" name="state" id="state"
+					[(ngModel)]="selectedState" required #state="ngModel">
+					<option selected disabled value = ''>Select state</option>
+					<option *ngFor="let state of states " [ngValue]= "state">{{state.name}}	</option>
+					</select>
+					<i class="fa"><img src="assets/image/icons/arrow.png"></i>
+					<!-- <div style="color:red;" *ngIf="!state.valid && country.dirty && (selectedState==undefined || selectedState==null)">State is required</div> -->
+				</div>
+				<!-- <input type="text" placeholder="State,Country" class="form-control" name="location" id="location"
+				 [(ngModel)]="userDetails.location" required #location="ngModel"> -->
+			</div>
+ </div>
+</div>
+
+</div>
+
+			<div class="form-group margin-bottom">
+									 <div class="row margin-bottom">
+										 <div class="col-md-12">
+											 <div class="title" *ngIf="!addCardFlag">Banking Information <span  style="vertical-align: super; margin-left: 10px;"><img src="assets/image/icons/edit.png" height ="27px" width ="26px" (click)="bankingInfoEdit()"></span></div>
+											 <div class="title" *ngIf="addCardFlag">Banking Information <span  style="vertical-align: super; margin-left: 10px;"></span></div>
+										 </div>
+									 </div>
+
+
+								 <div class="row">
+									 <div class="col-md-12 no-padding margin-bottom-medium">
+												<div class="col-md-2">
+													<label class="form-label">Card Holder's Name</label>
+												</div>
+												<div class="col-md-10" *ngIf="userDetails_Bkp.cardInfo !=undefined && userDetails_Bkp.cardInfo != null">
+													<span class="title" *ngIf="userDetails_Bkp.cardInfo.cardHolderName !=undefined && userDetails_Bkp.cardInfo.cardHolderName != null">
+														{{userDetails_Bkp.cardInfo.cardHolderName}}
+													</span>
+												</div>
+									 </div>
+							 </div>
+
+						 <div class="row">
+								 <div class="col-md-12 no-padding margin-bottom-medium">
+											<div class="col-md-2">
+												<label class="form-label">Card Type</label>
+											</div>
+											<div class="col-md-10" *ngIf="userDetails_Bkp.cardInfo !=undefined && userDetails_Bkp.cardInfo != null">
+												<span class="title" *ngIf="userDetails_Bkp.cardInfo.cardType !=undefined && userDetails_Bkp.cardInfo.cardType != null">
+													{{userDetails_Bkp.cardInfo.cardType}}
+												</span>
+											</div>
+								 </div>
+						 </div>
+
+					 <div class="row">
+							 <div class="col-md-12 no-padding margin-bottom-medium">
+										<div class="col-md-2">
+											<label class="form-label">Card Number</label>
+										</div>
+										<div class="col-md-10" *ngIf="userDetails_Bkp.cardInfo !=undefined && userDetails_Bkp.cardInfo != null">
+											<span class="title" *ngIf="userDetails_Bkp.cardInfo.cardNumber !=undefined && userDetails_Bkp.cardInfo.cardNumber != null">
+												{{userDetails_Bkp.cardInfo.cardNumber}}
+											</span>
+										</div>
+							 </div>
+					 </div>
+
+					 <div class="row">
+						 <div class="col-md-12 no-padding margin-bottom-medium">
+									<div class="col-md-2">
+										<label class="form-label">Expiry Date</label>
+									</div>
+									<div class="col-md-10" *ngIf="userDetails_Bkp.cardInfo != undefined && userDetails_Bkp.cardInfo != null">
+										<span class="title" *ngIf="userDetails_Bkp.cardInfo.expiryMonth != undefined && userDetails_Bkp.cardInfo.expiryMonth != null && userDetails_Bkp.cardInfo.expiryYear != undefined && userDetails_Bkp.cardInfo.expiryYear != null">
+											{{userDetails_Bkp.cardInfo.expiryMonth}}, {{userDetails_Bkp.cardInfo.expiryYear}}
+										</span>
+									</div>
+						 </div>
+				 </div>
+		 </div>
+
+ <div class="panel-group" id="accordion" role="tablist" aria-multiselectable="true">
+	<div class="panel panel-default">
+			<div class="panel-heading black-panel" role="tab" id="headingOne" *ngIf="EditableBankingInfo">
+					<h4 class="panel-title">
+							<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+									Edit Card Details
+							</a>
+					</h4>
+			</div>
+			<div class="panel-heading black-panel" role="tab" id="headingOne" *ngIf="addCardFlag">
+					<h4 class="panel-title">
+							<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+									Add Card Details
+							</a>
+					</h4>
+			</div>
+			<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne" *ngIf="EditableBankingInfo">
+					<div class="panel-body margin-bottom">
+.
+					 <div class="row margin-bottom">
+						 <div class="col-md-6">
+							 <div class="col-md-12 no-padding">
+										 <label class="form-label">Card Holder's Name*</label>
+							 </div>
+							 <div class="col-md-12 no-padding">
+										<input type="text" class="form-control" name="cardHolderName" id="cardHolderName"
+										 [(ngModel)]="userDetails.cardInfo.cardHolderName" pattern="/^[A-z\s]+$/" required #cardHolderName="ngModel">
+										 <div style="color:red;" [hidden]="cardHolderName.valid || cardHolderName.untouched">
+											Card Holder Name is required
+										</div>
+							 </div>
+						 </div>
+						 <div class="col-md-6">
+							 <div class="col-md-12 no-padding">
+										 <label class="form-label">Card Type</label>
+							 </div>
+							 <div class="col-md-12 no-padding">
+										 <select class="form-control" name="cardType" id="cardType"
+										 [(ngModel)]="userDetails.cardInfo.cardType" required #cardType="ngModel">
+											 <option class="text-dark"> Master Card</option>
+											 <option>Visa Card</option>
+										 </select>
+										 <img class="fa" src="assets/image/icons/arrow.png" >
+										 <div style="color:red;" [hidden]="cardType.valid || cardType.untouched">
+											Card Type is required
+										</div>
+							 </div>
+						 </div>
+					 </div>
+
+					 <div class="row margin-bottom">
+						 <div class="col-md-6">
+							 <div class="col-md-12 no-padding">
+										 <label class="form-label">Card Number*</label>
+							 </div>
+							 <div class="col-md-12 no-padding">
+										<input type="text" class="form-control" name="cardNumber" id="cardNumber"
+										[(ngModel)]="userDetails.cardInfo.cardNumber" required #cardNumber="ngModel">
+										<div style="color:red;" [hidden]="cardNumber.valid || cardNumber.untouched">
+											Card Number is required
+										</div>
+
+							 </div>
+						 </div>
+						 <div class="col-md-6">
+							 <div class="col-md-12 no-padding">
+										 <label class="form-label">Expiry Date*</label>
+							 </div>
+							 <div class="col-md-6 no-padding">
+												 <select class="form-control" class="form-control" name="expiryMonth" id="expiryMonth"
+												[(ngModel)]="userDetails.cardInfo.expiryMonth" required #expiryMonth="ngModel">
+													 <option class="text-dark">01</option><option class="text-dark">02</option><option class="text-dark">03</option>
+													 <option class="text-dark">04</option><option class="text-dark">05</option><option class="text-dark">06</option>
+													 <option>07</option><option class="text-dark">08</option><option class="text-dark">09</option>
+													 <option class="text-dark">10</option><option class="text-dark">11</option><option class="text-dark">12</option>
+												 </select>
+												 <img class="fa" src="assets/image/icons/arrow.png" >
+												 <div style="color:red;" [hidden]="expiryMonth.valid || expiryMonth.untouched">
+													Expiry Month is required
+												</div>
+							 </div>
+							 <div class="col-md-6 no-right-padding">
+												<select class="form-control" class="form-control" name="expiryYear" id="expiryYear"
+											 [(ngModel)]="userDetails.cardInfo.expiryYear" required #expiryYear="ngModel">
+											 		<option>2017</option>
+													<option>2018</option>
+													<option>2019</option>
+													<option>2020</option>
+													<option>2021</option>
+													<option>2022</option>
+													<option>2023</option>
+													<option>2024</option>
+													<option>2025</option>
+												</select>
+												<img class="fa" src="assets/image/icons/arrow.png" >
+												<div style="color:red;" [hidden]="expiryYear.valid || expiryYear.untouched">
+													Expiry Year is required
+												</div>
+							 </div>
+							</div>
+
+						</div>
+
+					</div>
+			</div>
+
+			<div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne" *ngIf="addCardFlag">
+					<div class="panel-body margin-bottom">
+.
+					 <div class="row margin-bottom">
+						 <div class="col-md-6">
+							 <div class="col-md-12 no-padding">
+										 <label class="form-label">Card Holder's Name*</label>
+							 </div>
+							 <div class="col-md-12 no-padding">
+										<input type="text" class="form-control" name="cardHolderName" id="cardHolderName"
+										 [(ngModel)]="userDetails.cardInfo.cardHolderName" required #cardHolderName="ngModel">
+										 <div style="color:red;" [hidden]="cardHolderName.valid || cardHolderName.untouched">
+											Card Holder Name is required
+										</div>
+							 </div>
+						 </div>
+						 <div class="col-md-6">
+							 <div class="col-md-12 no-padding">
+										 <label class="form-label">Card Type</label>
+							 </div>
+							 <div class="col-md-12 no-padding">
+										 <select class="form-control" name="cardType" id="cardType"
+										 [(ngModel)]="userDetails.cardInfo.cardType" required #cardType="ngModel">
+											 <option class="text-dark"> Master Card</option>
+											 <option>Visa Card</option>
+										 </select>
+										 <img class="fa" src="assets/image/icons/arrow.png" >
+										 <div style="color:red;" [hidden]="cardType.valid || cardType.untouched">
+											Card Type is required
+										</div>
+							 </div>
+						 </div>
+					 </div>
+
+					 <div class="row margin-bottom">
+						 <div class="col-md-6">
+							 <div class="col-md-12 no-padding">
+										 <label class="form-label">Card Number*</label>
+							 </div>
+							 <div class="col-md-12 no-padding">
+										<input type="text" class="form-control" name="cardNumber" id="cardNumber"
+										[(ngModel)]="userDetails.cardInfo.cardNumber" required #cardNumber="ngModel">
+										<div style="color:red;" [hidden]="cardNumber.valid || cardNumber.untouched">
+											Card Number is required
+										</div>
+
+							 </div>
+						 </div>
+						 <div class="col-md-6">
+							 <div class="col-md-12 no-padding">
+										 <label class="form-label">Expiry Date*</label>
+							 </div>
+							 <div class="col-md-6 no-padding">
+												 <select class="form-control" class="form-control" name="expiryMonth" id="expiryMonth"
+												[(ngModel)]="userDetails.cardInfo.expiryMonth" required #expiryMonth="ngModel">
+													 <option class="text-dark">01</option><option class="text-dark">02</option><option class="text-dark">03</option>
+													 <option class="text-dark">04</option><option class="text-dark">05</option><option class="text-dark">06</option>
+													 <option>07</option><option class="text-dark">08</option><option class="text-dark">09</option>
+													 <option class="text-dark">10</option><option class="text-dark">11</option><option class="text-dark">12</option>
+												 </select>
+												 <img class="fa" src="assets/image/icons/arrow.png" >
+												 <div style="color:red;" [hidden]="expiryMonth.valid || expiryMonth.untouched">
+													Expiry Month is required
+												</div>
+							 </div>
+							 <div class="col-md-6 no-right-padding">
+												<select class="form-control" class="form-control" name="expiryYear" id="expiryYear"
+											 [(ngModel)]="userDetails.cardInfo.expiryYear" required #expiryYear="ngModel">
+											 		<option>2017</option>
+													<option>2018</option>
+													<option>2019</option>
+													<option>2020</option>
+													<option>2021</option>
+													<option>2022</option>
+													<option>2023</option>
+													<option>2024</option>
+													<option>2025</option>
+												</select>
+												<img class="fa" src="assets/image/icons/arrow.png" >
+												<div style="color:red;" [hidden]="expiryYear.valid || expiryYear.untouched">
+													Expiry Year is required
+												</div>
+							 </div>
+							</div>
+
+						</div>
+
+					</div>
+			</div>
+
+	</div>
+</div>
+
+</div>
+</div>
+		 <div class="form-group margin-bottom-large" *ngIf="addCardFlag || EditableBankingInfo">
+				<div class="row">
+						<div class="col-md-2">
+									<button type="button" class="btn-cancel" (click)="cancelOnPayBill()">Cancel</button>
+						</div>
+						<div class="col-md-3 col-md-offset-7">
+									<button type="button" class=" btn-next" data-toggle="modal" data-target="#dataSubmission"
+									(click)="saveProfileInfo('yes')" [disabled]="userDetails.cardInfo.cardNumber == undefined || userDetails.cardInfo.cardNumber == null || userDetails.cardInfo.cardNumber == '' || userDetails.cardInfo.cardHolderName == undefined || userDetails.cardInfo.cardHolderName == null || userDetails.cardInfo.cardHolderName == '' || userDetails.cardInfo.cardType == undefined || userDetails.cardInfo.cardType == null || userDetails.cardInfo.cardType == '' || userDetails.cardInfo.expiryMonth == undefined || userDetails.cardInfo.expiryMonth == null || userDetails.cardInfo.expiryMonth == '' || userDetails.cardInfo.expiryYear == undefined || userDetails.cardInfo.expiryYear == null || userDetails.cardInfo.expiryYear == ''">Save</button>
+						</div>
+			 </div>
+			 <div class="modal fade" id="dataSubmission"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+				<div class="modal-content text-center">
+
+					<div class="clearfix">
+						<button type="button" class="close" data-toggle="modal" data-dismiss="modal"><img src="assets/image/icons/cross.png"></button>
+									</div>
+
+
+				<div class="row margin-large">
+					 <div class="col-xs-12 dialogue-font" *ngIf="saveSuccess">
+						 Profile Data is submitted successfully
+					</div>
+					<div class="col-xs-12 dialogue-font" *ngIf="saveFail">
+                                                 {{this.errorMessage}}
+                                        </div>
+
+				</div>
+
+				<div class="row">
+					 <div class="col-xs-4 col-xs-offset-4">
+							 <button type="button" class="btn-next"  data-dismiss="modal" (click)="fetchDetails()">OK</button>
+					 </div>
+				 </div>
+
+				 </div>
+				</div>
+				</div>
+		</div>
+ </div>
+
+
+<!--start of pay bill -->
+<div class="form-group margin-bottom clearfix" *ngIf="(tabStatus=='payBill')">
+<div class="row margin-large clearfix">
+			<div class="col-md-2">
+					<div class="col-md-12 no-padding" style="position: relative">
+						<img *ngIf ="userDetails.profilePic!=undefined && userDetails.profilePic!='' " [src]="userDetails.profilePic" class="img-rounded" width="100" height="100">
+						<img *ngIf ="userDetails.profilePic==undefined || userDetails.profilePic=='' " src="assets/image/images.png" class="img-rounded" width="100" height="100">
+					</div>
+			</div>
+			<div class="col-md-10">
+					<div class="col-md-12">
+							<span style="font-size: 14pt"> Welcome! <span class="offer" style="vertical-align: bottom;">{{userDetails.firstName}} {{userDetails.lastName}}</span></span>
+					</div>
+
+				<div class="col-md-12 margin-top-small">
+						<span class="font-small"> Payment Due: </span>
+						<span class="font-large margin-right font-bold" *ngIf="userDetails.credits < 0"> ${{paymentDue}} </span>
+						<span class="font-large margin-right font-bold" *ngIf="userDetails.credits >= 0"> $0 </span>
+				</div>
+				<div class="col-md-12 margin-top-small text-grey">
+					Please Note: Due date of the oustanding balance is 10th of every month.
+				</div>
+</div>
+</div>
+
+<div class="form-group margin-bottom clearfix">
+
+		 <div class="row margin-bottom clearfix">
+		 		<div class="col-md-11">
+		 			<div class="col-md-12 tab-data"> Pay Outstanding Bill </div>
+		 		</div>
+		 </div>
+
+<div class="row margin-bottom-large">
+<div class="col-md-11">
+	 <div class="col-md-6">
+		 <div class="col-md-12 no-padding">
+					 <label class="form-label">Choose Payment Method*</label>
+		 </div>
+		 <div class="col-md-12 no-padding">
+					 <select class="form-control">
+						 <option class="text-dark"> Credit Card</option>
+						 <option class="text-dark"> Debit Card </option>
+					 </select>
+					 <img class="fa" src="assets/image/icons/arrow.png" >
+		 </div>
+	 </div>
+	 <div class="col-md-6">
+		 <div class="col-md-12 no-padding">
+					 <label class="form-label">Select from your saved details*</label>
+		 </div>
+		 <div class="col-md-12 no-padding">
+					 <select class="form-control">
+						 <option class="text-dark">{{userDetails.cardInfo.cardNumber}}</option>
+					 </select>
+					 <img class="fa" src="assets/image/icons/arrow.png" >
+		 </div>
+	 </div>
+	 </div>
+
+</div>
+ <div class="form-group margin-bottom-large">
+		<div class="row">
+		<div class="col-md-11">
+				<div class="col-md-2">
+							<button type="button" class="btn-cancel" (click)="cancelOnCredits()">Cancel</button>
+				</div>
+
+				<div class="col-md-3 col-md-offset-7">
+							<button type="button" class="btn-next" data-toggle="modal" data-target="#paymentGateway">Proceed To Pay</button>
+				</div>
+				</div>
+	 </div>
+</div>
+
+</div>
+</div>
+
+<!--start of confirmation modal-->
+<div class="modal fade" id="paymentGateway"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal-dialog">
+<div class="modal-content text-center">
+
+	<div class="clearfix">
+		<button type="button" class="close" data-toggle="modal" (click)="navigate()" data-dismiss="modal"
+		 data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+					</div>
+
+
+<div class="row margin-large">
+	 <div class="col-xs-12 dialogue-font">
+		 Click OK and you will be redirected to payment gateway.
+		</div>
+</div>
+
+<div class="row">
+	 <div class="col-xs-4 col-xs-offset-4">
+			 <button type="button" id="nextBtnModal" class="btn-next" (click)="creditsPage()" data-dismiss="modal" >OK</button>
+	 </div>
+ </div>
+
+ </div>
+</div>
+</div>
+
+				<div class="form-group margin-bottom clearfix" *ngIf="(tabStatus=='credits')">
+					<div class="col-xs-8 bold error clearfix" *ngIf="errorMessage4" style="color: red; font-size:16px; width:300px;" id="errorDiv">
+										 {{errorMessage4}}
+				 </div>
+						<div class="row margin-large clearfix">
+									<div class="col-md-2">
+											<div class="col-md-12 no-padding" style="position: relative">
+												<img *ngIf ="userDetails.profilePic!=undefined && userDetails.profilePic!='' " [src]="userDetails.profilePic" class="img-rounded" width="100" height="100">
+												<img *ngIf ="userDetails.profilePic==undefined || userDetails.profilePic=='' " src="assets/image/images.png" class="img-rounded" width="100" height="100">
+											</div>
+									</div>
+
+									<div class="col-md-10">
+											<div class="col-md-12">
+													<span style="font-size: 14pt"> Welcome! <span class="offer" style="vertical-align: bottom;">{{userDetails.firstName}} {{userDetails.lastName}}</span></span>
+											</div>
+
+										<div class="col-md-12 margin-top-small">
+												<span class="font-small"> Available: </span>
+												<span class="font-large font-bold" *ngIf="userDetails.credits >= 0"> ${{userDetails.credits}} </span>
+												<span class="font-large font-bold" *ngIf="userDetails.credits < 0"> $0 </span>
+										</div>
+										<div class="col-md-12 text-grey">
+												minumum balance of $200 to continue hassle free services.
+										</div>
+				</div>
+			</div>
+
+			<div class="form-group margin-bottom clearfix">
+
+										<div class="row margin-bottom clearfix">
+									 			<div class="col-md-12 tab-data">
+														Add $
+												</div>
+								    	</div>
+											<div class="row margin-bottom">
+												<div class="col-md-12">
+													<label class="font-medium margin-bottom">Choose $</label>
+												</div>
+
+											<div class="row margin-bottom">
+													<div class="col-md-6">
+														<div class="col-md-12 no-padding">
+															<div class="col-md-3 no-padding">
+																		<button type="button" class="btn-back" (click)="selectedCredits(500)">$500</button>
+															</div>
+															<div class="col-md-3">
+																		<button type="button" class="btn-back" (click)="selectedCredits(1000)">$1000</button>
+															</div>
+															<div class="col-md-3">
+																		<button type="button" class="btn-back" (click)="selectedCredits(2500)">$2500</button>
+															</div>
+															<div class="col-md-3">
+																		<button type="button" class="btn-back" (click)="selectedCredits(5000)">$5000</button>
+															</div>
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="form-label">
+																<span>or enter a different value</span>
+																<span style="padding-left:5px;">
+																	<input class="form-control" name="numberOfCredits" id="numberOfCredits"
+																	[(ngModel)]="creditObj.numberOfCredits" required #numberOfCredits="ngModel" type="text" pattern="^[0-9]+(\.[0-9]{1,2})?$" style="border: none; border-bottom: 1px solid #dadada; width: initial; display: inline-block;">
+																</span>
+															<div style="color:red;" [hidden]="numberOfCredits.valid || numberOfCredits.untouched">
+																	Only number should be present
+															</div>
+														</div>
+													</div>
+											</div>
+
+											<div class="row margin-top margin-bottom">
+													<div class="col-md-6">
+														<div class="col-md-12 no-padding">
+																	<label class="form-label">Choose Payment Method*</label>
+														</div>
+														<div class="col-md-12 no-padding">
+																	<select class="form-control">
+																		<option class="text-dark">Credit Card</option>
+																		<option>Debit Card</option>
+																	</select>
+																	<img class="fa" src="assets/image/icons/arrow.png" >
+														</div>
+													</div>
+													<div class="col-md-6">
+														<div class="col-md-12 no-padding">
+																	<label class="form-label">Select from your saved details</label>
+														</div>
+														<div class="col-md-12 no-padding">
+																	<select class="form-control">
+																		<option class="text-dark">{{userDetails.cardInfo.cardNumber}}</option>
+																	</select>
+																	<img class="fa" src="assets/image/icons/arrow.png" >
+														</div>
+													</div>
+											</div>
+										</div>
+										<div class="form-group margin-bottom">
+											 <div class="row">
+													 <div class="col-md-2">
+																 <button type="button" class="btn-cancel" (click)="cancelTopup()">Cancel</button>
+													 </div>
+													 <div class="col-md-2 ">
+																 <button type="button" class=" btn-next" data-toggle="modal" data-target="#amountCredit"
+																  (click)="submit()" *ngIf="(creditObj.numberOfCredits != null && creditObj.numberOfCredits != undefined && creditObj.numberOfCredits != '') || numberOfCredits.valid">Submit</button>
+
+																	<button type="button" class=" btn-next" *ngIf="(creditObj.numberOfCredits == null || creditObj.numberOfCredits == undefined || creditObj.numberOfCredits == '') && !numberOfCredits.valid"
+																	style = "cursor:not-allowed" popover="Enter credit amount" [popoverCloseOnClickOutside]="true">Submit</button>
+													 </div>
+											</div>
+
+			 <div class="modal fade" id="amountCredit"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+				<div class="modal-dialog">
+				<div class="modal-content text-center">
+
+					<div class="clearfix">
+						<button type="button" class="close" data-toggle="modal" data-dismiss="modal"><img src="assets/image/icons/cross.png"></button>
+									</div>
+
+
+				<div class="row margin-large">
+					 <div class="col-xs-12 dialogue-font" *ngIf="creditAddSucc">
+						Amount credited in the account.
+					</div>
+					 <div class="col-xs-12 dialogue-font" *ngIf="creditAddFail">
+                                                {{errorMessage4}}
+                                        </div>
+
+				</div>
+
+				<div class="row">
+					 <div class="col-xs-4 col-xs-offset-4">
+							 <button type="button" class="btn-next"  data-dismiss="modal" >OK</button>
+					 </div>
+				 </div>
+
+				 </div>
+				</div>
+				</div>
+									 </div>
+								</div>
+				 </div>
+
+
+</div>

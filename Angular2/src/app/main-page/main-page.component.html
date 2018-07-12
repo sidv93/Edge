@@ -1,0 +1,428 @@
+
+<div class="container-fluid form-signin no-padding">
+
+  <div class="row fill clearfix">
+
+        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 side-bar no-padding"  *ngIf="microServiceDeveloper">
+              <div class="col-sm-12 col-md-12 col-lg-12 no-padding clearfix">
+                    <div class="col-xs-12 col-md-12 col-lg-12 no-padding clearfix"><img src="assets/image/logo/edge_logo_black.png"></div>
+              </div>
+
+              <div class="col-md-12 no-padding" (click)="toggleHighlight(1)">
+                    <a class="list-items services full-width" routerLink="/dash" skipLocationChange [ngClass]="{'active-list-items': highlightedDiv === 1 }"  (click)="hideMonitoring()" (mouseover)="dashMouseEnter()" (mouseout)="dashMouseOut()" href="javascript:void(0);">
+                        <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img id="dash" [src]="dashSource"  style="vertical-align: baseline;" ></div>
+                        <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Dashboard</div>
+                    </a>
+              </div>
+
+              <div class="col-md-12 no-padding" (click)="toggleHighlight(2)">
+                  <a class="list-items services full-width" [ngClass]="{'active-list-items': highlightedDiv === 2 }" (click)="hideDash('ms')"  (mouseover)="microMouseEnter()" (mouseout)="microMouseOut()" href="javascript:void(0);">
+                      <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img id="micro" [src]="microSource" style="vertical-align: baseline;" ></div>
+                      <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Microservices</div>
+                  </a>
+              </div>
+
+              <div class="col-md-12 no-padding" (click)="toggleHighlight(3)">
+                   <a class="list-items services full-width" routerLink="/billing" skipLocationChange (click)="hideDash('null')"  [ngClass]="{'active-list-items': highlightedDiv === 3 }" (mouseover)="revenueMouseEnter()" (mouseout)="revenueMouseOut()" href="javascript:void(0);">
+                      <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img  [src]="revenueSource" style="vertical-align: baseline;" ></div>
+                      <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Revenue</div>
+                  </a>
+              </div>
+
+              <div class="col-md-12 no-padding" (click)="toggleHighlight(4)">
+                  <a class="list-items services full-width" (click)="redirectToMonitor()"  [ngClass]="{'active-list-items': highlightedDiv === 4 }"  (mouseover)="monitorMouseEnter()" (mouseout)="monitorMouseOut()" href="javascript:void(0);">
+                      <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img id="monitor" [src]="monitorSource"  style="vertical-align: baseline;"></div>
+                      <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Reports</div>
+                  </a>
+              </div>
+
+              <div class="col-md-12 no-margin" *ngIf="monitoring" style="padding:10px 0; border-bottom: 2px solid #1E202C;">
+                           <div class="row" style="padding: 5px 0 !important; color: #fff;">
+                               <div class="col-sm-11 col-sm-offset-1 col-md-11 col-md-offset-1 col-lg-11 col-lg-offset-1 no-right-padding">
+                                     <span class="monitor-title">Select Time Period</span>
+                               </div>
+                           </div>
+                           <div class="row" style="padding: 5px 0 !important;" *ngFor="let item of checks ; let i = index;">
+                               <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1 no-right-padding">
+                                     <input type="checkbox" id="check{{i}}" class="monitor-checkbox" (click)="updateNumPreparedSpells(item)" [(ngModel)]="item.isPrepared"
+                                    name="check{{i}}" >
+                   <label class="checkbox-color" for="check{{i}}"></label>
+                               </div>
+                               <div class="col-sm-8 col-md-8 col-lg-9 color-default text-left">
+                                 <span class="monitor-time">{{item.name}}</span>
+                               </div>
+                           </div>
+                     </div>
+
+                     <div class="col-md-12 no-margin" *ngIf="monitoring" style="padding:10px 0; border-bottom: 2px solid #1E202C;">
+                           <div class="row" style="padding: 5px 0 !important; color: #fff;">
+                               <div class="col-sm-11 col-sm-offset-1 col-md-11 col-md-offset-1 col-lg-11 col-lg-offset-1 no-right-padding">
+                                     <span class="monitor-title">Select MicroServices</span>
+                               </div>
+                           </div>
+                           <div class="row" style="padding: 5px 0 !important;" *ngFor="let microservice of msToDisplay; let i = index;">
+                               <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1 no-right-padding">
+                                     <input type="checkbox" id="checked{{i}}" class="monitor-checkbox" (click)="onClickMS(checkBoxValue[i],i)" [disabled]="((counterForName==maxCount) && !(checkBoxValue[i]))"
+                                      [(ngModel)]="checkBoxValue[i]"  name="checked{{i}}" >
+									  <label class="checkbox-color" for="checked{{i}}"></label>
+                               </div>
+                               <div class="col-sm-8 col-md-8 col-lg-9 color-default text-left">
+                                 <span class="monitor-time">{{microservice.microServiceName}}</span>
+                               </div>
+                           </div>
+                           <br>
+                           <div class="row color-default" style="padding: 5px 0 !important;text-align:center;" >
+                             <img src="assets/image/icons/__plus icon.png" style="cursor:pointer;" *ngIf="showMoreMS" (click)="seeMoreMS()"><span class="monitor-time" style="cursor:pointer;" *ngIf="showMoreMS" (click)="seeMoreMS()">More</span>&nbsp;&nbsp;&nbsp;
+                             <img src="assets/image/icons/__minus icon.png" style="cursor:pointer;" *ngIf="showLessMS" (click)="seeLessMS()"><span class="monitor-time" style="cursor:pointer;" *ngIf="showLessMS" (click)="seeLessMS()">Less</span>
+                           </div>
+                     </div>
+
+
+
+        </div>
+
+        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 side-bar no-padding"  *ngIf="newcoDeveloper">
+              <div class="col-sm-12 col-md-12 col-lg-12 no-padding clearfix">
+                    <div class="col-xs-12 col-md-12 col-lg-12 no-padding clearfix"><img src="assets/image/logo/edge_logo_black.png"></div>
+              </div>
+              <div class="col-md-12 no-padding"  (click)="toggleHighlight(1)"  >
+                    <a class="list-items services full-width" [ngClass]="{'active-list-items': highlightedDiv === 1 }" (mouseover)="dashMouseEnter()" (click)="showOperator()" (mouseout)="dashMouseOut()" href="javascript:void(0);">
+                        <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img id="dash" [src]="dashSource" style="vertical-align: baseline;" ></div>
+                        <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Dashboard</div>
+                    </a>
+              </div>
+              <div class="col-md-12 no-padding" (click)="toggleHighlight(6)">
+                  <a class="list-items services full-width" [ngClass]="{'active-list-items': highlightedDiv === 6 }" (click)="hideDash('edge')"  (mouseover)="edgeMouseEnter()" (mouseout)="edgeMouseOut()" href="javascript:void(0);">
+                      <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img id="micro" [src]="edgeSource" style="vertical-align: baseline;" ></div>
+                      <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Edge</div>
+                  </a>
+              </div>
+              <div class="col-md-12 no-padding" (click)="toggleHighlight(7)">
+                   <a class="list-items services full-width" (click)="hideDash('cloudlet')" [ngClass]="{'active-list-items': highlightedDiv === 7 }" (mouseover)="cloudletMouseEnter()" (mouseout)="cloudletMouseOut()" href="javascript:void(0);">
+                      <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img id="app" [src]="cloudletSource" style="vertical-align: baseline;" ></div>
+                      <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Cloudlets</div>
+                  </a>
+              </div>
+              <!-- <div class="col-md-12 list-items no-margin" id="monitor1" >
+                      <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img id="monitor" src="assets/image/icons/monitoring.png"  style="vertical-align: baseline;"></div>
+                      <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Reports</div>
+                  </a>
+              </div> -->
+              <div class="col-md-12 no-padding"  (click)="toggleHighlight(3)" >
+                  <a class="list-items services full-width" routerLink="/billing" skipLocationChange (click)="hideDash('null')" [ngClass]="{'active-list-items': highlightedDiv === 3 }" (mouseover)="revenueMouseEnter()" (mouseout)="revenueMouseOut()" href="javascript:void(0);">
+                      <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img id="revenue" [src]="revenueSource"  style="vertical-align: baseline;"></div>
+                      <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Revenue</div>
+                  </a>
+              </div>
+              <div class="col-md-12 no-padding" (click)="toggleHighlight(8)" style="border-bottom: 2px solid #1E202C;">
+                  <a class="list-items services full-width" routerLink="/telcoSignup" skipLocationChange (click)="hideDash('null')" [ngClass]="{'active-list-items': highlightedDiv === 8}" (mouseover)="telcoMouseEnter()" (mouseout)="telcoMouseOut()" href="javascript:void(0);">
+                      <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img id="monitor" [src]="telcoSource"  style="vertical-align: baseline;"></div>
+                      <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Operator</div>
+                  </a>
+              </div>
+			  <div class="col-md-12 no-margin" *ngIf="operatorCheck" style="padding:10px 0;">
+                           <div class="row" style="padding: 5px 0 !important; color: #fff;">
+                               <div class="col-sm-11 col-sm-offset-1 col-md-11 col-md-offset-1 col-lg-11 col-lg-offset-1 no-right-padding">
+                                     <span class="monitor-title">Select Operator</span>
+                               </div>
+                           </div>
+                           <div class="row" style="padding: 5px 0 !important;" *ngFor=" let operator of operatorsToDisplay ; let i = index;">
+                               <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1 no-right-padding">
+                                     <input type="checkbox" id="check{{i}}" class="monitor-checkbox" [(ngModel)]="checkBoxValueOperator[i]"
+                                    name="check{{i}}" (click)="onClickOperator(checkBoxValueOperator[i],i)" >
+                   <label class="checkbox-color" for="check{{i}}"></label>
+                               </div>
+                               <div class="col-sm-8 col-md-8 col-lg-9 color-default text-left">
+                                 <span class="monitor-time">{{operator}}</span>
+                               </div>
+                           </div>
+                           <br>
+                           <div class="row color-default" style="padding: 5px 0 !important;text-align:center;">
+                             <img src="assets/image/icons/__plus icon.png" style="cursor:pointer;" *ngIf="showMore" (click)="seeMore()"><span class="monitor-time" style="cursor:pointer;" *ngIf="showMore" (click)="seeMore()">More</span>&nbsp;&nbsp;&nbsp;
+                             <img src="assets/image/icons/__minus icon.png" style="cursor:pointer;" *ngIf="showLess" (click)="seeLess()"><span class="monitor-time" style="cursor:pointer;" *ngIf="showLess" (click)="seeLess()">Less</span>
+                           </div>
+                     </div>
+
+			  <div class="col-md-12 no-padding" (click)="toggleHighlight(9)">
+                  <a class="services full-width" routerLink="/vmi" skipLocationChange (click)="hideDash('null')" [ngClass]="{'active-list-items': highlightedDiv === 9 }" (mouseover)="vmiMouseEnter()" (mouseout)="vmiMouseOut()" href="javascript:void(0);">
+                      <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img id="vmi" [src]="vmiSource"  style="vertical-align: baseline;"></div>
+                      <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">VMI Report</div>
+                  </a>
+              </div>
+        </div>
+
+        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 side-bar no-padding"  *ngIf="telcoDeveloper">
+              <div class="col-sm-12 col-md-12 col-lg-12 no-padding clearfix">
+                    <div class="col-xs-12 col-md-12 col-lg-12 no-padding clearfix"><img src="assets/image/logo/edge_logo_black.png"></div>
+              </div>
+
+              <div class="col-md-12 no-padding"  (click)="toggleHighlight(1)">
+                    <a class=" list-items services full-width" routerLink="/newcodash" skipLocationChange [ngClass]="{'active-list-items ': highlightedDiv === 1 }" (click)="hideDash('null')" (mouseover)="dashMouseEnter()" (mouseout)="dashMouseOut()" href="javascript:void(0);">
+                        <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img id="dash"  [src]="dashSource" style="vertical-align: baseline;" ></div>
+                        <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Dashboard</div>
+                    </a>
+              </div>
+
+			  <div class="col-md-12 no-padding" (click)="toggleHighlight(4)">
+                    <a class="list-items services full-width" routerLink="/cloudletGraph" skipLocationChange [ngClass]="{'active-list-items ': highlightedDiv === 4 }"  (click)="hideDash('null')" (mouseover)="monitorMouseEnter()" (mouseout)="monitorMouseOut()" href="javascript:void(0);">
+                        <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img id="dash"  [src]="monitorSource" style="vertical-align: baseline;" ></div>
+                        <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Usage</div>
+                    </a>
+              </div>
+
+			   <div class="col-md-12 no-padding" (click)="toggleHighlight(3)">
+                    <a class="list-items services full-width" routerLink="/billing" skipLocationChange [ngClass]="{'active-list-items ': highlightedDiv === 3 }" (click)="hideDash('null')" (mouseover)="revenueMouseEnter()" (mouseout)="revenueMouseOut()" href="javascript:void(0);">
+                        <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img id="dash"  [src]="revenueSource" style="vertical-align: baseline;" ></div>
+                        <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Revenue</div>
+                    </a>
+              </div>
+        </div>
+
+        <div class="col-xs-4 col-sm-4 col-md-3 col-lg-2 side-bar no-padding" *ngIf="mobileAppDeveloper">
+              <div class="col-sm-12 col-md-12 col-lg-12 no-padding clearfix">
+                    <div class="col-xs-12 col-md-12 col-lg-12 no-padding clearfix"><img src="assets/image/logo/edge_logo_black.png"></div>
+              </div>
+
+              <div class="col-md-12 no-padding"  (click)="toggleHighlight(1)"  >
+                    <a class="list-items services full-width"  routerLink="/dashMobile" skipLocationChange [ngClass]="{'active-list-items': highlightedDiv === 1 }" (click)="hideMonitoring()"  (mouseover)="dashMouseEnter()" (mouseout)="dashMouseOut()" href="javascript:void(0);">
+                        <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img id="dash" [src]="dashSource" style="vertical-align: baseline;" ></div>
+                        <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Dashboard</div>
+                    </a>
+              </div>
+
+              <div class="col-md-12 no-padding" (click)="toggleHighlight(5)">
+                  <a class="list-items services full-width"  (click)="hideDash('app')" [ngClass]="{'active-list-items': highlightedDiv === 5 }"  (mouseover)="appMouseEnter()" (mouseout)="appMouseOut()" href="javascript:void(0);">
+                      <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img id="app" [src]="appSource" style="vertical-align: baseline;" ></div>
+                      <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Apps</div>
+                  </a>
+              </div>
+              <div class="col-md-12 no-padding" (click)="toggleHighlight(2)">
+                  <a class="list-items services full-width"  (click)="hideDash('marketplace')" [ngClass]="{'active-list-items': highlightedDiv === 2 }" (mouseover)="microMouseEnter()" (mouseout)="microMouseOut()" href="javascript:void(0);">
+                      <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img id="micro" [src]="microSource" style="vertical-align: baseline;" ></div>
+                      <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding"><div>Microservices</div></div>
+                  </a>
+              </div>
+              <div class="col-md-12 no-padding" (click)="toggleHighlight(3)">
+                  <a class="list-items services full-width" routerLink="/billing" skipLocationChange (click)="hideDash('null')" [ngClass]="{'active-list-items': highlightedDiv === 3 }" (mouseover)="revenueMouseEnter()" (mouseout)="revenueMouseOut()" href="javascript:void(0);">
+                      <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img  [src]="revenueSource" style="vertical-align: baseline;"></div>
+                      <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Revenue</div>
+                  </a>
+              </div>
+
+              <div class="col-md-12 no-padding" (click)="toggleHighlight(4)">
+                  <a class="list-items services full-width" (click)="redirectToMonitor()" [ngClass]="{'active-list-items': highlightedDiv === 4 }" (mouseover)="monitorMouseEnter()" (mouseout)="monitorMouseOut()" href="javascript:void(0);">
+                      <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-3 col-lg-offset-1"><img [src]="monitorSource" style="vertical-align: baseline;"></div>
+                      <div class="col-sm-8 col-md-8 col-lg-8 text-left no-padding">Reports</div>
+                  </a>
+              </div>
+
+              <div class="col-md-12 no-margin" *ngIf="monitoring" style="padding:10px 0; border-bottom: 2px solid #1E202C;">
+                           <div class="row" style="padding: 5px 0 !important; color: #fff;">
+                               <div class="col-sm-11 col-sm-offset-1 col-md-11 col-md-offset-1 col-lg-11 col-lg-offset-1 no-right-padding">
+                                     <span class="monitor-title">Select Time Period</span>
+                               </div>
+                           </div>
+                           <div class="row" style="padding: 5px 0 !important;" *ngFor="let item of checks ; let i = index;">
+                               <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1 no-right-padding">
+                                     <input type="checkbox" id="check{{i}}" class="monitor-checkbox" (click)="updateNumPreparedSpells(item)" [(ngModel)]="item.isPrepared"
+                                    name="check{{i}}" >
+									  <label class="checkbox-color" for="check{{i}}"></label>
+                               </div>
+                               <div class="col-sm-8 col-md-8 col-lg-9 color-default text-left">
+                                 <span class="monitor-time">{{item.name}}</span>
+                               </div>
+                           </div>
+                     </div>
+
+                     <div class="col-md-12 no-margin" *ngIf="monitoring" style="padding:10px 0; border-bottom: 2px solid #1E202C;">
+                           <div class="row" style="padding: 5px 0 !important; color: #fff;">
+                               <div class="col-sm-11 col-sm-offset-1 col-md-11 col-md-offset-1 col-lg-11 col-lg-offset-1 no-right-padding">
+                                     <span class="monitor-title">Select Apps</span>
+                               </div>
+                           </div>
+                           <div class="row" style="padding: 5px 0 !important;" *ngFor="let mobileApp of mobileAppsToDisplay; let i = index;">
+                               <div class="col-sm-3 col-sm-offset-1 col-md-3 col-md-offset-1 col-lg-2 col-lg-offset-1 no-right-padding">
+                                     <input type="checkbox" id="checked{{i}}" class="monitor-checkbox" (click)="onClick(checkBoxValue[i],i)" [disabled]="((counterForName==maxCount) && !(checkBoxValue[i]))"
+                                      [(ngModel)]="checkBoxValue[i]"  name="checked{{i}}" >
+									  <label class="checkbox-color" for="checked{{i}}"></label>
+                               </div>
+                               <div class="col-sm-8 col-md-8 col-lg-9 color-default text-left">
+                                 <span class="monitor-time">{{mobileApp.applicationName}}</span>
+                               </div>
+                           </div>
+                           <br>
+                           <div class="row color-default" style="padding: 5px 0 !important;text-align:center;" >
+                             <img src="assets/image/icons/__plus icon.png" style="cursor:pointer;" *ngIf="showMoreApp" (click)="seeMoreApp()"><span class="monitor-time" style="cursor:pointer;" (click)="seeMoreApp()" *ngIf="showMoreApp">More</span>&nbsp;&nbsp;&nbsp;
+                             <img src="assets/image/icons/__minus icon.png" style="cursor:pointer;" *ngIf="showLessApp" (click)="seeLessApp()"><span class="monitor-time" style="cursor:pointer;" (click)="seeLessApp()" *ngIf="showLessApp">Less</span>
+                           </div>
+                     </div>
+
+
+        </div>
+
+        <div class="col-xs-8 col-xs-offset-4 col-sm-8 col-sm-offset-4 col-md-9 col-md-offset-3 col-lg-10 col-lg-offset-2 no-padding clearfix">
+        	<div class="col-sm-12 col-md-12 col-lg-12 margin-bottom no-padding clearfix">
+                <div class="row menu-border margin-bottom clearfix">
+
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2 col-lg-offset-5 clearfix" style="text-align: right;" style="text-align: right;" *ngIf="!mobileAppDeveloper && !microServiceDeveloper">
+                         <span class="col-md-4 col-lg-4"> <img id="feedback" [src]="feedbackSource" (mouseover)="feedbackMouseEnter()" (mouseout)="feedbackMouseOut()"> </span>
+                         <span class="col-md-4 col-lg-4" style="cursor:pointer;" (click)="feedback()" data-toggle="modal" data-target="#feedbackModal" > <img id="documentation" [src]="documentSource" (mouseover)="documentMouseEnter()" (mouseout)="documentMouseOut()" > </span>
+                         <span class="col-md-4 col-lg-4" (click)="profile()" style="cursor:pointer;"><img  src="assets/image/icons/user-profile.png" ></span>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-2 col-lg-offset-5 clearfix" style="text-align: right;"  *ngIf="mobileAppDeveloper || microServiceDeveloper">
+                         <span class="col-md-4 col-lg-4"> <img id="feedback" [src]="feedbackSource" (mouseover)="feedbackMouseEnter()" (mouseout)="feedbackMouseOut()"> </span>
+                         <span class="col-md-4 col-lg-4" style="cursor:pointer;" (click)="feedback()" data-toggle="modal" data-target="#feedbackModal" > <img id="documentation" [src]="documentSource" (mouseover)="documentMouseEnter()" (mouseout)="documentMouseOut()" > </span>
+                         <span class="col-md-4 col-lg-4" (click)="profile()" style="cursor:pointer;"><img  src="assets/image/icons/user-profile.png" ></span>
+                    </div>
+
+                     <div class="modal fade" id="feedbackModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+              			      <div class="modal-dialog modal-lg">
+              			            <div class="modal-content text-center">
+								                      <app-feedback> </app-feedback>
+              			            </div>
+              			      </div>
+                     </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2" *ngIf="mobileAppDeveloper || microServiceDeveloper">
+                     <button class="btn-cancel" (click)="sdk()" >Download SDK</button>
+                    </div>
+                    <!-- <div class="modal fade" id="sdkDetails" role="dialog" >
+                                           <div class="modal-dialog">
+                                             <div class="modal-content text-center">
+                                             <div class="clearfix">
+													<button type="button" class="close"  data-dismiss="modal" >
+													<img src="assets/image/icons/cross.png"></button>
+									            </div>
+
+                                               <div class="row margin-bottom-large">
+                                                  <h3>SDK is available on request. Contact<b> dtedge.support@aricent.com</b> for acquiring the SDK.</h3>
+                                                  </div>
+
+                                                  <div class="row">
+                                                      <div class="col-md-4 col-md-offset-4">
+                                                          <button class="btn-next" data-dismiss="modal">OK</button>
+                                                      </div>
+                                                  </div>
+                                               </div>
+
+                                             </div>
+                      </div> -->
+                    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2" *ngIf="newcoDeveloper">
+                     <button class="btn-cancel" (click)="sdk()">Manage SDK</button>
+                    </div>
+
+                    <div class="col-xs-12 col-sm-6 col-md-3 col-lg-2 no-padding">
+                    	<div class="form">
+		                      <select class="form-control" (change)="pageRedirect()">
+                      <option *ngFor="let role of rolesToDisplay" >{{role}}</option>
+                   </select>
+
+		                      <img class="fa" src="assets/image/icons/arrow.png" >
+                  		</div>
+                  </div>
+                  <div class="col-xs-12 col-sm-12 col-md-2 col-lg-1 clearfix">
+                      <label class="form-label" style="font-size: 13pt;">
+                          <span style="vertical-align: sub; color: #979A9F; cursor:pointer;" (click)="logout()">Logout</span>
+                      </label>
+                      <!-- <div style="padding:10%;">
+                        <img [src]="accountSource">&nbsp;<img src="assets/image/icons/arrow.png" (click)="switchFlagFunc()">
+                      </div>
+                        <div *ngIf="switchFlag" style="display: block;position: absolute;background-color: #f9f9f9;min-width: 160px;box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);">
+                          <span data-toggle="modal" data-target="#changePassword" style="color: black; cursor:pointer;margin-bottom:10px;padding-left:10px;"><label class="form-label">Change password</label></span><br>
+                          <span style="color: black; cursor:pointer;margin-bottom:10px;padding-left:10px;" (click)="logout()"><label class="form-label">Logout</label></span><br>
+                        </div> -->
+                    </div>
+
+                    <div class="modal fade" id="changePassword" role="dialog">
+                      <div class="modal-dialog">
+                        <div class="modal-content text-center">
+                          <div class="clearfix">
+                            <button type="button" class="close"  data-dismiss="modal" >
+                              <img src="assets/image/icons/cross.png"></button>
+                          </div>
+                          <div class="row margin-bottom" *ngIf="!changeSubmit">
+                            <div class="col-xs-12"><h2>Change Password</h2></div>
+                          </div>
+                          <div class="row margin-bottom" *ngIf="!changeSubmit">
+                            <div class="col-xs-12">
+                              <div class="col-xs-4">
+                              <label class="form-label">
+                                Old password
+                              </label>
+                            </div>
+                            <div class="col-xs-8">
+                              <input type="password" class="form-group form-control" name="oldpassword" id="oldpassword"  required maxlength="20" [(ngModel)]="oldPass"
+ 														 reverse="true" style="background-color:white;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                            </div>
+                          </div>
+                          <div class="col-xs-12">
+                            <div class="col-xs-4">
+                            <label class="form-label">
+                              New password
+                            </label>
+                          </div>
+                          <div class="col-xs-8">
+                            <input type="password" class="form-group form-control" name="newpassword" id="newpassword" [(ngModel)]="newPass" required maxlength="20" #newpassword="ngModel"
+                             reverse="true" pattern="^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!*^&+=_\.]).*$"
+                            style="background-color:white;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                            <div style="color:red;" [hidden]="newpassword.valid || newpassword.untouched">
+                              Password is required ( minimum length: 8 characters, maximum length: 20 characters, should contain atleast 1 uppercase character, 1 lowercase character, 1 number and 1 special character )
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-xs-12">
+                          <div class="col-xs-4">
+                          <label class="form-label">
+                            Confirm password
+                          </label>
+                        </div>
+                        <div class="col-xs-8">
+                          <input type="password" class="form-group form-control" name="retypePassword" id="retypePassword"
+                          [(ngModel)]="retypePass" required #retypePassword="ngModel"
+                          style="background-color:white;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                          <!-- <div style="color:red;" *ngIf="!retypePassword.valid ||  !retypePassword.untouched || mismatch">
+                           Password mismatch
+                         </div> -->
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row" *ngIf="!changeSubmit">
+              				 <div class="col-xs-4">
+              						 <button type="button" class="btn-cancel" data-dismiss="modal">Cancel</button>
+              				 </div>
+              				 <div class="col-xs-4 col-xs-offset-4">
+              						 <button type="button" class="btn-next" (click)="changePassword()">Submit</button>
+              				 </div>
+              			 </div>
+                     <div class="row margin-bottom" *ngIf="changeSubmit">
+                       <div class="col-xs-12"><h2>Success</h2></div>
+                     </div>
+                     <div class="row margin-bottom" *ngIf="changeSubmit">
+                       <div class="col-xs-12"><h4>Your password has been changed successfully. Please login again to continue.</h4></div>
+                     </div>
+                     <div class="row" *ngIf="changeSubmit">
+                       <div class="col-xs-4 col-xs-offset-4">
+              						 <button type="button" class="btn-next" data-dismiss="modal">OK</button>
+              				 </div>
+                     </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+               </div>
+
+
+        <div class="col-sm-12 col-md-10 col-md-offset-1 col-lg-10 col-lg-offset-1 no-padding clearfix">
+        	<div class="row clearfix">
+            <app-loader [loading]="loading" *ngIf="loading"></app-loader>
+	        	  <router-outlet></router-outlet>
+		          <app-dashboard *ngIf="flagMicro"></app-dashboard>
+		           <app-dashboard-mobileapp *ngIf="flagMobile"></app-dashboard-mobileapp>
+               <app-dashboard-new-co *ngIf="flagCloud"></app-dashboard-new-co>
+	       </div>
+        </div>
+      </div>
+
+  </div>
+</div>

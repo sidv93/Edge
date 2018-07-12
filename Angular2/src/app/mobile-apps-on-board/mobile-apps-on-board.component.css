@@ -1,0 +1,64 @@
+.msDiv{
+	background-color : #f4f6f6;
+	border: 1px solid cc0066;
+    border-radius: 0px;
+	margin-bottom: 10px;
+	margin-right:10px;
+	height: 184px;
+	width:147px;
+	padding: 20px;
+	float: left;
+	text-align: center;
+}
+/*table, th, td{
+  height: 30px;
+  text-align: center;
+}*/
+.th1{
+	font-weight:normal;
+	background-color:#505151;
+	color:#ffffff;
+  width:50px;
+  text-align: center;
+}
+.th2{
+	font-weight:normal;
+	background-color:#7a7d80;
+	color:#ffffff;
+  width:50px;
+  text-align: center;
+}
+.th3{
+	font-weight:normal;
+	background-color:#707171;
+	color:#ffffff;
+  width:50px;
+  text-align: center;
+}
+.mstable{
+	border: 1px dotted #cccccc;
+	width:600px;
+}
+
+.td1{
+	padding-left:20px;
+	height:36px;
+	width:200px;
+	border:1px dotted #ececec;
+	font-family:Arial;
+	font-size:14px;
+	color:#77013d;
+}
+
+.td2{
+	padding-left:20px;
+	border:1px dotted #ececec;
+	font-family:Arial;
+	font-size:14px;
+	color:#333333;
+}
+.error{
+	color: red;
+	font-size:16px;
+	width:300px;
+}

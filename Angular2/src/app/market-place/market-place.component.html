@@ -1,0 +1,182 @@
+<div class="form-group margin-bottom clearfix">
+        <div class="row margin-bottom clearfix">
+          <div class="col-xs-12 col-sm-12 col-md-8 col-lg-8 clearfix" style="padding-right: 0;">
+                <a class="tabs margin-right" *ngIf="globalServiceObj.marketPlaceView=='viewAll'" id="viewAll" routerLink="/microservicemarketplace" skipLocationChange (click)="setMicroserviceMarketPlaceFlag('viewAll')">View All</a>
+                <a class="link margin-right" *ngIf="globalServiceObj.marketPlaceView!='viewAll'" style="border-bottom:none;" id="viewAll" routerLink="/microservicemarketplace" skipLocationChange (click)="setMicroserviceMarketPlaceFlag('viewAll')">View All</a>
+                <a class="tabs" *ngIf="globalServiceObj.marketPlaceView=='viewSubscriptions'" id="viewSubscriptions" routerLink="/microservicemarketplace" skipLocationChange (click)="setMicroserviceMarketPlaceFlag('viewSubscriptions')" >View Subscriptions</a>
+                <a class="link" *ngIf="globalServiceObj.marketPlaceView!='viewSubscriptions'" style="border-bottom:none;" id="viewSubscriptions" routerLink="/microservicemarketplace" skipLocationChange (click)="setMicroserviceMarketPlaceFlag('viewSubscriptions')" >View Subscriptions</a>
+            </div>
+        </div>
+    </div>
+
+
+<div class="form-group margin-bottom clearfix">
+      <div class="row clearfix">
+          <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 clearfix">
+              <!-- <div class="input-group add-on clearfix">
+                    <input #srchterm class="form-control" placeholder="Search" name="srchterm" id="srch-term" type="text">
+                    <div class="input-group-btn">
+                        <button class="btn btn-default" type="submit" (click)="search(srchterm.value)" style="padding: 10px; font-size: 14pt; border-color: #d9d9d9"><i class="glyphicon glyphicon-search" style="color: #979A9F;"></i></button>
+                    </div>
+              </div> -->
+              <input type="text" class="form-control" name="srchterm" #srchterm  placeholder="Search" (change)="search(srchterm.value)" id="srchterm" style="background-image: url('assets/image/icons/search.png'); background-position: 5px; background-repeat: no-repeat; padding: 10px 30px !important;">
+          </div>
+          <div class="col-xs-12 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-4 col-lg-3 col-lg-offset-6">
+              <div class="form">
+                <select class="form-control" (change)="onChangeEvent()" [(ngModel)]="sort.name" name="selectSort" id="selectSort">
+				<option value="microServiceName">Alphabetic</option>
+                <option value="rating">Most Popular</option>
+				<option value="creditsPerAPICall">Price</option>
+                <option value="releaseDate">Release Date</option>
+                </select>
+                <img class="fa" src="assets/image/icons/arrow.png" >
+              </div>
+          </div>
+        </div>
+</div>
+<app-loader [loading]="loading" *ngIf="loading"></app-loader>
+    <div class="form-group margin-bottom clearfix" *ngIf="servicePresent">
+            <div class="row clearfix">
+                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 margin-bottom clearfix"
+                 *ngFor="let marketPlace of marketP | paginate: {itemsPerPage: initialItems, currentPage:page, id: '1'};
+                  let i = index " style="cursor:pointer" (click)="(marketPlace.onBoardStatus=='Disabled'||marketPlace.onBoardStatus=='disabled')?null:serviceDetail(marketPlace.microServiceName,marketPlace.category)">
+                       <div class="app-box clearfix">
+                           <div id="content" *ngIf="marketPlace.userId==userId">
+                             <img src="assets/image/icons/flag.png">
+                           </div>
+
+                           <div class="small-box clearfix" *ngIf ="marketPlace.icon!=undefined && marketPlace.icon!=null">
+                              <img id="imgAppIcon+{{i}}" style="width: 100%" [src]="'data:image/png;base64,'+marketPlace.icon">
+                            </div>
+
+                             <div class="small-box clearfix" *ngIf ="marketPlace.icon==undefined || marketPlace.icon==null">
+                              <img id="imgAppIcon+{{i}}" style="width: 100%" src="assets/image/images.png">
+                            </div>
+
+                           <div class="box-text clearfix">{{marketPlace.microServiceName}}</div>
+                           <div class="stars" (click)="setMSName(marketPlace.microServiceName, marketPlace.rating)">
+                                <span [ngSwitch]="marketPlace.rating">
+                                   <img *ngSwitchCase="1" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/1-Star.png" />
+                                   <img *ngSwitchCase="2" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/2-Star.png" />
+                                   <img *ngSwitchCase="3" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/3-Star.png" />
+                                   <img *ngSwitchCase="4" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/4-Star.png" />
+                                   <img *ngSwitchCase="5" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/5-Star.png" />
+                                   <img *ngSwitchDefault id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/0-Star.png" />
+                               </span>
+                           </div>
+                           <!-- <div class="modal fade" id="ratingsModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                             <div class="modal-dialog">
+                               <div class="modal-content text-center">
+                                 <div class="clearfix">
+                                   <button type="button" class="close" data-dismiss="modal"
+                                    data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+                                         </div>
+
+                                  <div class="row margin-bottom">
+                                       <div class="col-xs-12"><h3>Ratings</h3></div>
+                                       <div class="col-xs-12 dialogue-font">We are always looking to improve this experience.
+                                       Open the microservice to rate it.
+                                       </div>
+                                   </div>
+                                 <div class="row margin-bottom" >
+                                     <div class="col-xs-12 "><h3>{{MSName}}</h3></div>
+                                   </div>
+
+                                   <div class="row margin-bottom">
+                                     <div class="col-xs-12 dialogue-font">
+                                        Average rating
+                                        <span [ngSwitch]="rating">
+                                           <img *ngSwitchCase="1" style="msleft-margin msbottom-margin" src="assets/image/icons/1-Star.png" />
+                                           <img *ngSwitchCase="2" style="msleft-margin msbottom-margin" src="assets/image/icons/2-Star.png" />
+                                           <img *ngSwitchCase="3" style="msleft-margin msbottom-margin" src="assets/image/icons/3-Star.png" />
+                                           <img *ngSwitchCase="4" style="msleft-margin msbottom-margin" src="assets/image/icons/4-Star.png" />
+                                           <img *ngSwitchCase="5" style="msleft-margin msbottom-margin" src="assets/image/icons/5-Star.png" />
+                                           <img *ngSwitchDefault style="msleft-margin msbottom-margin" src="assets/image/icons/0-Star.png" />
+                                       </span>
+                                     </div>
+                                   </div>
+
+                                   <div class="row margin-bottom">
+                                     <div class="col-md-12 no-padding">
+                                          <label class="form-label" style="text-align: left !important">5 stars </label>
+                                          <img style="msleft-margin msbottom-margin" src="assets/image/icons/5star.png" (click)="getFeedback(5)"/>
+                                          <label class="form-label" style="text-align: left !important">32</label><br>
+                                          <label class="form-label" style="text-align: left !important">4 stars </label>
+                                          <img style="msleft-margin msbottom-margin" src="assets/image/icons/4star.png" (click)="getFeedback(4)" />
+                                          <label class="form-label" style="text-align: left !important">12</label><br>
+                                          <label class="form-label" style="text-align: left !important">3 stars </label>
+                                          <img style="msleft-margin msbottom-margin" src="assets/image/icons/3star.png" (click)="getFeedback(3)"/>
+                                          <label class="form-label" style="text-align: left !important">2</label><br>
+                                          <label class="form-label" style="text-align: left !important">2 stars </label>
+                                          <img style="msleft-margin msbottom-margin" src="assets/image/icons/2star.png" (click)="getFeedback(2)"/>
+                                          <label class="form-label" style="text-align: left !important">65</label><br>
+                                          <label class="form-label" style="text-align: left !important">1 star </label>
+                                          <img style="msleft-margin msbottom-margin" src="assets/image/icons/1star.png" (click)="getFeedback(1)"/>
+                                          <label class="form-label" style="text-align: left !important">65</label><br>
+                                     </div>
+
+                                   </div>
+                                   <div class="row margin-bottom">
+                                     <div class="col-xs-12 dialogue-font">
+                                        Top reviews
+                                     </div>
+                                   </div>
+                                   <div class = "row" *ngIf="feedbackFlag">
+                                   <div class="row margin-bottom" *ngFor="let feed of feedback | paginate: {itemsPerPage: 5, currentPage:p, id: 'feedback'}">
+                                     <div class="row" style="text-align:left;">
+                                       <label  style="text-align: left !important font-weight:bold;">{{feed.username}} </label>
+
+                                       <span [ngSwitch]="feed.rating">
+                                          <img *ngSwitchCase="1" style="msleft-margin msbottom-margin" src="assets/image/icons/1-Star.png" />
+                                          <img *ngSwitchCase="2" style="msleft-margin msbottom-margin" src="assets/image/icons/2-Star.png" />
+                                          <img *ngSwitchCase="3" style="msleft-margin msbottom-margin" src="assets/image/icons/3-Star.png" />
+                                          <img *ngSwitchCase="4" style="msleft-margin msbottom-margin" src="assets/image/icons/4-Star.png" />
+                                          <img *ngSwitchCase="5" style="msleft-margin msbottom-margin" src="assets/image/icons/5-Star.png" />
+                                          <img *ngSwitchDefault style="msleft-margin msbottom-margin" src="assets/image/icons/0-Star.png" />
+                                      </span>
+
+
+                                     </div>
+                                     <div class="row" style="border-style:groove;">
+                                        {{feed.feedback}}
+                                     </div>
+                                   </div>
+                                   <div class="form-group margin-bottom">
+                                       <div class="col-xs-12 col-sm-12 col-md-12">
+                                         <p style="text-align: center;">
+                                           <pagination-controls (pageChange)="p = $event" id="feedback"
+                                               maxSize="5"
+                                               directionLinks="true"
+                                               autoHide="true">
+                                           </pagination-controls>
+                                         </p>
+                                       </div>
+                                   </div>
+                                 </div>
+                                   <div class="row" style="text-align:center;" *ngIf="!feedbackFlag">
+                                      <h4 style="font-color:grey;">No reviews found.</h4>
+                                   </div>
+                               </div>
+                             </div>
+                           </div> -->
+                           <div style="padding: 5px;"><img class="vertical" src="assets/image/icons/user.png"> <span class="box-value">{{marketPlace.noOfUsers}}</span></div>
+            </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div class="form-group margin-bottom" *ngIf="servicePresent && !loading">
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <p style="text-align: center;">
+          <pagination-controls (pageChange)="page = $event" id="1"
+              maxSize="5"
+              directionLinks="true"
+              autoHide="false">
+          </pagination-controls>
+        </p>
+      </div>
+  </div>
+  <div class="form-group margin-bottom clearfix" style="text-align:center;" *ngIf="!servicePresent">
+    <h2 style="font-color:grey;">{{errorMessage}}</h2>
+  </div>

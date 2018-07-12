@@ -1,0 +1,134 @@
+<div class="row" *ngIf="!loading">
+	<div class="col-md-6">
+			<div class="monitor-report">{{this.globalServiceObj.operator}}</div>
+		</div>
+	</div>
+	<app-loader [loading]="loading" *ngIf="loading"></app-loader>
+			  <div class="row margin-bottom clearfix" *ngIf="!loading">
+				  <div class="col-md-6">
+					  <!-- <div class="monitor-report">Average Last 24 hours</div> -->
+				  </div>
+				  <div class="col-md-5 col-md-offset-1 text-right" *ngIf="!detailsError7">
+					  <span class="credits-avialable">${{creditsObj.creditsAvailable}}</span>
+					  <span style="vertical-align: super;">  Available </span>
+				  </div>
+				  <div class="col-md-5 col-md-offset-1 text-right" *ngIf="detailsError7">
+					  <span style="vertical-align: super;">$ Available </span>
+				  </div>
+
+			  </div>
+
+		  <div class="row margin-bottom clearfix" *ngIf="!loading">
+
+			 <div class="col-md-4">
+				  <div class="col-md-12 monitor-box no-padding" style="text-align: center">
+					 <div class="monitor-head">
+						  <div class="monitor-title">Daily CPU Usage</div>
+					  </div>
+					  <div class="monitor-body" *ngIf="!detailsError1">
+							<span><img src="assets/image/icons/latency-icon.png"></span>
+						  {{cloudletUsage.cpuUsage}}%
+					  </div>
+					  <div class="monitor-body" *ngIf="detailsError1">
+							<span><img src="assets/image/icons/latency-icon.png"></span>
+					  </div>
+				  </div>
+			  </div>
+
+			  <div class="col-md-4">
+				  <div class="col-md-12 monitor-box no-padding"  style="text-align: center">
+					 <div class="monitor-head">
+						  <div class="monitor-title">Daily Memory Usage</div>
+					  </div>
+					  <div class="monitor-body" *ngIf="!detailsError1">
+					  <span><img src="assets/image/icons/storage.png"></span>
+						  {{cloudletUsage.memoryUsage}}%
+					  </div>
+					  <div class="monitor-body" *ngIf="detailsError1">
+					  <span><img src="assets/image/icons/storage.png"></span>
+					  </div>
+				  </div>
+			  </div>
+
+			   <div class="col-md-4">
+				  <div class="col-md-12 monitor-box no-padding"  style="text-align: center">
+					 <div class="monitor-head">
+						  <div class="monitor-title">Daily Storage Usage</div>
+					  </div>
+					  <div class="monitor-body" *ngIf="!detailsError1">
+					  <span><img src="assets/image/icons/storage.png"></span>
+						  {{cloudletUsage.storageUsage}}%
+					  </div>
+					  <div class="monitor-body" *ngIf="detailsError1">
+					  <span><img src="assets/image/icons/storage.png"></span>
+					  </div>
+				  </div>
+			  </div>
+		  </div>
+
+		  <div class="row margin-bottom clearfix" *ngIf="!loading">
+		  	<div class="col-md-12">
+              <div class="col-md-12 monitor-box margin-bottom no-padding">
+                  <div class="monitor-head">
+                      <div class="monitor-title letter-spacing">Latency</div>
+                      <div class="measure">Top 3 with the lowest latency last week (In Milliseconds)</div>
+                  </div>
+                  <div class="monitor-body" *ngIf="lineLatencyFlag && divLatencyShow">
+                       <canvas baseChart width="300" height="150"
+                [datasets]="lineChartDataLatency"
+                [labels]="labelArrayLatency"
+                [options]="lineChartOptionsLatency"
+                [colors]="lineChartColorsLatency"
+                [legend]="lineChartLegend"
+                [chartType]="lineChartTypeLatency"></canvas>
+                  </div>
+				  <div class="monitor-body" *ngIf="!lineLatencyFlag && divLatencyShow">
+                       <h2 style="font-color:grey;text-align:center">{{publicConfiguration.emptyString}}</h2>
+                  </div>
+              </div>
+              </div>
+		 </div>
+		 <div class="row margin-bottom clearfix" *ngIf="!loading">
+		 	<div class="col-md-12">
+							<div class="col-md-12 monitor-box margin-bottom no-padding">
+									<div class="monitor-head">
+											<div class="monitor-title letter-spacing">MEMORY</div>
+											<div class="measure">Top 3 with the lowest memory usage last week</div>
+									</div>
+									<div class="monitor-body" *ngIf="lineCPUFlag && divCPUShow">
+											 <canvas baseChart width="300" height="150"
+								[datasets]="lineChartDataCPU"
+								[labels]="labelArrayCPU"
+								[options]="lineChartOptionsCPU"
+								[colors]="lineChartColorsCPU"
+								[legend]="lineChartLegend"
+								[chartType]="lineChartTypeLatency"></canvas>
+									</div>
+				 <div class="monitor-body" *ngIf="!lineCPUFlag && divCPUShow">
+											 <h2 style="font-color:grey;text-align:center">{{publicConfiguration.emptyString}}</h2>
+									</div>
+							</div>
+							</div>
+		</div>
+		<div class="row margin-bottom clearfix" *ngIf="!loading">
+			<div class="col-md-12">
+						<div class="col-md-12 monitor-box margin-bottom no-padding">
+								<div class="monitor-head">
+										<div class="monitor-title letter-spacing">CPU</div>
+										<div class="measure">Top 3 with the lowest CPU usage last week</div>
+								</div>
+								<div class="monitor-body" *ngIf="lineMemoryFlag && divMemoryShow">
+										 <canvas baseChart width="300" height="150"
+							[datasets]="lineChartDataMemory"
+							[labels]="labelArrayMemory"
+							[options]="lineChartOptionsMemory"
+							[colors]="lineChartColorsMemory"
+							[legend]="lineChartLegend"
+							[chartType]="lineChartTypeLatency"></canvas>
+								</div>
+				<div class="monitor-body" *ngIf="!lineMemoryFlag && divMemoryShow">
+										 <h2 style="font-color:grey;text-align:center">{{publicConfiguration.emptyString}}</h2>
+								</div>
+						</div>
+						</div>
+	 </div>

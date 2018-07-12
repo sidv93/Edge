@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<head>
+  <meta charset="utf-8">
+
+  <title>Dashboard, Free HTML5 Admin Template</title>
+  <meta name="keywords" content="" />
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width">
+  <link rel="stylesheet" href="assets/css/templatemo_main.css">
+  <link rel="stylesheet" href="assets/css/main.css">
+  <link rel="stylesheet" href="assets/css/dashboard.css">
+
+  <script type="text/javascript" src="js/jquery.min.js"></script>
+  <script type="text/javascript" src="js/jquery-ui.min.js"></script>
+  <script type="text/javascript" src="main.js"></script>
+<script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script>
+	function setFormField(){
+	var credit=localStorage.getItem('maCredits');
+	var totalCredit=localStorage.getItem('maTotalCredits');
+	if(totalCredit!=null)
+		$("#maDashboardCredits").text(totalCredit-credit);
+	else
+		totalCredit=$("#maDashboardCredits").text();
+	if(credit!=null){
+		localStorage.setItem('maTotalCredits',totalCredit-credit);
+		$("#maDashboardCredits").text(totalCredit-credit);
+		localStorage.removeItem('maCredits');
+	}
+	}
+  </script>
+</head>
+<body onload="setFormField()";>
+	<form class="form-inline">
+          <h1 class="left-top-margin magenta">Dashboard</h1>
+		  <div class="row left-margin">
+			<a style="color: #666666">Dashboard</a>
+		  </div>
+		 <div class="row left-top-margin">
+			<div class="box orange-box">
+				<img src="assets/images/no-of-credits.png">
+				<br/>
+				<p class="box-p-style" style="float: right">
+					<span id="maDashboardCredits" style="float: right;font-size:27px;margin-right:8px">716</span>
+					<br/>
+					<span style="float:right;">$ Available&nbsp;&nbsp;&nbsp;</span>
+				</p>
+			</div>
+			<div class="box green-box">
+				<img src="assets/images/no-of-microservices-icon.png">
+
+				<br/>
+				<p class="box-p-style" style="float: right">
+					<span style="float: right;font-size:27px;">54&nbsp;</span>
+					<br/>
+					<span style="float:right;">MServices used&nbsp;&nbsp;&nbsp;</span>
+				</p>
+			</div>
+			<div class="box yellow-box"><img src="assets/images/avg-usage-icon.png">
+				<br/>
+				<p class="box-p-style" style="float: right">
+					<span style="float: right;font-size:27px;">432&nbsp;</span>
+					<br/>
+					<span style="float:right;">Usage&nbsp;&nbsp;&nbsp;</span>
+				</p>
+			</div>
+			<div class="box blue-box"><img src="assets/images/avg-revenue-icon.png">
+				<br/>
+				<p class="box-p-style" style="float: right">
+					<span style="float: right;font-size:27px;">$2M&nbsp;</span>
+					<br/>
+					<span style="float:right;">Revenue&nbsp;&nbsp;&nbsp;</span>
+				</p>
+			</div>
+			<div class="box purple-box"><img src="assets/images/avg-latency-icon.png">
+				<br/>
+				<p class="box-p-style" style="float: right">
+					<span style="float: right;font-size:27px;">31%&nbsp;</span>
+					<br/>
+					<span style="float:right;">Latency&nbsp;&nbsp;&nbsp;&nbsp;</span>
+			</div>
+		</div>
+
+		<div class="row left-top-margin">
+			<div class="col-xs-7">
+				<div><label class="magenta bold">APP USAGE GRAPH</label></div>
+				<div><img src="assets/images/graph-1.png"></div>
+			</div>
+			<div class="col-xs-5">
+				<div><label class="magenta bold">APP LATENCY GRAPH</label></div>
+				<div><img  src="assets/images/graph-2.png"></div>
+			</div>
+		</div>
+
+		<div class="row left-top-margin">
+			<div class="col-xs-7">
+				<div><label class="magenta bold">TOP MICRO SERVICES</label></div>
+				<div>
+					<table class="table table-striped table-hover table-bordered">
+					<thead>
+						<tr>
+							<th class="th1">MICRO-SERVICES</th>
+							<th class="th2">REGION</th>
+							<th class="th3">$</th>
+						</tr>
+					</thead>
+					 <tbody>
+												<tr>
+							<td class="th1-text-color">TreasureLocator</td>
+							<td>Belgium</td>
+							<td>30</td>
+						</tr>
+
+						<tr>
+							<td class="th1-text-color">OCRService</td>
+							<td>Denmark</td>
+							<td>12</td>
+						</tr>
+
+						<tr>
+							<td class="th1-text-color">TranslationService</td>
+							<td>Finland</td>
+							<td>65</td>
+						</tr>
+
+						<tr>
+							<td class="th1-text-color">DigitClassifier</td>
+							<td>France</td>
+							<td>56</td>
+						</tr>
+
+						<tr>
+							<td class="th1-text-color">ImageClassifier</td>
+							<td>Germany</td>
+							<td>34</td>
+						</tr>
+
+						<tr>
+							<td class="th1-text-color">SecureConnect</td>
+							<td>Italy</td>
+							<td>88</td>
+						</tr>
+						<tr>
+							<td class="th1-text-color">iWriter</td>
+							<td>Netherlands</td>
+							<td>43</td>
+						</tr>
+						<tr>
+							<td class="th1-text-color">SlideComposer</td>
+							<td>Portugal</td>
+							<td>02</td>
+						</tr>
+					</table>
+				</div>
+			</div>
+			<div class="col-xs-5">
+				<div><label class="magenta bold">TOP USER APPS</label></div>
+				<div class="block block1"><img src="assets/images/app1-dash.png" class="block-image"><br/>
+					<p class="p-text">
+					ShareBox<br/>No of Users 2.5 K
+					</p>
+				</div>
+
+				<div class="block block2"><img src="assets/images/app2-dash.png" class="block-image"><br/>
+					<p class="p-text">
+					WPS Office<br/>No of Users 5.5 K
+					</p>
+				</div>
+				<div class="block block3"><img src="assets/images/app3-dash.png" class="block-image"><br/>
+					<p class="p-text">
+					<bold>Quick Sum UP</bold><br/>No of Users 3 K
+					</p>
+				</div>
+				<div class="block block4"><img src="assets/images/app4-dash.png" class="block-image"><br/>
+					<p class="p-text">
+					Network Plus<br/>No of Users 8.9 K
+					</p>
+				</div>
+				<div class="block block5"><img src="assets/images/app5-dash.png" class="block-image"><br/>
+					<p class="p-text">
+					Business Connect<br/>No of Users 1.5 K
+					</p>
+				</div>
+			</div>
+		</div>
+</body>
+</html>

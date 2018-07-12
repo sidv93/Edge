@@ -1,0 +1,113 @@
+  		<div class="form-group margin-bottom clearfix">
+              <div class="row margin-bottom clearfix">
+                  <div class="col-xs-12 col-sm-7 col-md-7 col-lg-8 clearfix">
+                      <a class="tabs margin-right" *ngIf="!myAllApps" id="allApp" routerLink="/mobileApp" skipLocationChange (click)="setAppsFlag('allApps')">All Apps</a>
+                      <a class="link margin-right"  *ngIf="myAllApps" id="allApp" routerLink="/mobileApp" skipLocationChange (click)="setAppsFlag('allApps')">All Apps</a>
+                      <a class="tabs" *ngIf="myAllApps" id="myApp" routerLink="/mobileApp" skipLocationChange (click)="setAppsFlag('myApps')" >My Apps</a>
+                      <a class="link" *ngIf="!myAllApps" id="myApp" routerLink="/mobileApp" skipLocationChange (click)="setAppsFlag('myApps')" >My Apps</a>
+                  </div>
+                  <div class="col-xs-12 col-sm-5 col-md-5 col-lg-4">
+                    <div style="width:300px; color:red;"*ngIf="errorFlag">{{errorMessage}}</div>
+                      <button type="button" class="btn-onboard"  (click)="redirect()">Onboard New App <i class="fa fa-angle-right" aria-hidden="true" style="font-size: 19pt; top: 9px; right: 7px; position: absolute;"></i> </button>
+                  </div>
+              </div>
+          </div>
+
+          <!-- <div   *ngIf="ModalFlag">
+
+	                <app-mobile-apps-on-board> </app-mobile-apps-on-board>
+
+         </div> -->
+
+
+		 <div class="form-group margin-bottom clearfix">
+                  <div class="row clearfix">
+                      <div class="col-xs-6 col-sm-6 col-md-4 col-lg-3 clearfix">
+                          <!-- <div class="input-group add-on clearfix">
+                                <input #srchterm class="form-control" placeholder="Search" name="srchterm" id="srch-term" type="text">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="submit" (click)="search(srchterm.value)" style="padding: 10px; font-size: 15pt; border-color: #d9d9d9"><i class="glyphicon glyphicon-search" style="color: #979A9F;"></i></button>
+                                </div>
+                          </div> -->
+
+                          <input type="text" class="form-control" name="srchterm" id="srchterm" #srchterm  placeholder="Search" (change)="search(srchterm.value)" style="background-image: url('assets/image/icons/search.png'); background-position: 5px; background-repeat: no-repeat; padding: 10px 30px !important;">
+		<!--				  <input type="text" class="form-control" name="srchterm" #srchterm  placeholder="Search" (change)="search(srchterm.value)" style="background-image: url('assets/image/icons/search.png'); background-position: 5px; background-repeat: no-repeat; padding: 10px 30px !important;" *ngIf="myAllApps"> -->
+                      </div>
+
+                      <div class="col-xs-12 col-sm-5 col-sm-offset-1 col-md-4 col-md-offset-4 col-lg-3 col-lg-offset-6">
+                      		<div class="form">
+	                      		<select class="form-control" (change)="onChangeEvent()" [(ngModel)]="sort.name">
+								    <option value="applicationName">Alphabetic</option>
+								    <option value="rating">Most Popular</option>
+								    <option value="releaseDate">Release Date</option>
+								 </select>
+								 <img class="fa" src="assets/image/icons/arrow.png" >
+							 </div>
+                      </div>
+
+                  </div>
+           </div>
+           <app-loader [loading]="loading" *ngIf="loading"></app-loader>
+      		<div class="form-group margin-bottom clearfix" *ngIf="appsPresent">
+                  <div class="row clearfix">
+                      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 margin-bottom clearfix"(click)="(location.onBoardStatus=='Disabled'||location.onBoardStatus=='disabled')?null:appDetail(location.applicationName,location.category)" *ngFor="let location of mobileP | paginate: {itemsPerPage: initialItems, currentPage:page, id: '1'}; let i = index " style="cursor:pointer">
+                             <div class="app-box clearfix">
+                                 <div id="content" *ngIf="location.userId==userId">
+                                   <img src="assets/image/icons/flag.png">
+                                 </div>
+                                 <div class="small-box clearfix" *ngIf ="location.icon!=undefined && location.icon!=null">
+								 	<img id="imgAppIcon+{{i}}" style="width: 100%" [src]="'data:image/png;base64,'+location.icon">
+								 </div>
+								<div class="small-box clearfix" *ngIf ="location.icon==undefined || location.icon==null">
+									<img id="imgAppIcon+{{i}}" style="width: 100%" src="assets/image/images.png">
+								</div>
+                                 <div class="box-text clearfix" title="{{location.applicationName}}">{{location.applicationName}}</div>
+                                 <div class="stars">
+                                      <span [ngSwitch]="location.rating">
+		                                     <img *ngSwitchCase="1" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/1-Star.png" />
+		                                     <img *ngSwitchCase="2" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/2-Star.png" />
+		                                     <img *ngSwitchCase="3" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/3-Star.png" />
+		                                     <img *ngSwitchCase="4" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/4-Star.png" />
+		                                     <img *ngSwitchCase="5" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/5-Star.png" />
+		                                     <img *ngSwitchDefault id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/0-Star.png" />
+                                     </span>
+                                 </div>
+                                 <div style="padding: 5px;"><img class="vertical" src="assets/image/icons/user.png"> <span class="box-value">150</span></div>
+                               <!--   <div class="form-label" *ngIf="myAllApps"><span style="font-weight:bold;">Stage</span> : {{location.stage}}</div>
+                                 <div class="form-label" *ngIf="myAllApps"><span style="font-weight:bold;">Status</span> : {{location.onBoardStatus}}</div>
+                                 -->
+                                        <div class="row status-border" *ngIf="myAllApps">
+                                 	 <div class="col-lg-6 top-padding border-right" >
+                                 	 	 <div class="form-label font-medium no-margin">Stage</div>
+                                 	 	 <div class="status"> {{location.stage}}</div>
+                                 	 </div>
+                                 	 <div class="col-lg-6 top-padding" >
+                                 	 	 <div class="form-label font-medium no-margin">Status</div>
+                                 	 	 <div  class="status"> {{location.onBoardStatus}}</div>
+
+
+                            		 </div>
+                      </div>
+                  </div>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="form-group margin-bottom" *ngIf="appsPresent && !loading">
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
+              <p style="text-align: center;">
+                <pagination-controls (pageChange)="page = $event" id="1"
+                    maxSize="5"
+                    directionLinks="true"
+                    autoHide="false">
+                </pagination-controls>
+              </p>
+            </div>
+        </div>
+
+
+        <div class="form-group margin-bottom clearfix" style="text-align:center;" *ngIf="!appsPresent">
+          <h2 style="font-color:grey;">{{errorMessage}}</h2>
+        </div>

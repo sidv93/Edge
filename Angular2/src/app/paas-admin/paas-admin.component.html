@@ -1,0 +1,76 @@
+
+          <div class="row clearfix">
+               <div class="form-group margin-bottom clearfix">
+                  <div class="row margin-bottom clearfix">
+
+                      <div class="col-xs-12 col-sm-8 col-sm-offset-4 col-md-5 col-md-offset-7 col-lg-4 col-lg-offset-8">
+                          <button type="button" class="btn-onboard"  (click)="redirect()">Onboard New Edge<i class="fa fa-angle-right" aria-hidden="true" style="font-size: 19pt; top: 9px; right: 7px; position: absolute;"></i></button>
+                      </div>
+                      </div>
+                  </div>
+
+
+              <div class="form-group margin-bottom clearfix">
+                  <div class="row clearfix">
+                      <div class="col-xs-6 col-sm-3 col-md-4 col-lg-3 clearfix">
+                          <!-- <div class="input-group add-on clearfix">
+                                <input #srchterm class="form-control" placeholder="Search" name="srch-term" id="srch-term" type="text">
+                                <div class="input-group-btn">
+                                    <button class="btn btn-default" type="submit" (click)="search(srchterm.value)" style="padding: 10px; font-size: 14pt; border-color: #d9d9d9"><i class="glyphicon glyphicon-search" style="color: #979A9F;"></i></button>
+                                </div>
+                          </div> -->
+                          <input type="text" class="form-control" name="srchterm" #srchterm  placeholder="Search" (change)="search(srchterm.value)" style="background-image: url('assets/image/icons/search.png'); background-position: 5px; background-repeat: no-repeat; padding: 10px 30px !important;">
+                      </div>
+                      <div class="col-xs-12 col-sm-4 col-sm-offset-2 col-md-4 col-md-offset-4 col-lg-3 col-lg-offset-6">
+                        <div>
+                            <select  class="form-control" (change)="onChangeEvent()" [(ngModel)]="sort" >
+                             						  <option value="0"  >Select Operator</option>
+	                                                  <option *ngFor="let operator of globalServiceObj.operatorsList">{{operator}}</option>
+                            </select>
+                            <img class="fa" src="assets/image/icons/arrow.png" >
+                        </div>
+                      </div>
+                  </div>
+              </div>
+              <app-loader [loading]="loading" *ngIf="loading"></app-loader>
+              <div class="form-group margin-bottom clearfix" *ngIf="edgePresentFlag">
+                  <div class="row clearfix">
+                      <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 margin-bottom clearfix" (click)="edgeDetail(edges.edgeName)" *ngFor="let edges of allOnboardedEdge | paginate: {itemsPerPage: initialItems, currentPage:page, id: '1'}; let i = index " style="cursor:pointer">
+                             <div class="app-box clearfix">
+
+                                 <div class="small-box clearfix" *ngIf ="edges.icon!=undefined && edges.icon!=null && edges.icon !=''">
+									                           <img id="imgEdgeIcon+{{i}}" style="width: 100%" [src]="'data:image/png;base64,'+edges.icon">
+								                </div>
+
+								 <div class="small-box clearfix" *ngIf ="edges.icon==undefined || edges.icon==null || edges.icon==''">
+									<img id="imgEdgeIcon+{{i}}" style="width: 100%" src="assets/image/images.png">
+								 </div>
+
+                                 <div class="box-text clearfix">{{edges.edgeName}}</div>
+                                 <div class="title-small text-color-fade">
+                                      {{edges.operator}}
+                                 </div>
+                                 <div class="title-small text-color-fade">{{edges.telcoUser}}</div>
+                             </div>
+                      </div>
+
+                  </div>
+              </div>
+          </div>
+
+		  <div class="form-group margin-bottom" *ngIf="edgePresentFlag && !loading">
+
+            <div class="col-xs-12 col-sm-12 col-md-12">
+              <p style="text-align: center;">
+                <pagination-controls (pageChange)="page = $event" id="1"
+                    maxSize="5"
+                    directionLinks="true"
+                    autoHide="false">
+                </pagination-controls>
+              </p>
+            </div>
+        </div>
+
+		 <div class="form-group margin-bottom clearfix" style="text-align:center;" *ngIf="!edgePresentFlag">
+          <h2 style="font-color:grey;">{{errorMessage}}</h2>
+        </div>

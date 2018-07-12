@@ -1,0 +1,218 @@
+
+	<div class="row">
+		<div class="col-xs-12">
+
+				<form name="telcoSignUpForm" id="telcoSignUpForm" #telcoSignUpForm="ngForm" novalidate>
+           <div class="row clearfix">
+
+             <div class="form-group margin-bottom">
+               <div class="row margin-bottom">
+                            <div class="col-md-10 col-md-offset-1">
+                               <h1 class="text-center margin-bottom clearfix">Telco Registration</h1>
+                             </div>
+                 </div>
+               <div class="row margin-bottom">
+                            <div class="col-md-6">
+                              <div class="col-md-12 no-padding">
+                                    <label class="form-label">First Name <span class="highlight2">*</span></label>
+                              </div>
+                              <div class="col-md-12 no-padding">
+                                   <input type="text" class="form-group form-control" name="firstName" id="firstName" [(ngModel)]="telcoSignup.firstName" required #firstName="ngModel">
+                              </div>
+															<div style="width:300px; color:red;" [hidden]="firstName.valid || (firstName.untouched && !telcoSignup.submitted)">FirstName is required</div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="col-md-12 no-padding">
+                                    <label class="form-label">Last Name <span class="highlight2">*</span></label>
+                              </div>
+                              <div class="col-md-12 no-padding">
+                                   <input type="text" class="form-group form-control" name="lastName" id="lastName"  [(ngModel)]="telcoSignup.lastName" required #lastName="ngModel">
+                              </div>
+															<div style="width:300px; color:red;" [hidden]="lastName.valid || (lastName.untouched && !telcoSignup.submitted)">LastName is required</div>
+                            </div>
+                        </div>
+
+                        <div class="row margin-bottom">
+                            <div class="col-md-6">
+                              <div class="col-md-12 no-padding">
+                                    <label class="form-label">Email ID <span class="highlight2">*</span></label>
+                              </div>
+                              <div class="col-md-12 no-padding">
+                                   <input type="text" class="form-control" name="emailId" id="emailId"
+																	 [(ngModel)]="telcoSignup.emailId" required pattern="[^@]+@[^@\.]+\.[a-zA-Z]{2,}"
+																	 #emailId="ngModel" >
+                              </div>
+															<!-- <div style="width:300px; color:red;" [hidden]="emailId.valid || (emailId.untouched && !telcoSignup.submitted)">EmailId is required(e.g.telco@mec.com)</div> -->
+															<div style="color:red;" *ngIf="!emailId.untouched && !telcoSignUpForm.submitted && (telcoSignup.emailId == undefined || telcoSignup.emailId == null || telcoSignup.emailId == '')">Email is required</div>
+ 														 <div style="color:red;" *ngIf="!emailId.valid && emailId.touched && !telcoSignUpForm.submitted && (telcoSignup.emailId != undefined && telcoSignup.emailId != null && telcoSignup.emailId != '')">Email is invalid (e.g. edge@mec.com)</div>
+
+                            </div>
+                            <div class="col-md-6">
+                              <div class="col-md-12 no-padding">
+                                    <label class="form-label">Username <span class="highlight2">*</span></label>
+                              </div>
+                              <div class="col-md-12 no-padding">
+                                   <input type="text" class="form-control" name="username" [(ngModel)]="telcoSignup.username" pattern="^[a-zA-Z]([-a-z0-9A-Z]*[a-z0-9A-Z])?$"
+                                   minlength="5" maxlength="32" required #username="ngModel" style="background-color:white;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                              </div>
+															<!-- <div style="width:300px; color:red;" [hidden]="username.valid || (username.untouched && !telcoSignup.submitted)">{{configuration.requiredUserString}}</div> -->
+															<div style="color:red;" *ngIf="!username.untouched && !telcoSignUpForm.submitted && (telcoSignup.username == undefined || telcoSignup.username == null || telcoSignup.username == '')">Username is required</div>
+ 														 <div style="color:red;" *ngIf="!username.valid && username.touched && !telcoSignUpForm.submitted && (telcoSignup.username != undefined && telcoSignup.username != null && telcoSignup.username != '')">{{configuration.requiredUserString}}</div>
+                            </div>
+                        </div>
+
+                        <div class="row margin-bottom">
+                            <div class="col-md-6">
+                              <div class="col-md-12 no-padding">
+                                    <label class="form-label">Password <span class="highlight2">*</span></label>
+                              </div>
+                              <div class="col-md-12 no-padding">
+                                   <input type="password" class="form-control" name="password" [(ngModel)]="telcoSignup.password" maxlength="20"
+																	 validateEqual="retypePassword" reverse="true" pattern="^.*(?=.{8,})(?=..*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%!*^&+=\.]).*$"
+																	  required #password="ngModel" style="background-color:white;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                              </div>
+															<div style="width:300px; color:red;" [hidden]="password.valid || (password.untouched && !telcoSignup.submitted)">Password is required ( minimum length: 8 characters, maximum length: 20 characters, should contain atleast 1 uppercase character, 1 lowercase character, 1 number and 1 special character )</div>
+                            </div>
+                            <div class="col-md-6">
+                              <div class="col-md-12 no-padding">
+                                    <label class="form-label">Retype Password <span class="highlight2">*</span></label>
+                              </div>
+                              <div class="col-md-12 no-padding">
+                                   <input type="password" class="form-control" name="retypePassword" [(ngModel)]="telcoSignup.retypePassword" validateEqual="password"
+																	 required #retypePassword="ngModel" style="background-color:white;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                              </div>
+															<div style="width:300px; color:red;" [hidden]="retypePassword.valid ||  (retypePassword.untouched && !telcoSignup.submitted)">
+																Password mismatch</div>
+                            </div>
+                        </div>
+
+                        <div class="row margin-bottom">
+                            <div class="col-md-6">
+                                <div class="col-md-12 no-padding">
+                                      <label class="form-label">Company <span class="highlight2">*</span></label>
+                                </div>
+                                <div class="col-md-12 no-padding">
+																	<input type="text" class="form-control" name="companyName" [(ngModel)]="telcoSignup.companyName"
+																	required #companyName="ngModel">
+                                </div>
+																<div style="width:300px; color:red;" [hidden]="companyName.valid || (companyName.untouched && !telcoSignup.submitted)">Company name is required</div>
+                              </div>
+                             <div class="col-md-6">
+                              <div class="col-md-12 no-padding">
+                                    <label class="form-label">Country<span class="highlight2">*</span></label>
+                              </div>
+                              <div class="col-md-12 no-padding">
+
+																<select class="form-control text-grey countries" name="country"  id="country" [(ngModel)]="telcoSignup.country"
+																	required #country="ngModel">
+																	<option selected hidden disabled style="display: none" value = "null">Select country</option>
+																	<option *ngFor="let country of countries" [ngValue] = "country.name">{{country.name}}</option>
+																</select>
+                                <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+																<div style="width:300px; color:red;" [hidden]="country.valid || (country.untouched && !telcoSignup.submitted)">Country is required</div>
+                              </div>
+                            </div>
+                          </div>
+
+                          <!-- <div class="row margin-bottom">
+                            <div class="col-md-6">
+                               <div class="col-md-12 no-padding">
+                                      <label class="form-label">Telco Logo</label>
+                                </div>
+                                <div class="col-md-12 no-padding">
+                                     <div class="input-group clearfix" style="display: block;">
+                                          <div class="col-md-8 no-padding">
+																						<input type="file" class="form-control" value= "Browse" accept="image/*" name="iconName" id ="inp" (change)="onChange($event)">
+																					 <label class="form-label" style="margin: 10px 0 0 0;">Icon Max Dimensions 100 x 100px</label>
+                                          </div>
+                                    </div>
+                               </div>
+                           </div>
+                         </div> -->
+                      </div>
+
+                      <div class="row">
+                         <div class="col-md-6 col-md-offset-3">
+                           <button class="login-btn" type="button"  data-toggle="modal" data-target="#myModal" data-backdrop="static" data-keyboard="false" [hidden]="!telcoSignUpForm.valid" (click)="submitSignUp()">Register</button>
+													 <button class="login-btn" style="cursor:not-allowed;" [hidden]="telcoSignUpForm.valid"
+													 popover="{{configuration.mandatoryMsg}}" [popoverCloseOnClickOutside]="true">
+				    						 			Register
+				  								</button>
+                         </div>
+                     </div>
+
+										 <div id="myModal" class="modal fade" role="dialog" style="background-color:#333333; opacity:1;">
+										 <div class="modal-dialog">
+											 <div  class="modal-content" *ngIf="showSuccessPopUp" >
+												 <!--<div>
+													 <button type="button" class="close" style="padding: 5px 5px 5px 5px;" data-dismiss="modal">&times;</button>
+												 </div>-->
+												 <div class="modal-body" style="height:250px; overflow-y: auto;">
+													 <br/>
+													 <div class="row" *ngIf="showSuccessPopUp">
+														 <div class="col-xs-5"></div>
+														 <div class="col-xs-5" style="padding-left:20px;"><img src="assets/image/icons/confirm-icon.png"/></div>
+														 <div class="col-xs-1"></div>
+													 </div>
+
+													 <!--<div class="row" *ngIf="errorMessage">
+														 <div class="col-xs-6"></div>
+														 <div class="col-xs-5" style="padding-left:5px;"><img src="../images/error-icon.png"/></div>
+														 <div class="col-xs-1"></div>
+													 </div>-->
+
+													 <div class="row" *ngIf="showSuccessPopUp">
+														 <div class="col-xs-4"></div>
+														 <div class="col-xs-4 bold" style="padding-left:5px;font-size:22px;">	Congratulations! </div>
+														 <div class="col-xs-4"></div>
+													 </div>
+													 <br/>
+													 <div class="row" *ngIf="showSuccessPopUp">
+														 <div class="col-xs-3"></div>
+														 <div class="col-xs-9">
+																 Telco user registered successfully.</div>
+													 </div>
+													 <div class="row" *ngIf="showSuccessPopUp">
+														 <div class="col-xs-4"></div>
+														 <div class="col-xs-4"><br/>
+																 <button type="button" id="great" name="great" class="btn-next" data-dismiss="modal">GREAT</button>
+														 </div>
+														 <div class="col-xs-3"></div>
+													 </div>
+												 </div>
+											 </div>
+
+											 <div  *ngIf="errorMessage" class="modal-content" >
+												 <div>
+													 <button type="button" class="close" style="padding: 5px 5px 5px 5px;" data-dismiss="modal">&times;</button>
+												 </div>
+												 <div class="modal-body" style="height:200px; overflow-y: auto;">
+													 <br/>
+													 <div class="row">
+														 <div class="col-xs-6"></div>
+														 <div class="col-xs-5" style="padding-left:5px;"><img src="assets/image/icons/error-icon.png"/></div>
+													 </div>
+													 <br>
+													 <div class="row">
+														 <div class="col-xs-1"></div>
+														 <div class="col-xs-11 bold" style="padding-left:35px; text-align:center; font-size:19px;">{{errorMessage}} </div>
+													 </div>
+													 <br>
+													 <div class="row">
+														 <div class="col-xs-5"></div>
+														 <div class="col-xs-4" style="padding-left:0px;">
+																 <button type="button" id="ok" name="ok" class="btn-next" data-dismiss="modal" >Ok</button>
+														 </div>
+													 </div>
+
+												 </div>
+											 </div>
+
+										 </div>
+									 </div>
+
+             </div>
+				</form>
+
+		</div>
+	</div>

@@ -1,0 +1,13 @@
+{
+	"microservices": [{
+		"microserviceId": "OCRService1",
+		"userId": "markmiller",
+		"rating": 4,
+		"image": "//Pictures/icon01.png"
+	},{
+		"microserviceId": "TranslationService",
+		"userId": "markmiller",
+		"rating": 3,
+		"image": "//Pictures/icon04.png"
+	}]
+}

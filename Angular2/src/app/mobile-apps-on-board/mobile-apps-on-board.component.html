@@ -1,0 +1,2393 @@
+<button id="openModalButton" [hidden]="true" data-toggle="modal"  data-target="#onBoardSteps">Open Modal</button>
+<div class="modal fade no-padding"  tabindex="-1" id="onBoardSteps" role="dialog" style="overflow : auto;">
+	<div class="modal-dialog no-padding" style="width: 100%; height: 100%; margin: 0;">
+	<div class="modal-content no-padding" style="border: none; min-height: 100%;">
+			<div class="modal-body no-padding" >
+
+		<div class="container-fluid no-padding text-left">
+		    <div class="row logo-border">
+				<div class="col-sm-4 col-md-2 no-padding">
+					<div class="col-xs-12 col-md-12 no-padding"><img src="assets/image/logo/edge_logo_black.png"></div>
+				</div>
+		    </div>
+		</div>
+
+       <div class="container" name="DetailsOn" id="DetailsOn" [hidden]="!DetailsOn_Flag ">
+           <form class="form-group form-signin" name="onBoardForm" id="onBoardForm" #onBoardForm="ngForm" novalidate>
+				<div class="margin clearfix">
+					<button type="button" class="close" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+					 data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+                </div>
+
+			  <div class="row margin-large">
+                  <div class="col-md-12">
+                     <h1> Onboard New App</h1>
+                   </div>
+              </div>
+
+              	<div class="row margin-large">
+                		<div class="col-md-12">
+                        <div class="container no-padding">
+                            <div class="row bs-wizard" style="border-bottom:0;">
+                                <div class="col-xs-2 bs-wizard-step active">
+                                    <!-- <div class="text-center bs-wizard-stepnum">Step 1</div> -->
+                                    <div class="progress"><div class="progress-bar"></div></div>
+                                    <a href="javascript:;" class="bs-wizard-dot">1</a>
+                                    <div class="bs-wizard-info text-color">Details</div>
+                                </div>
+
+                                <div class="col-xs-2 bs-wizard-step disabled"><!-- complete -->
+                                    <!-- <div class="text-center bs-wizard-stepnum">Step 2</div> -->
+                                    <div class="progress"><div class="progress-bar"></div></div>
+                                    <a href="javascript:;" class="bs-wizard-dot" style="margin-left: 5px">2</a>
+                                    <div class="bs-wizard-info">Microservices</div>
+                                </div>
+
+                                <div class="col-xs-2 bs-wizard-step disabled"><!-- complete -->
+                                    <!-- <div class="text-center bs-wizard-stepnum">Step 3</div> -->
+                                    <div class="progress"><div class="progress-bar"></div></div>
+                                    <a href="javascript:;" class="bs-wizard-dot">3</a>
+                                    <div class="bs-wizard-info">Configure</div>
+                                </div>
+
+                                <div class="col-xs-2 bs-wizard-step disabled"><!-- active -->
+                                    <!-- <div class="text-center bs-wizard-stepnum">Step 4</div> -->
+                                    <div class="progress"><div class="progress-bar"></div></div>
+                                    <a href="javascript:;" class="bs-wizard-dot">4</a>
+                                    <div class="bs-wizard-info">Review</div>
+                                </div>
+
+                                <div class="col-xs-2 bs-wizard-step disabled"><!-- active -->
+                                    <!-- <div class="text-center bs-wizard-stepnum">Step 4</div> -->
+                                    <div class="progress"><div class="progress-bar"></div></div>
+                                    <a href="javascript:;" class="bs-wizard-dot">5</a>
+                                    <div class="bs-wizard-info">Finalize</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+              	</div>
+
+	             <div class="form-group less-margin">
+	                 <div class="row">
+	                     <div class="col-md-12">
+	                         <div class="col-md-12 no-padding"><span class="title">Lifecycle Stages</span>  <img src="assets/image/icons/more.png" style="margin-left: 10px; vertical-align: top;"></div>
+	                     </div>
+	                 </div>
+	             </div>
+
+
+                  <div class="form-group margin-bottom-large">
+                    	<div class="row">
+                        	<div class="col-md-4">
+                            	<div class="col-md-12 no-padding">
+                                    <label class="form-label">Select a stage*</label>
+                              </div>
+
+                              <div class="col-md-12 no-padding">
+                                     <select class="form-control" [(ngModel)]="mobileAppMetadata.stage" name="stage" id="stage" #stage="ngModel" required>
+                                         <option>Deploy</option>
+                                         <option value="Build">Build</option>
+										<option>Certify</option>
+                                     </select>
+                                     <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+									 <div style="width:300px; color:red;" [hidden]="stage.valid || (stage.untouched )">Stage is required</div>
+                             </div>
+                        	</div>
+                    	</div>
+                   </div>
+
+                   <div class="form-group margin-bottom">
+                     	<div class="row less-margin">
+                          <div class="col-md-12"> <span class="title">General Details</span></div>
+                        </div>
+
+                        <div class="row margin-bottom">
+                          <div class="col-md-4">
+                               <div class="col-md-12 no-padding">
+                                      <label class="form-label">Application Name*</label>
+                                </div>
+
+                                <div class="col-md-12 no-padding">
+                                       <input type="text" class="form-control" [(ngModel)]="mobileAppMetadata.applicationName" (change)="ValidateMobileAppName()"
+																			  name="applicationName" #applicationName="ngModel"  #applicationNameReg="ngModel"
+																				 [disabled]="disableFieldsOnEdit" pattern="^[a-zA-Z]([-a-z0-9A-Z]*[a-z0-9A-Z])?$"
+			                                   maxlength="32"  required>
+									   								 		<div style="width:300px; color:red;" [hidden]="applicationName.valid || (applicationName.untouched )">{{configuration.requiredString}}</div>
+															 					<div style="width:300px; color:red;" *ngIf="duplicateMobAppName && mobileAppMetadata.applicationName !='' ">Name already exists</div>
+                               </div>
+                          </div>
+
+                          <div class="col-md-4">
+                              <div class="col-md-12 no-padding">
+                                    <label class="form-label">Categories*</label>
+                              </div>
+
+                              <div class="col-md-12 no-padding">
+                                    <select class="form-control" [(ngModel)]="mobileAppMetadata.category" name="category" id="category" #category="ngModel" required>
+										<option>Finance</option>
+										<option>Marketing</option>
+                                    </select>
+                                    <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+								    <div style="width:300px; color:red;" [hidden]="category.valid || (category.untouched )">Category is required</div>
+                             </div>
+                         </div>
+                      </div>
+                   </div>
+
+                   <div class="form-group margin-bottom">
+                       <div class="row">
+                          <div class="col-md-4">
+                               <div class="col-md-12 no-padding">
+                                      <label class="form-label">Context Path</label>
+                                </div>
+
+                                <div class="col-md-12 no-padding">
+                                       <input type="text" class="form-control" [(ngModel)]="mobileAppMetadata.contextPath" name="contextPath"   #contextPath="ngModel">
+                               </div>
+                           </div>
+                           <div class="col-md-4">
+                              <div class="col-md-12 no-padding">
+                                     <label class="form-label">Support Document Link</label>
+                               </div>
+
+                               <div class="col-md-12 no-padding">
+                                    <!--  <input type="file" class="form-control" value= "Browse" [(ngModel)]="mobileAppMetadata.documentation" name="documentation" #documentation="ngModel" id="genOwner"> -->
+                                      <input type="text" class="form-control" [(ngModel)]="mobileAppMetadata.documentation" name="documentation"   #documentation="ngModel">
+                              </div>
+                          </div>
+                      </div>
+                   </div>
+
+                   <div class="form-group margin-bottom">
+                     	<div class="row">
+                     	<div class="col-md-4">
+                               <div class="col-md-12 no-padding">
+                                      <label class="form-label">App at Cloud</label>
+                                </div>
+																<div class="col-md-12 no-padding">
+                                  	<input type="text" class="form-control" [(ngModel)]="mobileAppMetadata.appAtCloudUrl" name="appAtCloudUrl"   #appAtCloudUrl="ngModel">
+                               </div>
+                           </div>
+
+                           <div class="col-md-4">
+                              <div class="col-md-12 no-padding">
+                                     <label class="form-label">App Icon</label>
+                               </div>
+
+                               <div class="col-md-12 no-padding">
+                                    <input type="file" class="form-control" value= "Browse" accept="image/*" name="iconName" id ="inp" (change)="onChange($event)">
+                                    <label class="form-label" style="margin: 10px 0 0 0;">Icon Max Dimensions 100 x 100px</label>
+																		<div style="color:grey;">Accepted formats are jpg,png,jpeg,tiff</div>
+																		<div style="width:300px; color:red;" [hidden]="!imageDimensionsFlag">Please select an image of the given dimesions</div>
+																		<div style="width:300px; color:red;" *ngIf="iconFlag">Invalid format</div>
+                              </div>
+                          </div>
+                      </div>
+                   </div>
+
+                   <div class="form-group margin-bottom">
+                     	<div class="row">
+
+                           <div class="col-md-4">
+                               <div class="col-md-12 no-padding">
+                                      <label class="form-label">Countries*</label>
+                                </div>
+
+                                <div class="col-md-12 no-padding">
+																<ss-multiselect-dropdown [texts]="myTexts" [settings]="mySettings" [options]="countries" name="regions" id="regions" #regions="ngModel" required [(ngModel)]="selectedCountries"></ss-multiselect-dropdown>
+                                   <!-- <select multiple class="form-control" style="width:330px;" [(ngModel)]="mobileAppMetadata.regions" name="regions" id="regions" #regions="ngModel" required>
+										<option *ngFor="let country of countries"  [ngValue]="country.name">{{country.name}}</option>
+									</select> -->
+									<!-- <div style="width:300px; color:red;" [hidden]="regions.valid || (regions.untouched )">Country is required</div> -->
+                               </div>
+
+                           </div>
+				 <!-- EdgeCR changes -->
+                           <div class="col-md-4">
+							<div class="col-md-12 no-padding">
+                                     <label class="form-label">Package Type*</label>
+                               </div>
+
+															 <div class="col-md-12 no-padding">
+                                     <select class="form-control" [disabled]="disableFieldsOnEdit" [(ngModel)]="mobileAppMetadata.metadata.appMetadata.deliveryMethod" name="deliveryMethod" id="deliveryMethod" #deliveryMethod="ngModel" required>
+										 										<option value="vm">vm</option>
+										 										<option value="docker">docker</option>
+                                     </select>
+                                     <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+ 								    					 			<div style="width:300px; color:red;" [hidden]="deliveryMethod.valid || (deliveryMethod.untouched )">PackageType is required</div>
+                              </div>
+
+                           </div>
+                      </div>
+                   </div>
+
+                   <div class="form-group margin-bottom">
+                     	<div class="row">
+                   <div class="col-md-8">
+                               <div class="col-md-12 no-padding">
+                                      <label class="form-label">Description</label>
+                                </div>
+
+                                <div class="col-md-12 no-padding">
+                                    <textarea class="form-control" rows="6" id="genDescription" [(ngModel)]="mobileAppMetadata.description" name="description"></textarea>
+                               </div>
+                           </div>
+                      </div>
+                   </div>
+
+
+
+                     <div class="form-group margin-bottom-large">
+                       <div class="row">
+                          <div class="col-md-6">
+                               <div class="col-md-12 no-padding">
+                                      <label class="form-label">Choose*</label>
+                                </div>
+                                <div class="col-md-12 no-padding" *ngIf="disableFieldsOnEdit || disableRadio">
+                                    <div class="col-md-4 no-padding">
+                                        <label class="rad">
+                                            <input type="radio" id="Event" name="applicationType"   disabled [(ngModel)]="chooseCheckBox" value="event" />
+                                            <i></i> <label class="form-label" style="color: #333647;  vertical-align: text-top;">Event Based</label>
+                                        </label>
+                                    </div>
+                                    <div class="col-md-4 no-padding">
+                                        <label class="rad">
+                                            <input type="radio" id="API" name="applicationType"  disabled   [(ngModel)]="chooseCheckBox" value="http" />
+                                            <i></i> <label class="form-label" style="color: #333647; vertical-align: text-top;">HTTP Based</label>
+                                        </label>
+                                    </div>
+																		<div class="col-md-4 no-padding">
+                                        <label class="rad">
+                                            <input type="radio" id="Network" name="applicationType"  disabled   [(ngModel)]="chooseCheckBox" value="network" />
+                                            <i></i> <label class="form-label" style="color: #333647; vertical-align: text-top;">Network Based</label>
+                                        </label>
+                                    </div>
+
+                               </div>
+								 <div class="col-md-12 no-padding" *ngIf="!disableFieldsOnEdit && !disableRadio">
+										 <div class="col-md-4 no-padding">
+												 <label class="rad">
+														 <input type="radio" id="Event" name="applicationType"    [(ngModel)]="chooseCheckBox" value="event" />
+														 <i></i> <label class="form-label" style="color: #333647;  vertical-align: text-top;">Event Based</label>
+												 </label>
+										 </div>
+										 <div class="col-md-4 no-padding">
+												 <label class="rad">
+														 <input type="radio" id="API" name="applicationType"     [(ngModel)]="chooseCheckBox" value="http" />
+														 <i></i> <label class="form-label" style="color: #333647; vertical-align: text-top;">HTTP Based</label>
+												 </label>
+										 </div>
+										 <div class="col-md-4 no-padding">
+												 <label class="rad">
+														 <input type="radio" id="Network" name="applicationType"     [(ngModel)]="chooseCheckBox" value="network" />
+														 <i></i> <label class="form-label" style="color: #333647; vertical-align: text-top;">Network Based</label>
+												 </label>
+										 </div>
+
+								</div>
+                           </div>
+                      </div>
+                   </div>
+
+                   <div class="form-group margin-bottom-large">
+                       <div class="row">
+                           <div class="col-md-2">
+														 <button type="button" class="btn-cancel" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+															data-backdrop="static" data-keyboard="false" >Cancel</button>
+                           </div>
+
+                           <div class="col-md-2 col-md-offset-6">
+                                 <!-- <button type="button" class="btn-back">Back</button> -->
+                           </div>
+
+                           <div class="col-md-2">
+                                 <button type="button" class="btn-next" name="next1" id="next1" (click)="addServiceFromMarketPlace()" [hidden]="!onBoardForm.valid || iconFlag || duplicateMobAppName || imageDimensionsFlag">Next</button>
+																 <button class="btn-next" style="cursor:not-allowed;" [hidden]="onBoardForm.valid && !duplicateMobAppName && !imageDimensionsFlag && !iconFlag"
+              									 popover="{{configuration.mandatoryMsg}}" [popoverCloseOnClickOutside]="true">
+                  						 			Next
+                								</button>
+                           </div>
+                      </div>
+                   </div>
+
+                </form>
+            </div>
+
+	<!--
+
+		Following Code will handle second part of App Onboarding (Micro Services)
+	-->
+
+		<div class="container" name="MicroServices" id="MicroServices" [hidden]="!Microservice_Flag">
+          <form class="form-group" name="microserviceForm" id="microserviceForm" #microserviceForm="ngForm" novalidate>
+				<div class="margin clearfix">
+					<button type="button" class="close" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+					 data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+                </div>
+
+				<div class="row margin-large">
+		                 <div class="col-md-12">
+		                    <h1> Onboard New App</h1>
+		                  </div>
+		             </div>
+
+              	 <div class="row margin-large">
+                   <div class="col-md-12">
+                      <div class="container no-padding">
+                          <div class="row bs-wizard" style="border-bottom:0;">
+                              <div class="col-xs-2 bs-wizard-step complete">
+                                  <!-- <div class="text-center bs-wizard-stepnum">Step 1</div> -->
+                                  <div class="progress"><div class="progress-bar"></div></div>
+                                  <a href="javascript:;" class="bs-wizard-dot">1</a>
+                                  <div class="bs-wizard-info text-color">Details</div>
+                              </div>
+
+                              <div class="col-xs-2 bs-wizard-step active"><!-- complete -->
+                                  <!-- <div class="text-center bs-wizard-stepnum">Step 2</div> -->
+                                  <div class="progress"><div class="progress-bar" style="width: 18%"></div></div>
+                                  <a href="javascript:;" class="bs-wizard-dot" style="margin-left: 5px;">2</a>
+                                  <div class="bs-wizard-info text-color">Microservices</div>
+                              </div>
+
+                              <div class="col-xs-2 bs-wizard-step disabled"><!-- complete -->
+                                  <!-- <div class="text-center bs-wizard-stepnum">Step 3</div> -->
+                                  <div class="progress"><div class="progress-bar"></div></div>
+                                  <a href="javascript:;" class="bs-wizard-dot">3</a>
+                                  <div class="bs-wizard-info">Configure</div>
+                              </div>
+
+                              <div class="col-xs-2 bs-wizard-step disabled"><!-- active -->
+                                  <!-- <div class="text-center bs-wizard-stepnum">Step 4</div> -->
+                                  <div class="progress"><div class="progress-bar"></div></div>
+                                  <a href="javascript:;" class="bs-wizard-dot">4</a>
+                                  <div class="bs-wizard-info">Review</div>
+                              </div>
+
+                              <div class="col-xs-2 bs-wizard-step disabled"><!-- active -->
+                                  <!-- <div class="text-center bs-wizard-stepnum">Step 4</div> -->
+                                  <div class="progress"><div class="progress-bar"></div></div>
+                                  <a href="javascript:;" class="bs-wizard-dot">5</a>
+                                  <div class="bs-wizard-info">Finalize</div>
+                              </div>
+                          </div>
+                      </div>
+                    </div>
+              	</div>
+
+           <div class="form-group margin-bottom-large">
+            <div class="row">
+	            <div class="col-xs-12 col-sm-12 col-md-12">
+                  <a class="app-tabs" (click)="selectTab(3)" *ngIf="tab==3" >Add Microservices*</a>
+                  <a class="app-link" (click)="selectTab(3)" *ngIf="tab!=3" style="border-bottom:none">Add Microservices*</a>
+
+                  <a class="app-tabs" (click)="selectTab(2)" *ngIf="tab==2" >All Microservices</a>
+                    <a class="app-link" (click)="selectTab(2)" *ngIf="tab!=2" style="border-bottom:none">All Microservices</a>
+
+                  <a class="app-tabs"  *ngIf="tab==1" >My Microservices</a>
+                  <a class="app-link"  *ngIf="tab!=1"  style="border-bottom:none">My Microservices</a>
+               </div>
+
+            </div>
+         </div>
+
+<!--
+            Following Code will handle Add Microservice  part of App Onboarding (Micro Services)
+            -->
+
+    <div class="form-group margin-bottom clearfix" [hidden]="tab==2 || tab==1">
+			<div class="row margin-bottom">
+				<div class="col-md-12 font-bold">*Add atleast 1 new microservice to your app</div>
+			</div>
+     <div class="row" *ngFor="let microservice of microserviceMetadata; let i = index">
+       <div class="col-md-11">
+         <div class="panel-group" id="accordion{{i}}" role="tablist" aria-multiselectable="true">
+           <div class="panel panel-default" style="border: 1px solid #d9d9d9 !important;">
+
+             <div class="panel-heading main-panel" role="tab" id="headingOne{{i}}">
+               <h4 class="panel-title">
+                 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{i}}" aria-expanded="true" aria-controls="collapseOne">
+                   <!-- <i class="more-less glyphicon glyphicon-plus" style="color: #fff;"></i> -->
+                   Microservice Title
+                 </a>
+               </h4>
+             </div>
+
+             <div  id="collapseOne{{i}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
+               <div class="panel-body">
+                 <div class="row less-margin">
+                   		<div class="col-md-12 title">Microservice Details</div>
+                 </div>
+
+                 <div class="row margin-bottom">
+                   <div class="col-md-5">
+                     <div class="col-md-12 no-padding">
+                       	<label class="form-label">Microservice Name*</label>
+                     </div>
+
+                     <div class="col-md-12 no-padding">
+                       <input type="text" name="microserviceName{{i}}" #microserviceName="ngModel" pattern="^[a-zA-Z]([-a-z0-9A-Z]*[a-z0-9A-Z])?$"
+						maxlength="32"
+                       [(ngModel)]="microservice.microServiceName" class="form-control" required (change)="validateMSName()">
+
+                        <div style="width:300px; color:red;" *ngIf="MSVal[microservice.microServiceName]">Name is duplicate</div>
+                        <div style="width:300px; color:red;" [hidden]="microserviceName.valid || (microserviceName.untouched)">{{configuration.requiredString}}</div>
+                     </div>
+                   </div>
+
+                   <div class="col-md-5">
+                     <div class="col-md-12 no-padding">
+                       <label class="form-label">Tenancy*</label>
+                     </div>
+
+                     <div class="col-md-12 no-padding">
+                       <select class="form-control" name="tenancy{{i}}" required disabled>
+	                      <option value="single">single</option>
+	                      <option>Multiple</option>
+                      </select>
+                      <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+                     </div>
+
+                   </div>
+                 </div>
+
+                 <div class="row" *ngFor="let workload of microservice.metadata.workloads; let j = index;">
+                   <div class="col-md-11 left-padding">
+                     <div class="panel-group" id="accordion2{{i}}{{j}}" role="tablist" aria-multiselectable="true">
+                       <div class="panel panel-default no-border">
+
+                         <div class="sub-panel-heading sub-panel" role="tab" id="componentHeadingOne{{i}}{{j}}">
+                           <h4 class="sub-panel-title">
+                             <a role="button" data-toggle="collapse" data-parent="#accordion2" href="#componentOne{{i}}{{j}}" aria-expanded="true" aria-controls="componentOne">
+                               Component {{j+1}}
+                             </a>
+                           </h4>
+                         </div>
+
+                        <div id="componentOne{{i}}{{j}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="componentHeadingOne">
+                           <div class="sub-panel-body">
+                             <div class="row margin-bottom">
+                               <div class="col-md-5 no-left-padding">
+                                 <div class="col-md-12 no-left-padding">
+                                   <label class="form-label">Component Name*</label>
+                                 </div>
+
+                                 <div class="col-md-12 no-left-padding">
+                                   <input id="workLoadName{{i}}{{j}}" name="workLoadName{{i}}{{j}}" type="text" (change)="validateWorkloadName(microservice)"
+																	 pattern="^[a-zA-Z]([-a-z0-9A-Z]*[a-z0-9A-Z])?$"
+	 																maxlength="32"    [(ngModel)]="workload.workloadName" class="form-control" #workloadName="ngModel" required>
+                                    <div style="width:300px; color:red;" *ngIf="workloadVal[workload.workloadName]">Name is duplicate</div>
+                                    <div style="width:300px; color:red;" [hidden]="workloadName.valid || (workloadName.untouched)">{{configuration.requiredString}}</div>
+                                 </div>
+                               </div>
+ 												<!-- EdgeCR changes -->
+							 									 <div class="col-md-5 no-left-padding">
+							 										 <div class="col-md-12 no-padding">
+							 											 <label class="form-label">Package type*</label>
+							 										 </div>
+
+							 										 <div class="col-md-12 no-padding">
+							 											 <select class="form-control" id="deliveryMethod{{i}}{{j}}"
+																		  name="deliveryMethod{{i}}{{j}}"
+																		 required disabled>
+							 											 <option>{{mobileAppMetadata.metadata.appMetadata.deliveryMethod}}</option>
+							 											</select>
+							 											<i class="fa"><img src="assets/image/icons/arrow.png"></i>
+							 										 </div>
+
+							 									 </div>
+                             </div>
+
+                             <div class="row margin-bottom">
+
+                              <div class="col-md-5 no-left-padding">
+                                <div class="col-md-12 no-left-padding">
+                                  <label class="form-label">Hosted At*</label>
+                                </div>
+
+                                <div class="col-md-12 no-left-padding">
+                                  <select class="form-control" id="Repository{{i}}{{j}}" (change) = "validateRepository(microservice)"
+																	  #respository="ngModel" name="Repository{{i}}{{j}}" [(ngModel)]="workload.source.sourceRepo" required>
+	                                     <option disabled [value]="defaultOption">Select Source Repository</option>
+	                                     <option>Git</option>
+	                                     <option>SVN</option>
+                                  </select>
+                                  <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+                                  <div style="width:300px; color:red;" *ngIf="repositoryVal[workload.source.sourceRepo]">Repository is invalid </div>
+                                </div>
+                              </div>
+                               <div class="col-md-5 no-left-padding">
+                                 <div class="col-md-12 no-left-padding">
+                                   <label class="form-label">Path*</label>
+                                 </div>
+                                 <div class="col-md-12 no-left-padding">
+                                   <input type="text" id="Path{{i}}{{j}}" required #path="ngModel"
+                                    name="Path{{i}}{{j}}" [(ngModel)]="workload.source.path" class="form-control">
+                                    <div style="width:300px; color:red;" [hidden]="path.valid || (path.untouched)">Path is required</div>
+                                 </div>
+                               </div>
+                             </div>
+
+                             <div class="row margin-bottom-large">
+                               <div class="col-md-5 no-left-padding">
+                                 <div class="col-md-12 no-left-padding">
+                                   <label class="form-label">Username*</label>
+                                 </div>
+                                 <div class="col-md-12 no-left-padding">
+                                   <input type="text" id="userName{{i}}{{j}}" name="userName{{i}}{{j}}"
+                                   #username="ngModel" required
+                                   [(ngModel)]="workload.source.username" class="form-control" style="background-color:white;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                                   <div style="width:300px; color:red;" [hidden]="username.valid || (username.untouched)">Username is required</div>
+                                 </div>
+                               </div>
+
+                               <div class="col-md-5 no-left-padding">
+                                 <div class="col-md-12 no-left-padding">
+                                   <label class="form-label">Password*</label>
+                                 </div>
+                                 <div class="col-md-12 no-left-padding">
+                                   <input type="password" id="password{{i}}{{j}}" name="password{{i}}{{j}}"
+                                   #password="ngModel" required
+                                    [(ngModel)]="workload.source.password" class="form-control" style="background-color:white;" autocomplete="off" readonly onfocus="this.removeAttribute('readonly');">
+                                   <div style="width:300px; color:red;" [hidden]="password.valid || (password.untouched)">Password is required</div>
+                                 </div>
+                               </div>
+                             </div>
+
+                             <div class="row less-margin">                     <!--     Network Binding - Start   -->
+                               <div class="col-md-12 no-left-padding title">Network Binding</div>
+                             </div>
+
+                             <div class="form-group" *ngFor="let network of workload.networks;let k=index">
+	                             <div class="row margin-bottom">
+	                               <div class="col-md-5 no-left-padding">
+	                                 <div class="col-md-12 no-left-padding">
+	                                   <label class="form-label">Network Binding Name<span *ngIf="chooseCheckBox=='network'">*</span></label>
+	                                 </div>
+	                                 <div class="col-md-12 no-left-padding" *ngIf="chooseCheckBox=='network'">
+	                                   <input type="text" id="NetworkName{{i}}{{j}}{{k}}"
+	                                   name="NetworkName{{i}}{{j}}{{k}}" #name="ngModel" required (change)="validate(microservice)"
+	                                   [(ngModel)]="network.name" class="form-control">
+	                                   <div style="width:300px; color:red;" [hidden]="name.valid || (name.untouched)">Name is required</div>
+	                                   <div style="width:300px; color:red;"  *ngIf="this.networkVal[network.name]">Name is duplicate</div>
+	                                 </div>
+																	 <div class="col-md-12 no-left-padding" *ngIf="chooseCheckBox=='http' || chooseCheckBox=='event'">
+	                                   <input type="text" id="NetworkName{{i}}{{j}}{{k}}"
+	                                   name="NetworkName{{i}}{{j}}{{k}}" #name="ngModel" (change)="validate(microservice)"
+	                                   [(ngModel)]="network.name" class="form-control">
+	                                   <!-- <div style="width:300px; color:red;" [hidden]="name.valid || (name.untouched)">Name is required</div> -->
+	                                   <div style="width:300px; color:red;"  *ngIf="this.networkVal[network.name]">Name is duplicate</div>
+																		 <div style="width:300px; color:red;"  *ngIf="mandatoryBind && network.name=='' && network.port!=''">Binding name is mandatory if port is entered</div>
+	                                 </div>
+	                                </div>
+
+
+	                               <div class="col-md-5 no-left-padding">
+	                                 <div class="col-md-12 no-left-padding">
+	                                   <label class="form-label">Protocol<span *ngIf="chooseCheckBox=='network'">*</span></label>
+	                                 </div>
+	                                 <div class="col-md-12 no-left-padding">
+	                                   <select class="form-control" id="protocol{{k}}" name="protocol{{i}}{{j}}{{k}}" [(ngModel)]="network.protocol" required #protocol="ngModel">
+	                                     <option >tcp</option>
+	                                     <option>udp</option>
+	                                   </select>
+	                                   <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+	                                   <!-- <div style="width:300px; color:red;" [hidden]="protocol.valid || (protocol.untouched)">Protocol is required</div> -->
+	                                 </div>
+	                               </div>
+
+	                               <div class="col-md-2 no-left-padding margin-top"  *ngIf="k > count">
+	                               	 <span (click)="deleteNetwork(microservice,workload,network)"><img src="assets/image/icons/delete.png" height="35px" ></span>
+	                                 <!-- <span class="glyphicon glyphicon-remove-circle" (click)="deleteNetwork(microservice,workload,network)" style="font-size: 25pt; margin-top: 30px;"></span> -->
+	                               </div>
+	                              </div>
+
+	                              <div class="row less-margin">
+		                               <div class="col-md-5 no-left-padding">
+		                                 <div class="col-md-12 no-left-padding">
+		                                   <label class="form-label">Port<span *ngIf="chooseCheckBox=='network'">*</span></label>
+		                                 </div>
+
+		                                 <div class="col-md-12 no-left-padding" *ngIf="chooseCheckBox=='network'">
+		                                   <input type="text" [(ngModel)]="network.port" id="port{{i}}{{j}}{{k}}" name="port{{i}}{{j}}{{k}}" required #port="ngModel" pattern="[0-9]*" (change)="validatePort(microservice)" class="form-control">
+		                                   <!-- <div style="width:300px; color:red;" [hidden]="port.valid || (port.untouched)">Port is required and must be numeric.</div> -->
+																			 <div style="width:300px; color:red;" *ngIf="port.touched  && (network.port==undefined || network.port=='')">Port is required.</div>
+                                   		 <div style="width:300px; color:red;" *ngIf="!port.valid && port.dirty && (network.port!='')">Enter a numeric value.</div>
+		                                   <div style="width:300px; color:red;" *ngIf="networkPortVal[network.port]">Port is duplicate</div>
+		                                 </div>
+																		 <div class="col-md-12 no-left-padding" *ngIf="chooseCheckBox=='http' || chooseCheckBox=='event'">
+		                                   <input type="text" [(ngModel)]="network.port" id="port{{i}}{{j}}{{k}}" name="port{{i}}{{j}}{{k}}" #port="ngModel" pattern="[0-9]*" (change)="validatePort(microservice)" class="form-control">
+		                                   <!-- <div style="width:300px; color:red;" [hidden]="port.valid || (port.untouched)">Port is required and must be numeric.</div> -->
+																			 <!-- <div style="width:300px; color:red;" *ngIf="port.touched  && (network.port==undefined || network.port=='')">Port is required.</div> -->
+                                   		 <div style="width:300px; color:red;" *ngIf="!port.valid && port.dirty && (network.port!='')">Enter a numeric value.</div>
+		                                   <div style="width:300px; color:red;" *ngIf="networkPortVal[network.port]">Port is duplicate</div>
+																			 <div style="width:300px; color:red;"  *ngIf="mandatoryPort && (network.port=='' || network.port==null || network.port==undefined) && network.name!=''">Port is mandatory if Binding name is entered</div>
+		                                 </div>
+		                               </div>
+
+		                               <div class="col-md-5 no-left-padding">
+		                                 <div class="col-md-12 no-left-padding">
+		                                   <label class="form-label">Allow as External</label>
+		                                 </div>
+
+		                                 <div class="col-md-12 no-left-padding">
+		                                   <!-- <input type="checkbox" class="checkbox" [(ngModel)]="network.external"  name="external{{i}}{{j}}{{k}}"> -->
+
+											     <input id="external{{i}}{{j}}{{k}}"  type="checkbox" [(ngModel)]="network.external"  name="external{{i}}{{j}}{{k}}">
+												 <label class="checkbox" for="external{{i}}{{j}}{{k}}"></label>
+
+		                                 </div>
+		                               </div>
+	                           </div>
+                           </div>
+
+                           <div class="row margin-bottom-large">
+                              <div class="col-md-5 no-left-padding">
+                                <div class="col-md-12 no-left-padding">
+                                  <span (click)="addNetwork(workload)"><img src="assets/image/icons/plus.png" ></span>
+                                  <!-- <i class="fa fa-plus-square" (click)="addNetwork(workload)" aria-hidden="true" style="font-size: 20pt;"></i> -->
+                                  <span class="add-more">Add Another Network</span>
+                                </div>
+                              </div>
+                           </div>                           <!--     Network Binding - End   -->
+
+
+                             <div *ngIf="chooseCheckBox=='event'">
+	                             <div class="row less-margin" >             <!--     Event Part - Start   -->
+	                               <div class="col-md-12 no-left-padding title">Event Name</div>
+	                             </div>
+
+	                            <div class="form-group" *ngFor="let event of workload.events;let k=index">
+		                             <div class="row less-margin">
+		                               <div class="col-md-5 no-left-padding">
+			                                 <div class="col-md-12 no-left-padding">
+			                                   <label class="form-label">Event Name*</label>
+			                                 </div>
+
+			                                 <div class="col-md-12 no-left-padding">
+			                                   <input type="text" name="eventName{{i}}{{j}}{{k}}" [(ngModel)]="event.name" class="form-control" required #eventName="ngModel" (change)="validateEventName(microservice)">
+			                                   <div style="width:300px; color:red;" *ngIf="eventVal[event.name]">Name is duplicate</div>
+			                                   <div style="width:300px; color:red;" [hidden]="eventName.valid || (eventName.untouched)">Event Name is required</div>
+			                                  </div>
+		                                </div>
+
+		                               <div class="col-md-5 no-left-padding">
+			                                 <div class="col-md-12 no-left-padding">
+			                                   <label class="form-label">Reference*</label>
+			                                 </div>
+
+			                                 <div class="col-md-12 no-left-padding">
+			                                   <input type="text" name="reference{{i}}{{j}}{{k}}" #reference="ngModel" required [(ngModel)]="event.fn" class="form-control">
+			                                   <div style="width:300px; color:red;" [hidden]="reference.valid || (reference.untouched)">Event Reference is required </div>
+			                                 </div>
+		                               </div>
+
+		                               <div class="col-md-2 no-left-padding margin-top" *ngIf="k>count">
+		                               <span (click)="deleteEvent(microservice,workload,event)"><img src="assets/image/icons/delete.png" height="35px" ></span>
+		                                 <!-- <span class="glyphicon glyphicon-remove-circle" (click)="deleteEvent(microservice,workload,event)" style="font-size: 25pt; margin-top: 30px;"></span> -->
+		                               </div>
+		                           </div>
+
+		                           <div class="row less-margin">
+		                               <div class="col-md-5 no-left-padding">
+		                                 <div class="col-md-12 no-left-padding">
+		                                   <label class="form-label">Allow as External</label>
+		                                 </div>
+		                                 <div class="col-md-12 no-left-padding">
+		                                   <!-- <input type="checkbox" class="checkbox" name="externalEvent{{i}}{{j}}{{k}}" [(ngModel)]="event.external"> -->
+
+		                                   <input id="externalEvent{{i}}{{j}}{{k}}"  type="checkbox" name="externalEvent{{i}}{{j}}{{k}}" [(ngModel)]="event.external">
+										   <label class="checkbox" for="externalEvent{{i}}{{j}}{{k}}"></label>
+
+		                                 </div>
+		                               </div>
+		                             </div>
+		                     </div>
+                             <div class="row margin-bottom-large">
+                               <div class="col-md-5 no-left-padding">
+                                 <div class="col-md-12 no-left-padding">
+                                   <span (click)="addEvent(workload)"><img src="assets/image/icons/plus.png" ></span>
+                                   <!-- <i class="fa fa-plus-square" (click)="addEvent(workload)" aria-hidden="true" style="font-size: 20pt;"></i> -->
+                                   <span class="add-more">Add Another Event End Point</span>
+                                 </div>
+                               </div>
+                             </div>
+                           </div>                        <!--     Event Part - End   -->
+
+
+                           										 <!-- API Part starts here -->
+                           <div *ngIf="chooseCheckBox=='http'">
+	                            <div class="row less-margin" >
+	                              <div class="col-md-12 no-left-padding title">HTTP</div>
+	                            </div>
+
+	                            <div class="row margin-bottom" >
+	                              <div class="col-md-5 no-left-padding">
+	                                <div class="col-md-12 no-left-padding">
+	                                  <label class="form-label">Port*</label>
+	                                </div>
+	                                <div class="col-md-12 no-left-padding">
+	                                  <input type="text" name="apiPort{{i}}{{j}}"
+	                                  [(ngModel)]="workload.httpApis.port" class="form-control" required #apiPort="ngModel" pattern="[0-9]*">
+	                                  <!-- <div style="width:300px; color:red;" [hidden]="apiPort.valid || (apiPort.untouched)">Port is required and must be numeric.</div> -->
+																		<div style="width:300px; color:red;" *ngIf="apiPort.touched  && (workload.httpApis.port==undefined || workload.httpApis.port=='')">Port is required.</div>
+                                   	<div style="width:300px; color:red;" *ngIf="!apiPort.valid && apiPort.dirty && (workload.httpApis.port!='')">Enter a numeric value.</div>
+	                                </div>
+	                              </div>
+	                            </div>
+
+                              <div class="form-group" *ngFor="let endpnt of workload.httpApis.endpoints; let k=index">
+	                              <div class="row less-margin" >
+
+																	<div class="col-md-5 no-left-padding">
+	                                <div class="col-md-12 no-left-padding">
+	                                    <label class="form-label">HTTP Name*</label>
+	                                </div>
+
+	                              <div class="col-md-12 no-left-padding">
+	                                         <input type="text" name="APIName{{i}}{{j}}{{k}}" [(ngModel)]="endpnt.name"
+																					 class="form-control" required #apiName="ngModel" (change)="validateAPI(microservice)">
+	                                         <div style="width:300px; color:red;" *ngIf="apiNameVal[endpnt.name]">Name is duplicate</div>
+	                                         <div style="width:300px; color:red;" [hidden]="apiName.valid || (apiName.untouched)">HTTP Name is required</div>
+	                                  </div>
+																	</div>
+		                              <div class="col-md-5 no-left-padding">
+			                                <div class="col-md-12 no-left-padding">
+			                                  <label class="form-label">Context Path*</label>
+			                                </div>
+
+			                                <div class="col-md-12 no-left-padding">
+			                                  <input type="text" name="contextPath{{i}}{{j}}{{k}}"
+			                                  #contextPath="ngModel" required (change)="validateAPIName(microservice)"
+			                                  [(ngModel)]="endpnt.fn" class="form-control">
+			                                  <div style="width:300px; color:red;" [hidden]="contextPath.valid || (contextPath.untouched)">
+			                                    Context Path is required
+			                                  </div>
+			                                  <div style="width:300px; color:red;" *ngIf="apiVal[endpnt.fn]">Path is duplicate</div>
+			                                </div>
+		                              </div>
+		                              </div>
+
+	                              <div class="row less-margin">
+	                              <div class="col-md-5 no-left-padding">
+		                                <div class="col-md-12 no-left-padding">
+		                                  <label class="form-label">Allow as External</label>
+		                                </div>
+		                                <div class="col-md-12 no-left-padding">
+		                                  <!-- <input type="checkbox" class="checkbox" name="externalAPI{{i}}{{j}}{{k}}" [(ngModel)]="endpnt.external"> -->
+
+		                                  	<input id="externalAPI{{i}}{{j}}{{k}}"  type="checkbox" name="externalAPI{{i}}{{j}}{{k}}" [(ngModel)]="endpnt.external">
+											<label class="checkbox" for="externalAPI{{i}}{{j}}{{k}}"></label>
+
+		                                </div>
+                                  </div>
+
+	                              <div class="col-md-2 no-left-padding margin-top" *ngIf="k>count">
+	                              	<span (click)="deleteAPI(microservice,workload,endpnt)"><img src="assets/image/icons/delete.png" height="35px" ></span>
+	                                <!-- <span class="glyphicon glyphicon-remove-circle" (click)="deleteAPI(microservice,workload,endpnt)" style="font-size: 25pt; margin-top: 30px;"></span> -->
+	                              </div>
+	                           </div>
+                            </div>
+
+                            <div class="row margin-bottom-large">
+                              <div class="col-md-5 no-left-padding">
+                                <div class="col-md-12 no-left-padding">
+                                  <span (click)="addAPI(workload)"  ><img src="assets/image/icons/plus.png" ></span>
+                                  <!-- <i class="fa fa-plus-square" (click)="addAPI(workload)" aria-hidden="true" style="font-size: 20pt;"></i> -->
+                                  <span class="add-more">Add Another HTTP End Point</span>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                             				<!-- API Part ends here -->
+
+
+                           							  <!--     Resource Profile - Start   -->
+
+                             <div class="row less-margin">
+                               <div class="col-md-12 no-left-padding title">Resource Profile</div>
+                             </div>
+                             <div class="form-group" *ngFor="let resource of workload.resources; let k = index">
+	                             <div class="row margin-bottom">
+		                               <div class="col-md-5 no-left-padding">
+		                                 <div class="col-md-12 no-left-padding">
+		                                   <label class="form-label">Profile Name*</label>
+		                                 </div>
+		                                 <div class="col-md-12 no-left-padding">
+		                                   <input type="text" id="profile{{i}}{{j}}{{k}}" name="profile{{i}}{{j}}{{k}}" [(ngModel)]="resource.name"#profileName="ngModel" (change)="validateResName(microservice)" required class="form-control">
+	  	                                     <div style="width:300px; color:red;" [hidden]="profileName.valid || (profileName.untouched)">Name is required</div>
+		                                     <div style="width:300px; color:red;" *ngIf="resourceVal[resource.name]">Name is duplicate</div>
+		                                 </div>
+		                               </div>
+
+		                               <div class="col-md-5 no-left-padding">
+		                                 <div class="col-md-12 no-left-padding">
+		                                   <label class="form-label">Virtual CPU Quanta*</label>
+		                                 </div>
+		                                 <div class="col-md-12 no-left-padding">
+		                                   <input type="text" id="cpu{{i}}{{j}}{{k}}" name="cpu{{i}}{{j}}{{k}}" required #cpu="ngModel" pattern="[0-9]*" [(ngModel)]="resource.cpu" class="form-control">
+		                                   <!-- <div style="width:300px; color:red;" [hidden]="cpu.valid || (cpu.untouched)">CPU is required and must be numeric.</div> -->
+																			 <div style="width:300px; color:red;" *ngIf="cpu.touched  && (resource.cpu==undefined || resource.cpu=='')">Virtual CPU Quanta is required.</div>
+                                   		 <div style="width:300px; color:red;" *ngIf="!cpu.valid && cpu.dirty && (resource.cpu!='')">Enter a numeric value.</div>
+		                                 </div>
+		                               </div>
+
+		                               <div class="col-md-2 no-left-padding margin-top" *ngIf="k>count">
+		                                  <span (click)="deleteResource(microservice,workload,resource)"><img src="assets/image/icons/delete.png" height="35px" ></span>
+		                                <!--  <span class="glyphicon glyphicon-remove-circle" (click)="deleteResource(microservice,workload,resource)" style="font-size: 25pt; margin-top: 30px;"></span> -->
+		                               </div>
+		                        </div>
+
+		                        <div class="row margin-bottom">
+	                               <div class="col-md-5 no-left-padding">
+	                                 <div class="col-md-12 no-left-padding">
+	                                   <label class="form-label">Block Storage in GB*</label>
+	                                 </div>
+	                                 <div class="col-md-12 no-left-padding">
+	                                   <input type="text" id="GB{{i}}{{j}}{{k}}" name="GB{{i}}{{j}}{{k}}" required #memory="ngModel" pattern="[0-9]*" [(ngModel)]="resource.memory"  class="form-control">
+	                                   <!-- <div style="width:300px; color:red;" [hidden]="memory.valid || (memory.untouched)">Memory is required and must be numeric.</div> -->
+																		 <div style="width:300px; color:red;" *ngIf="memory.touched  && (resource.memory==undefined || resource.memory=='')">Block Storage is required.</div>
+                                   	 <div style="width:300px; color:red;" *ngIf="!memory.valid && memory.dirty && (resource.memory!='')">Enter a numeric value.</div>
+	                                 </div>
+	                               </div>
+
+	                               <div class="col-md-5 no-left-padding">
+	                                 <div class="col-md-12 no-left-padding">
+	                                   <label class="form-label">KV Storage in GB*</label>
+	                                 </div>
+	                                 <div class="col-md-12 no-left-padding">
+	                                   <input type="text" id="KV{{i}}{{j}}{{k}}" name="KV{{i}}{{j}}{{k}}" required #storage="ngModel"
+	                                  [(ngModel)]="resource.storage" pattern="[0-9]*"  class="form-control">
+	                                  <!-- <div style="width:300px; color:red;" [hidden]="storage.valid || (storage.untouched)">Storage is required and must be numeric.</div> -->
+																		<div style="width:300px; color:red;" *ngIf="storage.touched  && (resource.storage==undefined || resource.storage=='')">KV Storage is required.</div>
+                                   <div style="width:300px; color:red;" *ngIf="!storage.valid && storage.dirty && (resource.storage!='')">Enter a numeric value.</div>
+	                                 </div>
+	                               </div>
+							 </div>
+
+							 <div class="row less-margin">
+	                               <div class="col-md-5 no-left-padding">
+	                                 <div class="col-md-12 no-left-padding">
+	                                   <label class="form-label">Bandwidth in GB*</label>
+	                                 </div>
+	                                 <div class="col-md-12 no-left-padding">
+	                                   <input type="text" id="bandwidth{{i}}{{j}}{{k}}" name="bandwidth{{i}}{{j}}{{k}}" pattern="[0-9]*" required #bandwidth="ngModel"
+	                                  [(ngModel)]="resource.bandwidth"  class="form-control">
+	                                  <!-- <div style="width:300px; color:red;" [hidden]="bandwidth.valid || (bandwidth.untouched)">Bandwidth is required and must be numeric.</div> -->
+																		<div style="width:300px; color:red;" *ngIf="bandwidth.touched  && (resource.bandwidth==undefined || resource.bandwidth=='')">Bandwidth is required.</div>
+                                   	<div style="width:300px; color:red;" *ngIf="!bandwidth.valid && bandwidth.dirty && (resource.bandwidth!='')">Enter a numeric value.</div>
+	                                 </div>
+	                               </div>
+	                          </div>
+                       </div>
+
+                          <div class="row margin-bottom-large">
+                            <div class="col-md-5 no-left-padding">
+                              <div class="col-md-12 no-left-padding">
+                                <span (click)="addProfile(workload)" ><img src="assets/image/icons/plus.png" ></span>
+                                <!-- <i class="fa fa-plus-square" aria-hidden="true" (click)="addProfile(workload)" style="font-size: 20pt;"></i> -->
+                                <span class="add-more">Add Another Resource Profile</span>
+                              </div>
+                            </div>
+                          </div>
+                                                     <!--     Resource Profile - End   -->
+                     </div>
+                   </div>
+                 </div>
+               </div>
+             </div>
+
+             <div class="col-md-1 no-left-padding" *ngIf="j>count">
+             	 	<span (click)="deleteWorkload(microservice,workload)"><img src="assets/image/icons/delete.png" height="35px" ></span>
+              <!--  <span class="glyphicon glyphicon-remove-circle" (click)="deleteWorkload(microservice,workload)"  style="font-size: 25pt;"></span> -->
+             </div>
+           </div>
+
+           <div class="row margin-bottom">
+             <div class="col-md-3">
+               <div class="col-md-12">
+                 <button class="btn-add-component" (click)="OnDone(microservice)">Add Another Component</button>
+               </div>
+             </div>
+           </div>
+         </div>
+       </div>
+     </div>
+   </div>
+ </div>
+
+	 <div class="col-md-1">
+	 	 <span (click)="deleteMicroService(microservice)" ><img src="assets/image/icons/delete.png" height="35px" ></span>
+	   <!-- <span class="glyphicon glyphicon-remove-circle" (click)="deleteMicroService(microservice)" style="font-size: 25pt;"></span> -->
+	 </div>
+  </div>
+  <div class="row margin-bottom">
+    <div class="col-md-3">
+      <div class="col-md-12 no-padding">
+        <button class="btn-add-microservice" (click)="OnComplete()">Add Another Microservice</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!--End here -->
+
+                 <div class="form-group margin-bottom-large" *ngIf="tab==2 && mobileOnBrd.length>0">
+                     <div class="row">
+                             <div class="col-xs-6 col-sm-3 col-md-4 margin-bottom" *ngFor="let myServices of mobileOnBrd | paginate: {itemsPerPage: initialItems, currentPage:page, id: '1'}; let i = index ">
+                    <!--            <span>
+									<img *ngIf="myServices.status == 'pending'" id="statusPending+{{i}}" src="assets/images/status_on-going.png" />
+								    <img *ngIf="myServices.status == 'success'" id="statusSuccess+{{i}}" src="assets/images/status_success.png" />
+									<img *ngIf="myServices.status == 'failure'" id="statusFailure+{{i}}" src="assets/images/status_error.png" />
+								</span>
+					-->
+									<div class="app-box full-width clearfix">
+                                        <div class="col-md-12 border-padding">
+                                            <div class="col-md-4 no-padding">
+                                                <div class="small-box img"> <img id="imgMsIcon+ {{i}}" style="width: 100%" [src]="'data:image/png;base64,'+myServices.icon"> </div>
+                                            </div>
+                                            <div class="col-md-8" style="padding-right: 0;">
+                                                <div class="title-small align-padding" title="{{myServices.microServiceName}}">{{myServices.microServiceName}}</div>
+                                                <div class="align-padding">
+												   <span [ngSwitch]="myServices.rating">
+													<img *ngSwitchCase="1" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/1-Star.png" />
+													<img *ngSwitchCase="2" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/2-Star.png" />
+													<img *ngSwitchCase="3" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/3-Star.png" />
+													<img *ngSwitchCase="4" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/4-Star.png" />
+													<img *ngSwitchCase="5" id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/5-Star.png" />
+													<img *ngSwitchDefault id="imgMs2p1+{{i}}" style="msleft-margin msbottom-margin" src="assets/image/icons/0-Star.png" />
+												  </span>
+
+                      							</div>
+                                                <div style="text-align: left; padding-left: 10px; "><i class="fa fa-user-o" aria-hidden="true"></i> <span class="box-value">{{myServices.noOfUsers}}</span></div>
+                                          </div>
+                                     </div>
+                                     <div class="col-md-12 features">
+                                         <div class="col-md-6">
+                                             <div class="col-md-12 top-padding">Shared</div>
+                                             <div class="col-md-12 top-padding">
+                                                 <!-- <input type="checkbox" class="checkbox" id="check+{{i}}" name="check+{{i}}" (click)="uniquCheck(i,'check','Downcheck')" [(ngModel)]="checkboxes[i]"> -->
+
+			                                        <input type="checkbox" id="check+{{i}}" name="check+{{i}}" (click)="uniquCheck(i,'check','Downcheck')" [(ngModel)]="checkboxes[i]">
+													<label class="checkbox" for="check+{{i}}">
+			                                              <span class="credits">$</span>
+														  <span class="offer">{{myServices.creditsPerAPICall}}</span>
+													</label>
+
+<!--
+												  <span class="offer">{{myServices.creditsPerAPICall}}</span>
+												  <span class="credits">Credits</span> -->
+                                             </div>
+                                         </div>
+                                         <div class="col-md-6">
+                                              <div class="col-md-12 top-padding">Download</div>
+                                              <div class="col-md-12 top-padding" *ngIf="myServices.downloadable">
+												  <!-- <input type="checkbox" class="checkbox" id="Downcheck+{{i}}" name="Downcheck+{{i}}" (click)="uniquCheck(i,'Downcheck','check')" [(ngModel)]="downCheckSelected[i]"> -->
+
+												  <input type="checkbox" id="Downcheck+{{i}}" name="Downcheck+{{i}}" (click)="uniquCheck(i,'Downcheck','check')" [(ngModel)]="downCheckSelected[i]">
+												  <label class="checkbox" for="Downcheck+{{i}}">
+												 		 <span class="credits">$</span>
+														 <span class="offer">{{myServices.creditsForDownload}}</span>
+												   </label>
+
+
+												  <!-- <span class="offer">{{myServices.creditsForDownload}}</span>
+												  <span class="credits">Credits</span> -->
+											  </div>
+											  <div class="col-md-12 top-padding" *ngIf="!myServices.downloadable">
+												  <span class="not-avialable">Not Available</span>
+											  </div>
+                                         </div>
+                                     </div>
+                                 </div>
+                            </div>
+                  </div>
+              </div>
+
+              <div class="form-group margin-bottom-large">
+	            <div class="row">
+	               <div class="col-md-2">
+									 <button type="button" class="btn-cancel" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+										data-backdrop="static" data-keyboard="false" >Cancel</button>
+	               </div>
+	               <div class="col-md-2 col-md-offset-6">
+	                  <button type="button" class="btn-back" name="back2" id="back2" (click)="displayPage1()">Back</button>
+	               </div>
+	               <div class="col-md-2">
+	                  <button type="button" class="btn-next" name="next2"
+	                    *ngIf="microserviceForm.valid && (microserviceMetadata[0].microServiceName!=null) &&
+	                    ((chooseCheckBox=='http' && !apiCheck && !apiNameCheck && apiNameCheckVis && apiCheckVis) ||
+											(chooseCheckBox=='event' && !eventCheck && eventCheckVis) ||
+											(chooseCheckBox=='network' && !networkPortCheck && !networkCheck && networkPortCheckVis && networkCheckVis))
+											 && !workloadCheck
+	                    && !MSCheck  && !resourceCheck && !respositoryCheck  && workloadCheckVis
+											 && MSCheckVis  && resourceCheckVis && respositoryCheckVis"
+											id="next2" (click)="showPublish()" >Next</button>
+											<button class="btn-next" style="cursor:not-allowed;" *ngIf="!microserviceForm.valid || (microserviceMetadata[0].microServiceName==null) ||
+	                    ((chooseCheckBox=='http' && apiCheck && apiNameCheck && !apiCheckVis && !apiNameCheckVis) ||
+											(chooseCheckBox=='event' && eventCheck && !eventCheckVis) ||
+											(chooseCheckBox=='network' && networkPortCheck && networkCheck && !networkPortCheckVis && !networkCheckVis))  || workloadCheck
+	                    || MSCheck || eventCheck || resourceCheck || respositoryCheck || !workloadCheckVis
+											|| !MSCheckVis || !resourceCheckVis || !respositoryCheckVis"
+							       popover="{{configuration.mandatoryMsg}}" [popoverCloseOnClickOutside]="true">
+							          Next
+							      </button>
+	               </div>
+	            </div>
+         </div>
+        </form>
+    </div>
+
+
+			<!--start of exposed page -->
+
+					<div class="container" name="MicroServices" id="MicroServices" *ngIf="Configuration_Flag">
+						<div class="margin clearfix">
+							<button type="button" class="close" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+							 data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+                		</div>
+
+                		<div class="row margin-large">
+			                  <div class="col-md-12">
+			                     <h1> {{mobileAppMetadata.applicationName}} Onboarding</h1>
+			                   </div>
+			              </div>
+
+							<!-- <h1 class="margin-bottom"> {{mobileAppMetadata.applicationName}} Onboarding</h1> -->
+
+							<div class="row margin-large">
+                <div class="col-md-12">
+                    <div class="container no-padding">
+                        <div class="row bs-wizard" style="border-bottom:0;">
+                            <div class="col-xs-2 bs-wizard-step complete">
+                                <!-- <div class="text-center bs-wizard-stepnum">Step 1</div> -->
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="javascript:;" class="bs-wizard-dot">1</a>
+                                <div class="bs-wizard-info text-color">Details</div>
+                            </div>
+
+                            <div class="col-xs-2 bs-wizard-step complete"><!-- complete -->
+                                <!-- <div class="text-center bs-wizard-stepnum">Step 2</div> -->
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="javascript:;" class="bs-wizard-dot" style="margin-left: 5px;">2</a>
+                                <div class="bs-wizard-info text-color">Microservices</div>
+                            </div>
+
+                            <div class="col-xs-2 bs-wizard-step active"><!-- complete -->
+                                <!-- <div class="text-center bs-wizard-stepnum">Step 3</div> -->
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="javascript:;" class="bs-wizard-dot">3</a>
+                                <div class="bs-wizard-info text-color">Configure</div>
+                            </div>
+
+                            <div class="col-xs-2 bs-wizard-step disabled"><!-- active -->
+                                <!-- <div class="text-center bs-wizard-stepnum">Step 4</div> -->
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="javascript:;" class="bs-wizard-dot">4</a>
+                                <div class="bs-wizard-info">Review</div>
+                            </div>
+
+                            <div class="col-xs-2 bs-wizard-step disabled"><!-- active -->
+                                <!-- <div class="text-center bs-wizard-stepnum">Step 4</div> -->
+                                <div class="progress"><div class="progress-bar"></div></div>
+                                <a href="javascript:;" class="bs-wizard-dot">5</a>
+                                <div class="bs-wizard-info">Finalize</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+				<form class="form-group form-signin" name="configureForm" id="configureForm" #configureForm="ngForm" novalidate>
+
+							<!--start of iterating over all microservices  -->
+
+				<div *ngFor="let microservice of mobileAppMetadata.metadata.appMetadata.microservices; let i = index">
+
+            						<!-- start of microservice name panel group -->
+            	<div class="row">
+            		<div class="col-md-10">
+
+
+				<div *ngIf="microservice.microServiceName!=undefined" class="panel-group" id="accordion{{i}}" role="tablist" aria-multiselectable="true">
+					 <div class="panel panel-default">
+
+						 <div class="panel-heading black-panel" role="tab" id="headingOne{{i}}">
+							 <h4 class="panel-title">
+								 <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{i}}" aria-expanded="true" aria-controls="collapseOne" style="font-family: OpenSans; font-size: 14pt; color: #fff;">
+									{{microservice.microServiceName}}
+								 </a>
+							 </h4>
+						 </div>
+
+      					<div id="collapseOne{{i}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="componentHeadingOne">
+	        				<div class="sub-panel-body">
+
+	              <!--start of microservices loop added by user -->
+
+			                  <div  *ngFor="let microserviceMetadataloop of mobileAppMetadata.metadata.microserviceMetadata; let j = index">
+
+			       <!--if microservice is added by user -->
+			                    <div *ngIf="microservice.microServiceName == microserviceMetadataloop.microServiceName">
+
+			     <!--start of component loop on microservices added by user -->
+			                  <div *ngFor="let component of mobileAppMetadata.metadata.microserviceMetadata[j].metadata.workloads; let k = index">
+
+			                    <!--start of component panel -->
+
+			                    <!--  <div class="panel-group" id="accordion{{j}}{{k}}" role="tablist" aria-multiselectable="true">
+	                     			<div class="panel panel-default no-border"> -->
+
+                     					<!-- <div class="sub-panel-heading sub-panel" role="tab" id="componentHeading2">
+                   							<h4 class="panel-title">
+                   								<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{j}}{{k}}" aria-expanded="true" aria-controls="componentOne" style="font-family: OpenSans; font-size: 14pt; color: #fff;"> -->
+                   									<div class="row margin-medium">
+								                        <div class="col-md-12 no-left-padding title-component">
+								                        {{component.workloadName}}
+								                        </div>
+								                    </div>
+                   								<!-- </a>
+                   							</h4>
+                     					</div> -->
+
+                    			 		<!-- <div id="collapseOne{{j}}{{k}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="componentHeading2">
+	                     					<div class="panel-body panel-padding"> -->
+												 <div class="row margin-bottom">
+													   <div class="col-md-4 no-left-padding">
+														   <div class="col-md-12 no-left-padding">
+																 <label class="form-label">Resource Profile*</label>
+														   </div>
+
+														   <div class="col-md-12 no-left-padding">
+															   <select class="form-control" #resource2=ngModel
+									                                 name="res{{j}}{{k}}" [(ngModel)]="resourceProfiles[j][k]"
+									                                 (change)="exposedResource($event.target, j,k,mobileAppMetadata.metadata.microserviceMetadata[j].microServiceName,component.workloadName)">
+																				<option selected hidden disabled style="display: none" value = "null">Select resource profile</option>
+																 				<option *ngFor="let resource of mobileAppMetadata.metadata.microserviceMetadata[j].metadata.workloads[k].resources"    [ngValue] = "resource">{{resource.name}}</option>
+															   </select>
+															   <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+																 <div style="width:300px; color:red;" [hidden]="resource2.valid || (resource2.untouched )">Resource Profile is required</div>
+                                 							  <div style="width:300px; color:red;" *ngIf="result[j][k] && clicked"> Resource Profile is required</div>
+														  </div>
+													  </div>
+												 </div>
+
+													 <div class="row margin-bottom">
+														  <div class="col-md-9 no-left-padding">
+			<!-- start of Network Bind table-->
+															   <div class="table-responsive margin-bottom" *ngIf="mobileAppMetadata.metadata.microserviceMetadata[j].metadata.external.networks.length > 0">
+																   <table class="table table-configure">
+																	   <thead style="background-color: #D8D8D8;">
+																		   <tr>
+																			   <th  style="width: 40%;">Net Binding Name</th>
+																			   <th style="width: 20%;">Expose</th>
+																			   <th>Associate With</th>
+																		   </tr>
+																	  </thead>
+																	   <tbody>
+																		   <tr id="{{m}}" *ngFor="let networks of mobileAppMetadata.metadata.microserviceMetadata[j].metadata.workloads[k].networks; let m=index">
+
+																			   <td *ngIf="networks.external == true">{{networks.name}}</td>
+
+																			   <td *ngIf="networks.external == true">
+											                                         <!-- <input type="checkbox" class="checkbox" class="app-checkbox"  (change)="exposedNetworkChecked($event,networks.name,mobileAppMetadata.metadata.microserviceMetadata[j].microServiceName)"> -->
+
+											                                          <input id="networkUser{{networks.name}}{{m}}"  type="checkbox"   (change)="exposedNetworkChecked($event,networks.name,mobileAppMetadata.metadata.microserviceMetadata[j].microServiceName,m)">
+																					 <label class="checkbox" for="networkUser{{networks.name}}{{m}}"></label>
+
+																            	</td>
+
+																			    <td *ngIf="networks.external == true">
+																				   <select id="{{networkSelect}}{{networks.name}}{{m}}" multiple class="form-control"  name="exposedN" #exposedN [ngModel]="exposedN" (change)="exposedNetworkValues(m,$event.target,networks.name,mobileAppMetadata.metadata.microserviceMetadata[j].microServiceName)" style="height: 70px !important;">
+												                                         <option>app@client</option>
+												                                         <ng-container *ngFor="let microServiceName of mobileAppMetadata.metadata.appMetadata.microservices;">
+												                                       		    <option *ngIf="microServiceName.microServiceName!=microservice.microServiceName" [ngValue]="microServiceName.microServiceName">
+												                                           		{{microServiceName.microServiceName}}
+												                                         </option>
+												                                        </ng-container>
+												                                        <option>CIDR</option>
+																				   </select>
+																					 <input id="{{netName}}{{microservice.microServiceName}}{{networks.name}}{{m}}" type="text" class="form-control hide" placeholder="Enter CIDR value"  style="margin-top: 10px;" (change)="cidrValue(networks.name,$event.target)"/>
+																			    </td>
+																		   </tr>
+																	   </tbody>
+																   </table>
+															  </div>			<!-- end of Network Bind table-->
+
+
+	                          <!-- start of if applicationtype is event -->
+
+	                              <!--start of events table -->
+															  <div class="table-responsive margin-bottom" *ngIf="mobileAppMetadata.metadata.appMetadata.applicationType == 'event'
+																&& mobileAppMetadata.metadata.microserviceMetadata[j].metadata.external.events.length > 0">
+																  <table class="table table-configure">
+																	  <thead style="background-color: #d8d8d8;">
+																		  <tr>
+																			  <th style="width: 40%;">Event Name</th>
+																			  <th style="width: 20%;">Expose</th>
+																			  <th>Associate With</th>
+																		  </tr>
+																	 </thead>
+																	  <tbody>
+																		  <tr id="{{n}}" *ngFor="let events of mobileAppMetadata.metadata.microserviceMetadata[j].metadata.workloads[k].events;let n=index">
+																			  <td *ngIf="events.external == true">{{events.name}}</td>
+
+																			  <td *ngIf="events.external == true">
+										                                          <!-- <input type="checkbox" class="checkbox" class="app-checkbox"  (change)="exposedEventChecked($event,events.name,mobileAppMetadata.metadata.microserviceMetadata[j].microServiceName)"> -->
+
+										                                          <input id="eventUser{{events.name}}{{n}}"  type="checkbox"  (change)="exposedEventChecked($event,events.name,mobileAppMetadata.metadata.microserviceMetadata[j].microServiceName,n)">
+																				  <label class="checkbox" for="eventUser{{events.name}}{{n}}"></label>
+
+										                                      </td>
+
+																			  <td *ngIf="events.external == true">
+																				  <select id="{{eventSelect}}{{events.name}}{{n}}" multiple class="form-control" name="exposedE" #exposedN [ngModel]="exposedE"
+												                                        (change)="exposedEventValues(n,$event.target,events.name,mobileAppMetadata.metadata.microserviceMetadata[j].microServiceName,m)"   style="height: 70px !important;">
+												                                        <option>app@client</option>
+												                                        <ng-container *ngFor="let microServiceName of mobileAppMetadata.metadata.appMetadata.microservices;">
+													                                        <option *ngIf="microServiceName.microServiceName!=microservice.microServiceName" [ngValue]="microServiceName.microServiceName">
+													                                          {{microServiceName.microServiceName}}
+													                                        </option>
+												                                       </ng-container>
+												                                       <option>CIDR</option>
+																				  </select>
+																					<input id="{{eventName}}{{microservice.microServiceName}}{{events.name}}{{n}}" type="text"  class="form-control hide" placeholder="Enter CIDR value"  style="margin-top: 10px;" (change)="cidrEventValue(events.name,$event.target)"/>
+																			  </td>
+																		  </tr>
+																	  </tbody>
+																  </table>
+															 </div><!-- end of events table -->
+
+
+	                          <!-- start of if applicationtype is API -->
+
+	                         					 <div *ngIf="mobileAppMetadata.metadata.appMetadata.applicationType == 'http' &&
+																		 mobileAppMetadata.metadata.microserviceMetadata[j].metadata.external.httpApis.length > 0">
+	                          <!--start of httpapis table -->
+													  <div class="table-responsive margin-bottom">
+														  <table class="table table-configure">
+															  <thead style="background-color: #d8d8d8;">
+																  <tr>
+																	  <th style="width: 40%;">HTTP Name</th>
+																	  <th style="width: 20%;">Expose</th>
+																	  <th>Associate With</th>
+																  </tr>
+															 </thead>
+															  <tbody>
+																  <tr id="{{t}}"*ngFor="let apis of mobileAppMetadata.metadata.microserviceMetadata[j].metadata.workloads[k].httpApis.endpoints;let t=index">
+																	  <td *ngIf="apis.external == true">{{apis.name}}</td>
+
+																	  <td *ngIf="apis.external == true">
+								                                          <!-- <input type="checkbox" class="checkbox" class="app-checkbox"
+								                                          (change)="exposedApiChecked($event,apis.name,mobileAppMetadata.metadata.microserviceMetadata[j].microServiceName)"> -->
+
+								                                          <input id="apiUser{{apis.name}}{{t}}"  type="checkbox" (change)="exposedApiChecked($event,apis.name,mobileAppMetadata.metadata.microserviceMetadata[j].microServiceName,t)">
+																		  <label class="checkbox" for="apiUser{{apis.name}}{{t}}"> </label>
+
+								                                      </td>
+
+																	  <td *ngIf="apis.external == true">
+																		  <select id="{{apiSelect}}{{apis.name}}{{t}}" multiple class="form-control"
+		                                        name="exposedA" #exposedN [ngModel]="exposedA"
+		                                        (change)="exposedApiValues(t,$event.target,apis.name,mobileAppMetadata.metadata.microserviceMetadata[j].microServiceName)"   style="height: 70px !important;">
+			                                        <option>app@client</option>
+			                                        <ng-container *ngFor="let microServiceName of mobileAppMetadata.metadata.appMetadata.microservices;">
+			                                        <option *ngIf="microServiceName.microServiceName!=microservice.microServiceName" [ngValue]="microServiceName.microServiceName">
+			                                          {{microServiceName.microServiceName}}
+			                                        </option>
+			                                       </ng-container>
+			                                       <option>CIDR</option>
+																		  </select>
+																			<input id="{{apiName}}{{microservice.microServiceName}}{{apis.name}}{{t}}" type="text"  class="form-control hide" placeholder="Enter CIDR value"  style="margin-top: 10px;" (change)="cidrApiValue(apis.name,$event.target)"/>
+																	  </td>
+																  </tr>
+															  </tbody>
+														  </table>
+													 </div>		<!-- end of httpapis table -->
+	                         					 </div>		<!-- end of if applicationtype is API -->
+
+											</div>
+										 </div>
+	                      			  <!--  </div> -->		<!-- end of new added panel -->
+
+									 <!-- </div> -->
+								 <!-- </div> -->		<!--end of component panel -->
+	                   		  <!-- </div> -->			<!--end of component loop on microservices added by user -->
+	                      </div> 			<!--end of if microservice is added by user -->
+	                   </div>			<!--end of microservice loop added by user-->
+	                </div>
+
+
+	               <!--start of microservices loop added from marketplace -->
+	                   <div *ngFor="let mobileOnBrdloop of mobileOnBrd; let j = index">
+
+	                 <!--if microservice is added from marketplace -->
+	                     <div *ngIf="microservice.microServiceName == mobileOnBrdloop.microServiceName">
+
+	               <!--start of component loop on added from marketplace -->
+	                   <div *ngFor="let component of mobileOnBrd[j].metadata.workloads; let k = index">
+
+	                      <!-- <div class="panel-group" id="accordion{{j}}{{k}}" role="tablist" aria-multiselectable="true">
+	                          <div class="panel panel-default no-border"> -->
+<!--                    					<div class="sub-panel-heading sub-panel" role="tab" id="componentHeading2">
+               							<h4 class="panel-title">
+           									<a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseExposed{{j}}{{k}}" aria-expanded="true" aria-controls="componentOne" style="font-family: OpenSans; font-size: 14pt; color: #fff;"> -->
+           											<div class="row margin-medium">
+								                        <div class="col-md-12 no-left-padding title-component">
+								                       		 {{component.workloadName}}
+								                        </div>
+								                    </div>
+
+           									<!-- </a>
+               							</h4>
+                  					</div> -->
+	                                <!--   <div id="collapseExposed{{j}}{{k}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="componentHeading2">
+	                                    		<div class="panel-body panel-padding"> -->
+								                    <div class="row margin-bottom">
+								                        <div class="col-md-4 no-left-padding">
+   														   <div class="col-md-12 no-left-padding">
+   																 <label class="form-label">Resource Profile*</label>
+   														   </div>
+
+   														   <div class="col-md-12 no-left-padding">
+   															   <select class="form-control" name="resource{{j}}{{k}}" #resource3=ngModel [(ngModel)]="resourceProfilesForMP[j][k]"
+                                    							(change)="exposedResourceForMP($event.target,j,k,mobileOnBrd[j].microServiceName,component.workloadName)">
+																		<option selected hidden disabled style="display: none" value = ''></option>
+																		 <option *ngFor="let resource of mobileOnBrd[j].metadata.workloads[k].resources">{{resource.name}}</option>
+   															   </select>
+																	 <i class="fa"><img src="assets/image/icons/arrow.png"></i>
+																	 <div style="width:300px; color:red;" [hidden]="resource3.valid || (resource3.untouched )">Resource Profile is required</div>
+	                                 							  <div style="width:300px; color:red;" *ngIf="resultMicro[j][k] && clicked"> Resource Profile is required</div>
+   														   </div>
+								                         </div>
+								                     </div>
+
+	 												 <div class="row margin-bottom">
+	 													  <div class="col-md-9 no-left-padding">
+	                               <!-- start of Network Bind table-->
+	 														   <div class="table-responsive margin-bottom" *ngIf="mobileOnBrd[j].metadata.external.networks.length > 0">
+	 															   <table class="table table-configure">
+	 																   <thead style="background-color: #d8d8d8;">
+	 																	   <tr>
+	 																		  <th  style="width: 40%;">Net Binding Name</th>
+	 																		  <th style="width: 20%;">Expose</th>
+	 																		   <th>Associate With</th>
+	 																	   </tr>
+	 																 </thead>
+	 																 <tbody>
+	 																   <tr id="{{q}}" *ngFor="let networks of mobileOnBrd[j].metadata.external.networks; let q=index">
+
+ 																		   <td >{{networks}}</td>
+
+ 																		   <td >
+                                         										 <!-- <input type="checkbox" class="checkbox" class="app-checkbox" (change)="exposedNetworkChecked($event,networks.name,mobileOnBrd[j].microServiceName)"> -->
+
+                                         										 <input id="networksMp{{networks}}{{q}}"  type="checkbox" (change)="exposedNetworkChecked($event,networks,mobileOnBrd[j].microServiceName,q)">
+																				 <label class="checkbox" for="networksMp{{networks}}{{q}}"> </label>
+
+                                        								   </td>
+
+ 																		   <td>
+ 																			   <select id="{{networkSelect}}{{networks}}{{q}}"  multiple class="form-control" name="exposedN" #exposedN [ngModel]="exposedN"
+											                                    (change)="exposedNetworkValues(q,$event.target,networks,mobileOnBrd[j].microServiceName)"  style="height: 70px !important;">
+											                                          <option>app@client</option>
+											                                          <ng-container *ngFor="let microServiceName of  mobileAppMetadata.metadata.appMetadata.microservices;">
+											                                          <option *ngIf="microServiceName.microServiceName!=microservice.microServiceName" [ngValue]="microServiceName.name">
+											                                            {{microServiceName.microServiceName}}
+											                                          </option>
+											                                         </ng-container>
+											                                         <option>CIDR</option>
+ 																			   </select>
+																				  <input id="{{netName}}{{microservice.microServiceName}}{{networks}}{{q}}" type="text" placeholder="Enter CIDR value"  class="form-control hide" style="margin-top: 10px;" (change)="cidrValue(networks,$event.target)"/>
+ 																		   </td>
+	 																	   </tr>
+	 																   </tbody>
+	 															   </table>
+	 														  </div>			<!-- end of Network Bind table-->
+
+
+	                               <!--start of events table -->
+	 														  <div class="table-responsive margin-bottom">
+	 															  <table class="table table-configure" *ngIf="mobileOnBrd[j].metadata.external.events.length > 0">
+	 																  <thead style="background-color: #d8d8d8;" *ngIf="mobileAppMetadata.metadata.appMetadata.applicationType == 'event'">
+	 																	  <tr>
+	 																		  <th style="width: 40%;">Event Name</th>
+	 																		  <th style="width: 20%;">Expose</th>
+	 																		  <th>Associate With</th>
+	 																	  </tr>
+	 																 </thead>
+
+	 																  <tbody *ngIf="mobileAppMetadata.metadata.appMetadata.applicationType == 'event'">
+
+	 																	  <tr id="{{t}}" *ngFor="let events of mobileOnBrd[j].metadata.external.events;let t=index">
+
+
+	 																		  <td>{{events}}</td>
+
+	 																		  <td>
+	                                        									  <!-- <input type="checkbox" class="checkbox" class="app-checkbox" (change)="exposedEventChecked($event,events.name,mobileOnBrd[j].microServiceName)"> -->
+
+	                                        									  <input id="eventsMp{{events}}{{t}}"  type="checkbox" (change)="exposedEventChecked($event,events,mobileOnBrd[j].microServiceName,t)">
+																				  <label class="checkbox" for="eventsMp{{events}}{{t}}"></label>
+
+
+	                                       								      </td>
+
+	 																		  <td>
+	 																			  <select id="{{eventSelect}}{{events}}{{t}}"  multiple class="form-control" name="exposedE" #exposedN [ngModel]="exposedE"
+	                                         									    (change)="exposedEventValues(t,$event.target,events,mobileOnBrd[j].microServiceName)"  style="height: 70px !important;">
+												                                         <option>app@client</option>
+												                                         <ng-container *ngFor="let microServiceName of mobileAppMetadata.metadata.appMetadata.microservices;">
+												                                         <option *ngIf="microServiceName.microServiceName!=microservice.microServiceName" [ngValue]="microServiceName.microServiceName">
+												                                           {{microServiceName.microServiceName}}
+												                                         </option>
+												                                        </ng-container>
+												                                        <option>CIDR</option>
+	 																			  </select>
+																					<input id="{{eventName}}{{microservice.microServiceName}}{{events}}{{t}}" type="text"  class="form-control hide" placeholder="Enter CIDR value"  style="margin-top: 10px;" (change)="cidrEventValue(events,$event.target)"/>
+	 																		  </td>
+	 																	  </tr>
+	 																  </tbody>
+	 															  </table>
+	 														 </div><!-- end of events table -->
+
+
+	                            <!--start of httpapis table -->
+	 														  <div class="table-responsive margin-bottom" *ngIf="mobileOnBrd[j].metadata.external.httpApis.length > 0">
+	 															  <table class="table table-configure">
+	 																  <thead style="background-color: #d8d8d8;" *ngIf="mobileAppMetadata.metadata.appMetadata.applicationType == 'http'" >
+	 																	  <tr>
+	 																		  <th style="width: 40%;">HTTP Name</th>
+	 																		  <th style="width: 20%;">Expose</th>
+	 																		  <th>Associate With</th>
+	 																	  </tr>
+	 																 </thead>
+
+	 																  <tbody *ngIf="mobileAppMetadata.metadata.appMetadata.applicationType == 'http'">
+	 																	  <tr id={{t}} *ngFor="let endpoint of mobileOnBrd[j].metadata.external.httpApis; let t=index">
+
+
+	 																		  <td>{{endpoint}}</td>
+
+	 																		  <td>
+	                                         										<!-- <input type="checkbox" class="checkbox" class="app-checkbox" (change)="exposedApiChecked($event,endpoint.name,mobileOnBrd[j].microServiceName)"> -->
+
+	                                         										<input id="apisMp{{endpoint}}{{t}}"  type="checkbox" (change)="exposedApiChecked($event,endpoint,mobileOnBrd[j].microServiceName,t)">
+																					<label class="checkbox" for="apisMp{{endpoint}}{{t}}"></label>
+
+	                                       									  </td>
+
+	 																		  <td>
+	 																			  <select id="{{apiSelect}}{{endpoint}}{{t}}" multiple class="form-control" name="exposedA" #exposedA [ngModel]="exposedA"
+	                                         										(change)="exposedApiValues(t,$event.target,endpoint,mobileOnBrd[j].microServiceName)"  style="height: 70px !important;">
+												                                         <option>app@client</option>
+												                                         <ng-container *ngFor="let microServiceName of mobileAppMetadata.metadata.appMetadata.microservices;">
+												                                         <option *ngIf="microServiceName.microServiceName!=microservice.microServiceName" [ngValue]="microServiceName.microServiceName">
+												                                           {{microServiceName.microServiceName}}
+												                                         </option>
+												                                        </ng-container>
+												                                        <option>CIDR</option>
+	 																			  </select>
+																					<input id="{{apiName}}{{microservice.microServiceName}}{{endpoint}}{{t}}" type="text"  class="form-control hide" placeholder="Enter CIDR value"  style="margin-top: 10px;" (change)="cidrApiValue(endpoint,$event.target)"/>
+	 																		  </td>
+	 																	  </tr>
+	 																  </tbody>
+	 															  </table>
+	 														 </div>				<!-- end of httpapis table -->
+
+
+	 													</div>
+	 												 </div>
+	                     					   <!-- </div> -->		<!-- end of new added panel -->
+
+	 											 <!-- </div> -->
+	 										<!--  </div>
+				                     </div>	 -->		<!--end of component panel -->
+				                    </div>		<!--end of component loop on microservices added by user -->
+				                    </div> 		<!--end of if microservice is added by user -->
+				                  </div>	<!--end of microservice loop added from marketplace-->
+				                </div>	<!--end of panel body -->
+			                </div>
+												<!-- </div>-->
+											  <!-- end of microservice name panel group -->
+						</div>
+					</div>
+					</div>
+            	</div>
+				</div>			<!--end of iterating over all microservices  -->
+
+								 <div class="form-group margin-bottom-large">
+									 <div class="row">
+										 <div class="col-md-2">
+											 <button type="button" class="btn-cancel" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+												data-backdrop="static" data-keyboard="false" >Cancel</button>
+										 </div>
+										 <div class="col-md-2 col-md-offset-6">
+											   <button type="button" class="btn-back" (click)="displayPage2()">Back</button>
+										 </div>
+										 <div class="col-md-2">
+											   <button type="button" class="btn-next" *ngIf="configureForm.valid && !res && !resMP" (mouseenter)="onConfigureNext('hover','next')" (click)="onConfigureNext('click','next')">Next</button>
+												 <button type="button" class="btn-next" *ngIf="res || resMP" (click)="onConfigureNext('click','popover')"
+												 popover="Please select resource profile" [popoverCloseOnClickOutside]="true" style="cursor:not-allowed">Next</button>
+										 </div>
+									</div>
+								 </div>
+
+							</form>
+					</div>
+										<!--end of exposed page -->
+
+
+					<!--start of review page -->
+
+			<div class="container" name="Review" id="Review" *ngIf="Review_Flag">
+				  <form class="form-group form-signin" name="reviewForm" id="reviewForm" #reviewForm="ngForm">
+					  <div class="margin clearfix">
+							<button type="button" class="close" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+							 data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+                		</div>
+
+					  <div class="row margin-large">
+		                  <div class="col-md-12">
+		                     <h1> Onboard New App</h1>
+		                   </div>
+		              </div>
+
+					  <div class="row margin-large">
+              <div class="col-md-12">
+                  <div class="container no-padding">
+                      <div class="row bs-wizard" style="border-bottom:0;">
+                          <div class="col-xs-2 bs-wizard-step complete">
+                              <!-- <div class="bs-wizard-stepnum">Step 1</div> -->
+                              <div class="progress"><div class="progress-bar"></div></div>
+                              <a href="javascript:;" class="bs-wizard-dot">1</a>
+                              <div class="bs-wizard-info text-color">Details</div>
+                          </div>
+
+                          <div class="col-xs-2 bs-wizard-step complete"><!-- complete -->
+                              <!-- <div class="bs-wizard-stepnum">Step 2</div> -->
+                              <div class="progress"><div class="progress-bar"></div></div>
+                              <a href="javascript:;" class="bs-wizard-dot" style="margin-left: 5px">2</a>
+                              <div class="bs-wizard-info text-color">Microservices</div>
+                          </div>
+
+                          <div class="col-xs-2 bs-wizard-step complete"><!-- complete -->
+                              <!-- <div class="bs-wizard-stepnum">Step 3</div> -->
+                              <div class="progress"><div class="progress-bar"></div></div>
+                              <a href="javascript:;" class="bs-wizard-dot">3</a>
+                              <div class="bs-wizard-info text-color">Configure</div>
+                          </div>
+
+                          <div class="col-xs-2 bs-wizard-step active"><!-- active -->
+                              <!-- <div class="bs-wizard-stepnum">Step 4</div> -->
+                              <div class="progress"><div class="progress-bar"></div></div>
+                              <a href="javascript:;" class="bs-wizard-dot">4</a>
+                              <div class="bs-wizard-info text-color">Review</div>
+                          </div>
+
+                          <div class="col-xs-2 bs-wizard-step disabled"><!-- active -->
+                              <!-- <div class="bs-wizard-stepnum">Step 4</div> -->
+                              <div class="progress"><div class="progress-bar"></div></div>
+                              <a href="javascript:;" class="bs-wizard-dot">5</a>
+                              <div class="bs-wizard-info">Finalize</div>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+          </div>
+					  <div class = "row margin-bottom">
+							<div class="col-md-6"> <h4 style=" color: #96999E;">App Details</h4></div>
+					  </div>
+
+						  <div class="row margin-bottom">
+								<div class="col-md-2" *ngIf="mobileAppMetadata.icon!=undefined && mobileAppMetadata.icon!=null && mobileAppMetadata.icon!='empty' ">
+										<img [src]="mobileAppMetadata.icon" class="img-rounded" width="100" height="100">
+								</div>
+								<div class="col-md-2" *ngIf="mobileAppMetadata.icon==undefined || mobileAppMetadata.icon==null  || mobileAppMetadata.icon=='empty'">
+									<img id="imgAppIcon+{{i}}" class="img-rounded" width="100" height="100" src="assets/image/images.png">
+								 </div>
+
+								<div class="col-md-8">
+									  <div class="col-md-12 no-padding"> <h2>{{mobileAppMetadata.applicationName}}</h2> </div>
+									  <div class="col-md-12 no-padding form-label margin-bottom">
+									     {{mobileAppMetadata.description}}
+								      </div>
+								</div>
+						  </div>
+
+						  <div class="row margin-bottom-large">
+								<div class="col-md-8 col-md-offset-2">
+
+								  <div class="row">
+									  <div class="col-md-12 margin-bottom-medium no-padding">
+										   <div class="col-md-7 no-padding">
+										   		<label class="form-label">Context path:</label>
+										  		<span class="title-small">{{mobileAppMetadata.contextPath}}</span>
+										   </div>
+										   <div class="col-md-5">
+			                                   <label class="form-label">Categories</label>
+			                                   <span class="title-small">{{mobileAppMetadata.category}}</span>
+			                               </div>
+									  </div>
+								  </div>
+
+								  <div class="row">
+									  <div class="col-md-12 margin-bottom-medium no-padding">
+											<div class="col-md-7 no-padding">
+										   		<label class="form-label">Support Document Link:</label>
+										  		<span class="title-small">{{mobileAppMetadata.documentation}}</span>
+										   </div>
+										   <div class="col-md-5">
+			                                   <label class="form-label">Countries:</label>
+			                                   <span class="title-small">{{mobileAppMetadata.regions}}</span>
+			                               </div>
+									  </div>
+								  </div>
+
+								  <div class="row">
+									  <div class="col-md-12 margin-bottom-medium no-padding">
+									  		<div class="col-md-7 no-padding">
+										   		<label class="form-label">Type</label>
+										  		<span class="title-small">{{mobileAppMetadata.metadata.appMetadata.applicationType}}</span>
+										   </div>
+										   <div class="col-md-5">
+			                                   <label class="form-label">Lifecycle Stage:</label>
+			                                   <span class="title-small">{{mobileAppMetadata.stage}}</span>
+			                               </div>
+									  </div>
+								  </div>
+ 					<!-- EdgeCR changes -->
+									<div class="row">
+									  <div class="col-md-12 margin-bottom-medium no-padding">
+										   <div class="col-md-7 no-padding">
+                           <label class="form-label">Package Type:</label>
+                           <span class="title-small">{{mobileAppMetadata.metadata.appMetadata.deliveryMethod}}</span>
+			                  </div>
+									  </div>
+								  </div>
+							  </div>
+						</div>
+
+			<!--start of multiple microservices display-->
+			 	 <div *ngFor="let microserviceMetadata of mobileAppMetadata.metadata.appMetadata.microservices; let i = index">
+
+					<!--start of first panel group -->
+					  <div *ngIf="microserviceMetadata.microServiceName!=undefined" class="panel-group" id="accordion{{i}}" role="tablist" aria-multiselectable="true">
+						  <div class="panel panel-default">
+
+							  <div class="panel-heading black-panel" role="tab" id="headingOne{{i}}">
+								  <h4 class="panel-title">
+									  <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{i}}" aria-expanded="true" aria-controls="componentOne">
+										{{microserviceMetadata.microServiceName}} Details
+									  </a>
+								  </h4>
+							  </div>
+
+							  <div id="collapseOne{{i}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="componentHeadingOne">
+								  <div class="panel-body panel-padding">
+									   <div class="row">
+											<div class="col-md-2">
+												<label class="form-label">MicroService Name</label>
+											</div>
+											<div class="col-md-10"> <span class="title-small">{{microserviceMetadata.microServiceName}}</span> </div>
+									   </div>
+
+
+
+                     <!--start of microservices added by user -->
+                                   <div *ngFor="let mobileappdata of mobileAppMetadata.metadata.microserviceMetadata; let j = index">
+
+                     					<div *ngIf="mobileappdata.microServiceName==microserviceMetadata.microServiceName">
+                                      			<div class="row margin-bottom">
+           											<div class="col-md-2">
+           												<label class="form-label no-margin">Tenancy</label>
+           											</div>
+         											<div class="col-md-10"><span class="title-small">{{mobileappdata.tenancy}}</span></div>
+                 								 </div>
+
+              				  <!--start of components loop -->
+               									<div class="col-md-12 left-padding" *ngFor="let workloads of mobileAppMetadata.metadata.microserviceMetadata[j].metadata.workloads; let k = index">
+               									    <div class="panel-group" id="accordion{{j}}{{k}}" role="tablist" aria-multiselectable="true">
+               										   <div class="panel panel-default">
+
+               											    <div class="panel-heading main-panel" role="tab" id="componentHeading2">
+               												   <h4 class="panel-title">
+               													   <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{j}}{{k}}" aria-expanded="true" aria-controls="componentOne">
+		               												<!-- <div class="row margin-medium">
+											                      		  <div class="col-md-12 title-component"> -->
+			               														   Component {{k+1}} Details
+			               											<!-- 	  </div>
+		               												</div> -->
+               												    </a>
+               												   </h4>
+               											   </div>
+
+               											    <div id="collapseOne{{j}}{{k}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="componentHeading2">
+               												   <div class="sub-panel-body">
+
+               														<div class="row">
+               															  <div class="col-md-2">
+               																  <label class="form-label">Name</label>
+               															  </div>
+               															  <div class="col-md-10"><span class="title-small">{{workloads.workloadName}}</span></div>
+               														 </div>
+               														  <!-- EdgeCR changes -->
+																	 <div class="row">
+                															  <div class="col-md-2">
+                																  <label class="form-label">Package Type</label>
+                															  </div>
+                															  <div class="col-md-10"><span class="title-small">{{workloads.deliveryMethod}}</span></div>
+                														 </div>
+
+
+               														 <div class="row">
+               															  <div class="col-md-2">
+               																  <label class="form-label">Hosted At</label>
+               															  </div>
+               															  <div class="col-md-10"><span class="title-small">{{workloads.source.sourceRepo}}</span></div>
+               														 </div>
+
+               														 <div class="row">
+               															  <div class="col-md-2">
+               																  <label class="form-label">Path</label>
+               															  </div>
+               															  <div class="col-md-10"><span class="title-small">{{workloads.source.path}}</span></div>
+               														 </div>
+
+               														 <div class="row margin-bottom">
+               															  <div class="col-md-2">
+               																  <label class="form-label">Username</label>
+               															  </div>
+               															  <div class="col-md-10"><span class="title-small">{{workloads.source.username}}</span></div>
+               														 </div>
+
+               														 <div class="row">
+               															  <div class="col-md-11">
+               																  <div class="table-responsive margin-bottom">
+				               														<table class="table table-review" style="border:none;">
+				               															<thead *ngIf="mobileAppMetadata.metadata.microserviceMetadata[j].metadata.workloads[k].networks.length > 0">
+					               															<tr style= "background-color: #d8d8d8;">
+					               																<th >Network Binding</th>
+					               																<th >Name</th>
+					               																<th >Protocol</th>
+					               																<th >Port</th>
+					               																<th >Allowed External</th>
+					               																<th >Expose</th>
+					               																<th >Associate With</th>
+					               															</tr>
+				               															</thead>
+				               															<tbody *ngIf="mobileAppMetadata.metadata.microserviceMetadata[j].metadata.workloads[k].networks.length > 0">
+					               															<tr *ngFor="let networks of mobileAppMetadata.metadata.microserviceMetadata[j].metadata.workloads[k].networks;">
+					               																<td></td>
+					               																<td class="form-table">{{networks.name}}</td>
+					               																<td class="form-table">{{networks.protocol}}</td>
+					               																<td class="form-table">{{networks.port}}</td>
+					               																<td class="form-table">{{networks.external}}</td>
+					               																<ng-container *ngFor="let exposedNetwork of mobileAppMetadata.metadata.appMetadata.microservices[i].exposed.networks;">
+					               																   <td class="form-table" *ngIf="exposedNetwork.name==networks.name">
+					               																		Yes
+					               																   </td>
+					               																   <td class="form-table" *ngIf="exposedNetwork.name==networks.name">
+					               																		{{exposedNetwork.exposedTo}}
+					               																   </td>
+					               																</ng-container>
+					               															</tr>
+				               															</tbody>
+				                                           <!-- <div *ngIf="mobileAppMetadata.metadata.appMetadata.applicationType == 'Event'"> -->
+				               															<thead *ngIf="mobileAppMetadata.metadata.appMetadata.applicationType == 'event'">
+				               																<tr style= "background-color: #D9D9D9">
+					               																<th >Events</th>
+					               																<th >Name</th>
+					               																<th >Reference</th>
+					               																<th >Allowed External</th>
+					               																<th ></th>
+					               																<th >Expose</th>
+					               																<th >Associate With</th>
+				               																</tr>
+				               															</thead>
+																										<!-- <div *ngIf="mobileAppMetadata.metadata.appMetadata.applicationType == 'Event'"> -->
+																										<thead *ngIf="mobileAppMetadata.metadata.appMetadata.applicationType == 'http'">
+				               																<tr style= "background-color: #D9D9D9">
+																												<th >HTTP</th>
+				                      													<th >Port</th>
+																												<th >Name</th>
+				                      													<th >Context Path</th>
+				                      													<th >Allowed External</th>
+					               																<th >Expose</th>
+					               																<th >Associate With</th>
+				               																</tr>
+				               															</thead>
+				               															<tbody *ngIf="mobileAppMetadata.metadata.appMetadata.applicationType == 'event'">
+					               															<tr *ngFor="let events of mobileAppMetadata.metadata.microserviceMetadata[j].metadata.workloads[k].events;">
+					               																<td></td>
+					               																<td class="form-table">{{events.name}}</td>
+					               																<td class="form-table">{{events.fn}}</td>
+					               																<td class="form-table">{{events.external}}</td>
+					               																<td></td>
+					               																<ng-container *ngFor="let exposedEvent of mobileAppMetadata.metadata.appMetadata.microservices[i].exposed.events;">
+					               																   <td class="form-table" *ngIf="exposedEvent.name==events.name">
+					               																		Yes
+					               																   </td>
+					               																   <td class="form-table" *ngIf="exposedEvent.name==events.name">
+					               																		{{exposedEvent.exposedTo}}
+					               																   </td>
+					               																</ng-container>
+					               															</tr>
+				               															</tbody>
+																										<tbody *ngIf="mobileAppMetadata.metadata.appMetadata.applicationType == 'http'">
+																											<tr *ngFor="let endpnt of mobileAppMetadata.metadata.microserviceMetadata[j].metadata.workloads[k].httpApis.endpoints;">
+																												<td></td>
+																												<td class="form-table">{{mobileAppMetadata.metadata.microserviceMetadata[j].metadata.workloads[k].httpApis.port}}</td>
+																												<td class="form-table">{{endpnt.name}}</td>
+																												<td class="form-table">{{endpnt.fn}}</td>
+				                      													<td class="form-table">{{endpnt.external}}</td>
+																												<ng-container *ngFor="let exposedAPI of mobileAppMetadata.metadata.appMetadata.microservices[i].exposed.httpApis;">
+																													 <td class="form-table" *ngIf="exposedAPI.name==endpnt.name">
+																														Yes
+																													 </td>
+																													 <td class="form-table" *ngIf="exposedAPI.name==endpnt.name">
+																														{{exposedAPI.exposedTo}}
+																													 </td>
+																												</ng-container>
+																											</tr>
+																										</tbody>
+				               														<!-- </div> -->
+				               																<thead>
+					               																<tr style= "background-color: #D9D9D9;">
+						               																<th >Resource Profile</th>
+						               																<th style="vertical-align:top">Name</th>
+						               																<th >Virtual CPU Quanta</th>
+						               																<th >Block Storage <div>(GB)</div></th>
+						               																<th >KV Storage <div>(GB)</div></th>
+						               																<th >Bandwidth <div>(GB)</div></th>
+						               																<th >Selected Profile</th>
+					               																</tr>
+				               																</thead>
+			               																	<tbody>
+				               																	<tr *ngFor="let resources of mobileAppMetadata.metadata.microserviceMetadata[j].metadata.workloads[k].resources;">
+					               																	<td class="title form-table"></td>
+					               																	<td class="form-table">{{resources.name}}</td>
+					               																	<td class="form-table">{{resources.cpu}}</td>
+					               																	<td class="form-table">{{resources.memory}}</td>
+					               																	<td class="form-table">{{resources.storage}}</td>
+					               																	<td class="form-table">{{resources.bandwidth}}</td>
+					               																	<ng-container *ngFor="let exposedResource of mobileAppMetadata.metadata.appMetadata.microservices[i].resources;">
+					               																		   <td class="form-table" *ngIf="exposedResource.name==resources.name">
+					               																				Yes
+					               																		   </td>
+					               																	</ng-container>
+				               																	</tr>
+			               																    </tbody>
+				               															</table>
+				               														  </div>
+				               														  </div>
+
+				               														 </div>
+				               													  </div>
+				               												   </div>
+				               											  </div>
+				               											</div>
+				               									  </div><!--end of components loop -->
+				                     						</div><!-- end of if condition -->
+				                        		</div>		<!-- end of microservices added by user -->
+
+
+			<!--start of microservices added from marketplace -->
+				 <ng-container *ngFor="let mobileOnBrdloop of mobileOnBrd; let p = index">		<!--mobileOnBrd loop starts-->
+
+						<div *ngIf="mobileOnBrdloop.microServiceName==microserviceMetadata.microServiceName">
+			                  <div class="row margin-bottom">
+			                      <div class="col-md-2">
+			                        <label class="form-label no-margin">Tenancy</label>
+			                      </div>
+			                      <div class="col-md-10"><span class="title-small">{{mobileOnBrdloop.tenancy}}</span></div>
+			                   </div>
+
+								<!--start of components loop -->
+									<div class="col-md-12 left-padding" *ngFor="let workloads of mobileOnBrd[p].metadata.workloads; let q = index">
+									    <div class="panel-group" id="accordion{{p}}{{q}}" role="tablist" aria-multiselectable="true">
+										   <div class="panel panel-default" style="border-color: #D9D9D9">
+
+											  <div class="panel-heading main-panel" role="tab" id="heading{{q}}" style="background-color: #323544;">
+												   <h4 class="panel-title">
+													   <a role="button" data-toggle="collapse" data-parent="#accordion" href="#collapseOne{{p}}{{q}}" aria-expanded="true" aria-controls="componentOne" style="font-family: OpenSans; font-size: 14pt; color: #fff;">
+
+													     <!-- <div class="row margin-medium">
+									                      		  <div class="col-md-12 title-component"> -->
+														   				Component {{q+1}} Details
+														<!--    		   </div>
+														  </div> -->
+
+												     </a>
+												   </h4>
+											   </div>
+
+												 <div id="collapseOne{{p}}{{q}}" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="componentHeading2">
+													<div class="sub-panel-body">
+
+															<div class="row">
+																  <div class="col-md-2">
+																	  <label class="form-label">Name</label>
+																  </div>
+																  <div class="col-md-10"><span class="title-small">{{workloads.workloadName}}</span></div>
+															 </div>
+
+															 <div class="row">
+																  <div class="col-md-2">
+																	  <label class="form-label">Hosted At</label>
+																  </div>
+																  <div class="col-md-10"><span class="title-small">{{workloads.source.sourceRepo}}</span></div>
+															 </div>
+
+															 <div class="row">
+																  <div class="col-md-2">
+																	  <label class="form-label">Path</label>
+																  </div>
+																  <div class="col-md-10"><span class="title-small">{{workloads.source.path}}</span></div>
+															 </div>
+
+															 <div class="row margin-bottom">
+																  <div class="col-md-2">
+																	  <label class="form-label">Username</label>
+																  </div>
+																  <div class="col-md-10"><span class="title-small">{{workloads.source.username}}</span></div>
+															 </div>
+
+															<div class="row">
+																<div class="col-md-11">
+																	<div class="table-responsive margin-bottom">
+																		<table class="table table-review" style="border:none;">
+																			<thead *ngIf="mobileOnBrd[p].metadata.workloads[q].networks.length > 0">
+																				<tr style= "background-color: #d8d8d8;">
+																					<th >Network Binding</th>
+																					<th >Name</th>
+																					<th >Protocol</th>
+																					<th >Port</th>
+																					<th >Allowed External</th>
+																					<th >Expose</th>
+																					<th >Associate With</th>
+																				</tr>
+																			</thead>
+																			<tbody *ngIf="mobileOnBrd[p].metadata.workloads[q].networks.length > 0">
+																				<tr *ngFor="let networks of mobileOnBrd[p].metadata.workloads[q].networks; let r = index">
+																					<td></td>
+																					<td class="form-table">{{networks.name}}</td>
+																					<td class="form-table">{{networks.protocol}}</td>
+																					<td class="form-table">{{networks.port}}</td>
+                                          <ng-container *ngFor="let net of  mobileOnBrd[p].metadata.external.networks">
+
+																					     <td *ngIf="networks.name==net"class="form-table">true</td>
+																					</ng-container>
+																					<!-- <td class="form-table">{{networks.external}}</td> -->
+																					<ng-container *ngFor="let exposedNetwork of mobileAppMetadata.metadata.appMetadata.microservices[i].exposed.networks;">
+																					   <td class="form-table" *ngIf="exposedNetwork.name==networks.name">
+																							Yes
+																					   </td>
+																					   <td class="form-table" *ngIf="exposedNetwork.name==networks.name">
+																							{{exposedNetwork.exposedTo}}
+																					   </td>
+																					</ng-container>
+																				</tr>
+																			</tbody>
+
+																			<thead *ngIf="mobileAppMetadata.metadata.appMetadata.applicationType == 'event'">
+																				<tr style= "background-color: #d8d8d8">
+																					<th >Events</th>
+																					<th >Name</th>
+																					<th >Reference</th>
+																					<th >Allowed External</th>
+																					<th ></th>
+																					<th >Expose</th>
+																					<th >Associate With</th>
+																				</tr>
+																			</thead>
+																			<tbody *ngIf="mobileAppMetadata.metadata.appMetadata.applicationType == 'event'">
+																				<tr *ngFor="let events of mobileOnBrd[p].metadata.workloads[q].events;" >
+																					<td></td>
+																					<td class="form-table">{{events.name}}</td>
+																					<td class="form-table">{{events.fn}}</td>
+                                          <ng-container *ngFor="let eve of  mobileOnBrd[p].metadata.external.events">
+
+																					     <td *ngIf="events.name==eve"class="form-table">true</td>
+																					</ng-container>
+																					<!-- <td class="form-table">{{events.external}}</td> -->
+																					<td></td>
+																					<ng-container *ngFor="let exposedEvent of mobileAppMetadata.metadata.appMetadata.microservices[i].exposed.events;">
+																					   <td class="form-table" *ngIf="exposedEvent.name==events.name">
+																							Yes
+																					   </td>
+																					   <td class="form-table" *ngIf="exposedEvent.name==events.name">
+																							{{exposedEvent.exposedTo}}
+																					   </td>
+																					</ng-container>
+																				</tr>
+																			</tbody>
+
+																				<thead *ngIf="mobileAppMetadata.metadata.appMetadata.applicationType == 'http'">
+																					<tr style= "background-color: #d8d8d8;">
+																						<th >HTTP End Point</th>
+																						<th style="vertical-align:top">Context</th>
+																						<th>Name</th>
+																						<th >Port</th>
+																						<th >Allowed External</th>
+																						<th >Expose</th>
+																						<th >Associate with</th>
+																					</tr>
+																				</thead>
+																				<tbody *ngIf="mobileAppMetadata.metadata.appMetadata.applicationType == 'http'">
+																					<tr *ngFor="let endpoints of mobileOnBrd[p].metadata.workloads[q].httpApis.endpoints;">
+																						<td class="title form-table"></td>
+																						<td class="form-table">{{endpoints.fn}}</td>
+																						<td class="form-table">{{endpoints.name}}</td>
+																						<!-- <td></td> -->
+																						<td class="form-table">{{mobileOnBrd[p].metadata.workloads[q].httpApis.port}}</td>
+                                            <ng-container *ngFor="let api of  mobileOnBrd[p].metadata.external.httpApis">
+
+  																					     <td *ngIf="endpoints.name==api"class="form-table">true</td>
+  																					</ng-container>
+																						<!-- <td class="form-table">{{endpoints.external}}</td> -->
+
+																					    <ng-container *ngFor="let exposedApi of mobileAppMetadata.metadata.appMetadata.microservices[i].exposed.httpApis;">
+																					   <td class="form-table" *ngIf="exposedApi.name==endpoints.name">
+																							Yes
+																					   </td>
+																					   <td class="form-table" *ngIf="exposedApi.name==endpoints.name">
+																							{{exposedApi.exposedTo}}
+																					   </td>
+																				    	</ng-container>
+				                                								   </tr>
+											                                  </tbody>
+													                              <thead>
+														                              <tr style= "background-color: #d8d8d8;">
+															                              <th >Resource Profile</th>
+															                              <th style="vertical-align:top">Name</th>
+															                              <th >Virtual CPU Quanta</th>
+															                              <th >Block Storage <div>(GB)</div></th>
+															                              <th >KV Storage <div>(GB)</div></th>
+															                              <th >Bandwidth <div>(GB)</div></th>
+															                              <th >Selected Profile</th>
+														                              </tr>
+													                              </thead>
+
+												                                <tbody>
+													                                <tr *ngFor="let resources of mobileOnBrd[p].metadata.workloads[q].resources;">
+														                                <td class="title form-table"></td>
+														                                <td class="form-table">{{resources.name}}</td>
+														                                <td class="form-table">{{resources.cpu}}</td>
+														                                <td class="form-table">{{resources.memory}}</td>
+														                                <td class="form-table">{{resources.storage}}</td>
+														                                <td class="form-table">{{resources.bandwidth}}</td>
+														                                <ng-container *ngFor="let exposedResource of mobileAppMetadata.metadata.appMetadata.microservices[i].resources;">
+														                                     <td class="form-table" *ngIf="exposedResource.name==resources.name">
+														                                      Yes
+														                                     </td>
+														                                </ng-container>
+													                                </tr>
+												                              </tbody>
+																			</table>
+																		  </div>
+																		</div>
+																	</div>
+														        </div>
+													       </div>
+											          </div>
+											    </div>
+										  </div>          <!--end of components loop -->
+										</div>  	<!--if condition ends for microservices addded from marketplace -->
+									 </ng-container>		 <!--mobileOnBrd loop ends-->
+						<!--</div>-->
+
+								  </div>	<!-- end of panel body-->
+							  </div>
+						 </div>
+					 </div>			<!--end of first/outer panel group -->
+					</div>		<!--end of for loop for multiple microservices display -->
+
+
+					  <div class="form-group margin-bottom-large">
+						  <div class="row">
+							  <div class="col-md-2">
+									<button type="button" class="btn-cancel" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+									 data-backdrop="static" data-keyboard="false" >Cancel</button>
+							  </div>
+							  <div class="col-md-2 col-md-offset-6">
+									<button type="button" class="btn-back" (click)="displayPage3()">Back</button>
+							  </div>
+							  <div class="col-md-2" *ngIf="disableFieldsOnEdit">
+									<!-- <button type="button" class="btn btn-next" (click)="OnSubmit()">Submit</button> -->
+									<button data-toggle="modal" href="#publishConfirmModal" data-dismiss="modal"
+									 data-backdrop="static" data-keyboard="false" type="button" class="btn-next" (click)="OnSubmit()">SUBMIT</button>
+							  </div>
+							  <div class="col-md-2" *ngIf="!disableFieldsOnEdit">
+									<button type="button" class="btn-next" (click)="nextFinalize()">Next</button>
+							  </div>
+						 </div>
+					  </div>
+				  </form>
+   				 </div>
+
+	<div class="container" name="Review" id="Review" *ngIf="Finalize_Flag">
+         <form class="form-group form-signin" name="finalForm" id="finalForm" #finalForm="ngForm">
+			<div class="margin clearfix">
+				<button type="button" class="close" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+				 data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+            </div>
+
+             <div class="row margin-large">
+                  <div class="col-md-12">
+                     <h1> Onboard New App</h1>
+                   </div>
+              </div>
+
+                <div class="row margin-large">
+                    <div class="col-md-12">
+                        <div class="container no-padding">
+                            <div class="row bs-wizard" style="border-bottom:0;">
+                                <div class="col-xs-2 bs-wizard-step complete">
+                                    <!-- <div class="bs-wizard-stepnum">Step 1</div> -->
+                                    <div class="progress"><div class="progress-bar"></div></div>
+                                    <a href="javascript:;" class="bs-wizard-dot">1</a>
+                                    <div class="bs-wizard-info text-color">Details</div>
+                                </div>
+
+                                <div class="col-xs-2 bs-wizard-step complete"><!-- complete -->
+                                    <!-- <div class="bs-wizard-stepnum">Step 2</div> -->
+                                    <div class="progress"><div class="progress-bar"></div></div>
+                                    <a href="javascript:;" class="bs-wizard-dot" style="margin-left: 5px;">2</a>
+                                    <div class="bs-wizard-info text-color">Microservices</div>
+                                </div>
+
+                                <div class="col-xs-2 bs-wizard-step complete"><!-- complete -->
+                                    <!-- <div class="bs-wizard-stepnum">Step 3</div> -->
+                                    <div class="progress"><div class="progress-bar"></div></div>
+                                    <a href="javascript:;" class="bs-wizard-dot">3</a>
+                                    <div class="bs-wizard-info text-color">Configure</div>
+                                </div>
+
+                                <div class="col-xs-2 bs-wizard-step complete"><!-- active -->
+                                    <!-- <div class="bs-wizard-stepnum">Step 4</div> -->
+                                    <div class="progress"><div class="progress-bar"></div></div>
+                                    <a href="javascript:;" class="bs-wizard-dot">4</a>
+                                    <div class="bs-wizard-info text-color">Review</div>
+                                </div>
+
+                                <div class="col-xs-2 bs-wizard-step active"><!-- active -->
+                                    <!-- <div class="bs-wizard-stepnum">Step 4</div> -->
+                                    <div class="progress"><div class="progress-bar"></div></div>
+                                    <a href="javascript:;" class="bs-wizard-dot">5</a>
+                                    <div class="bs-wizard-info text-color">Finalize</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row margin-bottom">
+                      <div class="col-md-4"> <h4 style=" color: #979A9F;">App Details</h4></div>
+      		      </div>
+
+                <div class="row margin-bottom-large">
+									<div class="col-md-2" *ngIf="mobileAppMetadata.icon!=undefined && mobileAppMetadata.icon!=null && mobileAppMetadata.icon!='empty' ">
+											<img [src]="mobileAppMetadata.icon" class="img-rounded" width="100" height="100">
+									</div>
+									<div class="col-md-2" *ngIf="mobileAppMetadata.icon==undefined || mobileAppMetadata.icon==null  || mobileAppMetadata.icon=='empty'">
+										<img id="imgAppIcon+{{i}}" class="img-rounded" width="100" height="100" src="assets/image/images.png">
+									 </div>
+
+      		            <div class="col-md-10">
+      		                <div class="col-md-6">
+                                <h3>{{mobileAppMetadata.applicationName}}</h3>
+                                <div class="col-md-12 no-padding">
+                                     <label class="form-label font-status">Lifecycle Stage:</label>
+                                     <label class="title">{{mobileAppMetadata.stage}}</label>
+                                </div>
+                            </div>
+
+      		                <div class="col-md-6">
+                                <div class="col-md-12 no-padding">
+                                    <div class="table-responsive margin-bottom">
+                                        <table class="table table-credits" style="border: none;">
+                                             <thead>
+                                                 <tr>
+                                                    <th colspan="2"> <span class="title-small font-bold">Cost</span></th>
+                                                 </tr>
+                                             </thead>
+                                             <tbody>
+                                                   <tr>
+                                                       <td>
+                                                          <label class="form-label text-dark">Default Onboarding Charges</label>
+                                                       </td>
+                                                       <td>
+                                                          <label class="text-dark title-small">
+														  ${{globalservice.onBoardCharges}}</label>
+                                                      </td>
+                                                   </tr>
+                                             </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 total-credits">
+                                    <div class="col-md-6">
+                                        <label>Total Cost:</label>
+                                    </div>
+                                    <div class="col-md-6 text-right">
+                                        <label>${{globalservice.onBoardCharges}}</label>
+                                    </div>
+                               </div>
+                               <div class="col-md-12" style="padding: 10px 15px;">
+                                   <div class="col-md-6">
+                                       <label class="form-label">Available:</label>
+                                   </div>
+                                   <div class="col-md-6 text-right">
+                                       <label class="form-label">${{globalservice.creditsAvailable}}</label>
+                                   </div>
+                              </div>
+                           </div>
+                      </div>
+      	         </div>
+                 <div class="form-group margin-bottom-large">
+                     <div class="row">
+                         <div class="col-md-2">
+													 <button type="button" class="btn-cancel" data-toggle="modal" href="#confirmationClose" data-dismiss="modal"
+														data-backdrop="static" data-keyboard="false" >Cancel</button>
+                         </div>
+                         <div class="col-md-2 col-md-offset-6">
+                               <button type="button" class="btn-back" (click)="displayPage4()">Back</button>
+                         </div>
+                         <div class="col-md-2">
+													 <button data-toggle="modal" href="#publishConfirmModal" data-dismiss="modal"
+														data-backdrop="static" data-keyboard="false" type="button" class="btn-next" (click)="OnSubmit()">SUBMIT</button>
+                         </div>
+                    </div>
+                 </div>
+           </form>
+         </div>
+			 </div>
+			</div>
+			</div>
+			</div>
+
+			<!--start of confirmation modal-->
+			<div class="modal fade" id="publishConfirmModal"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			<div class="modal-content text-center">
+
+			 <div class="clearfix">
+					<button type="button" class="close" data-toggle="modal" data-target="#onBoardSteps" data-dismiss="modal"
+					 data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+             </div>
+
+			 <!-- <div class="modal-header"> -->
+			 <div class="row margin-bottom">
+			   <div class="col-xs-12"><h3>Publish Confirmation</h3></div>
+			 </div>
+			 <!-- </div> -->
+
+			<div *ngIf="!disableFieldsOnEdit">
+				<div class="row margin-bottom-large">
+				   <div class="col-xs-12 dialogue-font">
+						 Are you sure you want to start publishing?
+						 You can view the status in the My Mobile Apps page.
+				   </div>
+
+				</div>
+			</div>
+
+			<div  *ngIf="disableFieldsOnEdit">
+			<div class="row margin-bottom-large">
+				   <div class="col-xs-12 dialogue-font">
+			 Are you sure you want to edit publishing?
+			 You can view the status in the My Mobile Apps page.
+			   </div>
+
+		  	 </div>
+			</div>
+
+			 <div class="row">
+
+			 <div class="col-xs-10 col-xs-offset-1">
+			   <div class="col-xs-6" >
+			    <button type="button" data-toggle="modal" data-dismiss="modal" data-target="#onBoardSteps" class="btn-cancel">Cancel</button>
+			   </div>
+			   <div class="col-xs-6" >
+			     <button type="button" data-toggle="modal" data-dismiss="modal" data-target="#confirmationSuccess" class="btn-next"  (click)="confirmedOnboard()">YES</button>
+
+			   </div>
+				 <!-- <div class="col-xs-6" *ngIf="viewError">
+			     <button type="button" id="nextBtnModal" class="btn-next" data-dismiss="modal"(click)="navigate()">OK</button>
+
+			   </div> -->
+			 </div>
+
+			 </div>
+			</div>
+			</div>
+			</div>
+
+
+			<!--start of confirmation modal-->
+			<div class="modal fade" id="confirmationClose"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			<div class="modal-content text-center">
+
+			 <div class="row margin-bottom">
+			   <div class="col-xs-12"><h3>Are you sure you want end this onboarding session?</h3></div>
+			 </div>
+
+			<div class="row margin-bottom-large">
+			   <div class="col-xs-12 dialogue-font">
+				 Your progress will not be saved and your App will not be completed.
+				</div>
+			</div>
+
+ 			<div class="row">
+			 <div class="col-xs-10 col-xs-offset-1">
+			   <div class="col-xs-6">
+			    <button type="button" data-toggle="modal" data-dismiss="modal" href="#onBoardSteps" class="btn-cancel">No,Go Back</button>
+			   </div>
+			   <div class="col-xs-6">
+			     <button type="button" id="nextBtnModal" class="btn-next" data-dismiss="modal" (click)="OnClose()">Yes, End</button>
+			   </div>
+			 </div>
+			 </div>
+
+
+			</div>
+			</div>
+			</div>
+
+
+
+			<!--start of confirmation modal-->
+			<div class="modal fade" id="confirmationSuccess"  role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+			<div class="modal-dialog">
+			<div class="modal-content text-center">
+
+				<div class="clearfix">
+					<button type="button" class="close" data-toggle="modal" (click)="navigate()" data-dismiss="modal"
+					 data-backdrop="static" data-keyboard="false" ><img src="assets/image/icons/cross.png"></button>
+                </div>
+
+			 <div class="row margin-bottom">
+				 <div class="col-xs-12"><h3>Mobile App Onboarding Confirmation</h3></div>
+			 </div>
+
+			<div class="row margin-bottom-large">
+				 <div class="col-xs-12 dialogue-font" *ngIf="!viewError">
+					 <span class="font-semi-bold">Lifecycle Stage : <span class="text-color"> {{mobileAppMetadata.stage}}</span></span>
+					 <br>
+		       This process can take time. Check the "My Mobile Apps" page to see the onboarding status
+					</div>
+					<div class="col-xs-12 dialogue-font" *ngIf="viewError">
+							{{errorMessage}}
+				 	</div>
+			</div>
+
+			<div class="row">
+				 <div class="col-xs-4 col-xs-offset-4">
+						 <button type="button" id="nextBtnModal" class="btn-next" (click)="navigate()" data-dismiss="modal" >OK</button>
+				 </div>
+			 </div>
+
+			 </div>
+			</div>
+			</div>
